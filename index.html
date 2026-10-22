@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aykut Kilic</title>
+  <meta name="description" content="Vibe-coded apps by Aykut Kilic: Astroseeker, Cloak of Death and Caput.">
+  <meta property="og:title" content="Aykut Kilic">
+  <meta property="og:description" content="Vibe-coded apps: Astroseeker, Cloak of Death and Caput.">
+  <meta property="og:image" content="https://aykutkilic.github.io/img/og.jpg">
+  <meta property="og:url" content="https://aykutkilic.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='16' font-weight='600' fill='%23fff' text-anchor='middle'%3Eak%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #fbfbfa;
+      --fg: #18181b;
+      --muted: #71717a;
+      --line: #e4e4e7;
+      --shot: #0b0b10;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e0e11;
+        --fg: #ececee;
+        --muted: #8b8b94;
+        --line: #26262c;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    main { max-width: 720px; margin: 0 auto; padding: 72px 20px 48px; }
+    a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+    a:hover { text-decoration-color: currentColor; }
+
+    header { margin-bottom: 64px; }
+    h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+    header p { margin: 4px 0 0; color: var(--muted); }
+
+    article { padding: 40px 0; border-top: 1px solid var(--line); }
+    .shots { display: grid; gap: 8px; margin: 0 0 20px; }
+    .shots.two { grid-template-columns: 1fr 1fr; }
+    .shots figure { margin: 0; }
+    .shots img {
+      display: block; width: 100%; height: auto;
+      aspect-ratio: 16 / 10; object-fit: cover;
+      border-radius: 8px; background: var(--shot);
+      outline: 1px solid var(--line); outline-offset: -1px;
+    }
+    .shots figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .title { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+    h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+    .tags { font-size: 13px; color: var(--muted); }
+    article p { margin: 8px 0 0; }
+    .links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 12px; font-size: 15px; }
+
+    footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 14px; color: var(--muted); }
+
+    @media (max-width: 520px) {
+      main { padding: 48px 16px 40px; }
+      header { margin-bottom: 40px; }
+      article { padding: 32px 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Aykut Kilic</h1>
+    <p>Vibe-coded apps.</p>
+  </header>
+
+  <article>
+    <div class="shots">
+      <img src="img/astro.webp" width="1280" height="800" alt="Astroseeker on iPhone: a natal chart over the night sky, a birthplace map, and time playback controls">
+    </div>
+    <div class="title">
+      <h2>Astroseeker</h2>
+      <span class="tags">Flutter · iOS</span>
+    </div>
+    <p>An astrology app for learning the subculture and for personal analysis. It computes natal charts on the device with a pure-Dart astronomy engine (VSOP87) and draws them over a real sky background. You pick a birthplace on a map, play time forward to watch the chart move, and can ask Gemini to interpret what you see.</p>
+    <div class="links">
+      <a href="https://apps.apple.com/app/astroseekerapp/id6760286987">App Store ↗</a>
+      <a href="https://github.com/aykutkilic/astroseeker">Source ↗</a>
+    </div>
+  </article>
+
+  <article>
+    <div class="shots two">
+      <figure>
+        <img src="img/cod-flutter.webp" width="1280" height="800" loading="lazy" alt="Cloak of Death, Flutter edition: the Dark Hall in Atari pixel art next to the adventure journal">
+        <figcaption>Flutter</figcaption>
+      </figure>
+      <figure>
+        <img src="img/cod-unity.webp" width="1280" height="800" loading="lazy" alt="Cloak of Death, Unity edition: holding a candle in first person as the Cloak floats in a dark room">
+        <figcaption>Unity</figcaption>
+      </figure>
+    </div>
+    <div class="title">
+      <h2>Cloak of Death</h2>
+      <span class="tags">Flutter · Unity</span>
+    </div>
+    <p>David Cockram's Atari text adventure, rebuilt twice. The Flutter edition draws the original room art from the cassette's bytecode and keeps the parser, the 27 rooms and the puzzle chain intact. The Unity edition turns the same rules into a first-person 3D house, where you carry, push, light and throw things instead of typing commands.</p>
+    <div class="links">
+      <a href="https://aykutkilic.github.io/cloakofdeath-flutter/">Play Flutter edition ↗</a>
+      <a href="https://aykutkilic.github.io/cloakofdeath-unity/">Play Unity 3D edition ↗</a>
+      <a href="https://github.com/aykutkilic/cloakofdeath-flutter">Source ↗</a>
+    </div>
+  </article>
+
+  <article>
+    <div class="shots">
+      <img src="img/caput.webp" width="1280" height="800" loading="lazy" alt="Caput: an isometric football pitch mid-match with red and blue players and a minimap">
+    </div>
+    <div class="title">
+      <h2>Caput</h2>
+      <span class="tags">JavaScript · WebRTC</span>
+    </div>
+    <p>Small-sided online football in the spirit of ISS and Pro Evolution Soccer, from 1v1 up to 8v8 with AI players filling empty spots. Rooms run peer-to-peer in the browser with rollback netcode, so no server is needed. It plays with a keyboard, a gamepad or touch controls, and installs as an app.</p>
+    <div class="links">
+      <a href="https://aykutkilic.github.io/caput/">Play ↗</a>
+      <a href="https://github.com/aykutkilic/caput">Source ↗</a>
+    </div>
+  </article>
+
+  <footer>
+    <a href="https://github.com/aykutkilic">github.com/aykutkilic</a>
+  </footer>
+</main>
+</body>
+</html>
