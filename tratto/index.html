@@ -1,0 +1,2366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tratto</title>
+<meta name="description" content="A one-line comedy you can play: a little man made of a single white line, and the animator's hand that draws, rescues and pranks him.">
+<meta property="og:title" content="Tratto">
+<meta property="og:description" content="A one-line comedy you can play: a little man made of a single white line, and the animator's hand that draws, rescues and pranks him.">
+<meta property="og:image" content="https://aykutkilic.github.io/tratto/og.jpg">
+<meta property="og:url" content="https://aykutkilic.github.io/tratto/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+  /* Layout: a dark projection room; the film frame is the only lit object, controls typed like a film slate beneath it. */
+  :root {
+    --room: #14100d;        /* projection-room dark, warm */
+    --room-2: #1e1813;      /* raised surfaces */
+    --paper: #efe6d8;       /* the hand's paper-white */
+    --dim: #a59886;         /* secondary slate text */
+    --spill: #ffbf80;       /* light spilling off the screen */
+    --line: #3a3027;        /* hairlines */
+    --font-display: "Caveat Brush", "Marker Felt", "Comic Sans MS", cursive;
+    --font-slate: "Courier Prime", "Courier New", ui-monospace, monospace;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--room); color: var(--paper); font-family: var(--font-slate); -webkit-font-smoothing: antialiased; }
+  main {
+    box-sizing: border-box; margin: 0 auto; min-height: 100%;
+    width: min(100%, calc((100dvh - 150px) * 4 / 3 + 32px), 1120px);
+    padding-block: 14px 18px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
+  .mark { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+  h1 { font-family: var(--font-display); font-weight: 400; font-size: 42px; line-height: 1; margin: 0; letter-spacing: .5px; }
+  .reel { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+  .ctl { display: flex; gap: 8px; flex-wrap: wrap; }
+  button { font: inherit; }
+  .ctl button {
+    font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim);
+    background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer;
+  }
+  .ctl button[aria-pressed="true"] { color: var(--paper); border-color: var(--dim); }
+  .ctl button:hover { color: var(--paper); }
+  button:focus-visible { outline: 2px solid var(--spill); outline-offset: 2px; }
+  .gate {
+    position: relative; width: 100%; aspect-ratio: 4 / 3; max-width: 100%;
+    border-radius: 14px / 12px; overflow: hidden; background: #000;
+    box-shadow: 0 0 0 1px rgba(255, 230, 200, .05), 0 40px 90px -30px color-mix(in srgb, var(--spill) 22%, transparent), 0 0 140px -40px color-mix(in srgb, var(--spill) 18%, transparent);
+  }
+  canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: none; }
+  canvas.graded { filter: saturate(.9) contrast(1.04) sepia(.07) brightness(1.02); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--dim); line-height: 1.5; }
+  .legend span { white-space: nowrap; }
+  kbd { font-family: var(--font-slate); font-weight: 700; color: var(--paper); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; font-size: 11.5px; background: var(--room-2); }
+  .note { font-size: 11.5px; color: color-mix(in srgb, var(--dim) 75%, var(--room)); margin: 0; }
+  .note a { color: var(--dim); text-underline-offset: 3px; }
+  .touch { display: none; justify-content: space-between; gap: 12px; }
+  .touch .pad { display: flex; gap: 12px; }
+  .touch button {
+    width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--line); background: var(--room-2);
+    color: var(--paper); font-size: 22px; touch-action: none; -webkit-user-select: none; user-select: none;
+  }
+  .touch button[aria-pressed="true"] { background: var(--paper); color: var(--room); }
+  @media (pointer: coarse) { .touch { display: flex; } canvas { cursor: auto; } .keys-only { display: none; } }
+  @media (max-width: 520px) { h1 { font-size: 34px; } .reel { display: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="mark"><h1>Tratto</h1><span class="reel">a one-line comedy · six scenes</span></div>
+    <div class="ctl">
+      <button id="b-music" type="button" aria-pressed="true">Music</button>
+      <button id="b-film" type="button" aria-pressed="true">Film grain</button>
+      <button id="b-restart" type="button">Restart scene</button>
+    </div>
+  </header>
+  <div class="gate">
+    <canvas id="film" class="graded" width="960" height="720" aria-label="Tratto game screen"></canvas>
+  </div>
+  <div class="touch">
+    <div class="pad"><button id="t-left" type="button" aria-label="Walk left">◀</button><button id="t-right" type="button" aria-label="Walk right">▶</button></div>
+    <div class="pad"><button id="t-erase" type="button" aria-label="Eraser" aria-pressed="false">⌫</button><button id="t-jump" type="button" aria-label="Jump">▲</button></div>
+  </div>
+  <div class="legend keys-only">
+    <span><kbd>←</kbd> <kbd>→</kbd> walk</span>
+    <span><kbd>↑</kbd> / <kbd>space</kbd> jump</span>
+    <span>drag the mouse to draw</span>
+    <span>right-drag or <kbd>E</kbd> to erase</span>
+    <span>click him to poke</span>
+    <span><kbd>R</kbd> restart · <kbd>1</kbd>–<kbd>6</kbd> scenes · <kbd>Esc</kbd> skip</span>
+  </div>
+  <p class="note">An original homage to single-line animation: one white line, one flat colour, one meddling hand. Lettering is drawn from the Hershey Script single-stroke font data (Dr. A. V. Hershey, U.S. National Bureau of Standards; data format by James Hurt, Cognition, Inc.). More by <a href="https://aykutkilic.github.io/">Aykut Kilic</a>.</p>
+</main>
+<script>
+// ─── Tratto · shared utilities ──────────────────────────────────────────────
+'use strict';
+
+const W = 960, H = 720;            // logical film frame (4:3)
+const GROUND = 520;                 // default height of the line
+const TAU = Math.PI * 2;
+
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const invLerp = (a, b, v) => (v - a) / (b - a);
+const smooth = t => t * t * (3 - 2 * t);
+const easeOut = t => 1 - (1 - t) * (1 - t);
+const easeIn = t => t * t;
+const easeInOut = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+const easeOutBack = t => { const c = 1.6; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const dist = (ax, ay, bx, by) => Math.hypot(bx - ax, by - ay);
+const angLerp = (a, b, t) => { let d = ((b - a + Math.PI) % TAU + TAU) % TAU - Math.PI; return a + d * t; };
+// frame-rate independent exponential approach
+const damp = (a, b, k, dt) => lerp(a, b, 1 - Math.exp(-k * dt));
+
+// deterministic PRNG
+function mulberry(seed) {
+  let s = seed >>> 0;
+  return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+const rnd = mulberry(20261027);
+const rand = (a = 1, b) => b === undefined ? rnd() * a : a + rnd() * (b - a);
+const pick = arr => arr[(rnd() * arr.length) | 0];
+
+// smooth 1D value noise
+function hash1(n) { n = Math.sin(n * 127.1 + 311.7) * 43758.5453; return n - Math.floor(n); }
+function noise1(x) { const i = Math.floor(x), f = x - i; return lerp(hash1(i), hash1(i + 1), smooth(f)); }
+
+const V = (x, y) => ({ x, y });
+const rot = (x, y, a) => { const c = Math.cos(a), s = Math.sin(a); return { x: x * c - y * s, y: x * s + y * c }; };
+
+// Hermite spline through points; points flagged {c:true} keep a sharp corner.
+// Returns a dense polyline (~step px spacing).
+function spline(pts, closed, step = 3.5) {
+  const n = pts.length; if (n < 2) return pts.slice();
+  const P = i => closed ? pts[(i + n) % n] : pts[clamp(i, 0, n - 1)];
+  const tan = i => {
+    const p = P(i);
+    if (p.c || (!closed && (i === 0 || i === n - 1))) return { x: 0, y: 0 };
+    const a = P(i - 1), b = P(i + 1);
+    return { x: (b.x - a.x) * 0.5, y: (b.y - a.y) * 0.5 };
+  };
+  const out = [];
+  const segs = closed ? n : n - 1;
+  for (let i = 0; i < segs; i++) {
+    const p0 = P(i), p1 = P(i + 1), m0 = tan(i), m1 = tan(i + 1);
+    const len = Math.hypot(p1.x - p0.x, p1.y - p0.y);
+    const k = Math.max(1, Math.ceil(len / step));
+    for (let j = 0; j < k; j++) {
+      const t = j / k, t2 = t * t, t3 = t2 * t;
+      const h00 = 2 * t3 - 3 * t2 + 1, h10 = t3 - 2 * t2 + t, h01 = -2 * t3 + 3 * t2, h11 = t3 - t2;
+      out.push({ x: h00 * p0.x + h10 * m0.x + h01 * p1.x + h11 * m1.x, y: h00 * p0.y + h10 * m0.y + h01 * p1.y + h11 * m1.y });
+    }
+  }
+  if (!closed) out.push({ x: pts[n - 1].x, y: pts[n - 1].y }); else out.push({ x: pts[0].x, y: pts[0].y });
+  return out;
+}
+
+// resample a polyline at a fixed spacing, keeping the original vertices
+function densify(pts, step = 6) {
+  const out = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1];
+    const k = Math.max(1, Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / step));
+    for (let j = 0; j < k; j++) out.push({ x: lerp(a.x, b.x, j / k), y: lerp(a.y, b.y, j / k) });
+  }
+  if (pts.length) out.push({ x: pts[pts.length - 1].x, y: pts[pts.length - 1].y });
+  return out;
+}
+
+// light corner rounding (one Chaikin pass, small cut)
+function roundCorners(pts, r = 5) {
+  if (pts.length < 3) return pts.slice();
+  const out = [pts[0]];
+  for (let i = 1; i < pts.length - 1; i++) {
+    const a = pts[i - 1], p = pts[i], b = pts[i + 1];
+    const la = Math.hypot(p.x - a.x, p.y - a.y), lb = Math.hypot(b.x - p.x, b.y - p.y);
+    const ra = Math.min(r, la * .45), rb = Math.min(r, lb * .45);
+    const p1 = { x: p.x + (a.x - p.x) * ra / la, y: p.y + (a.y - p.y) * ra / la };
+    const p2 = { x: p.x + (b.x - p.x) * rb / lb, y: p.y + (b.y - p.y) * rb / lb };
+    out.push(p1, { x: (p1.x + p2.x) / 4 + p.x / 2, y: (p1.y + p2.y) / 4 + p.y / 2 }, p2);
+  }
+  out.push(pts[pts.length - 1]);
+  return out;
+}
+
+// Ramer–Douglas–Peucker simplification
+function simplify(pts, eps = 1.5) {
+  if (pts.length < 3) return pts.slice();
+  const keep = new Uint8Array(pts.length); keep[0] = keep[pts.length - 1] = 1;
+  const stack = [[0, pts.length - 1]];
+  while (stack.length) {
+    const [s, e] = stack.pop(); let md = 0, mi = -1;
+    const ax = pts[s].x, ay = pts[s].y, bx = pts[e].x, by = pts[e].y, L = Math.hypot(bx - ax, by - ay) || 1;
+    for (let i = s + 1; i < e; i++) {
+      const d = Math.abs((by - ay) * pts[i].x - (bx - ax) * pts[i].y + bx * ay - by * ax) / L;
+      if (d > md) { md = d; mi = i; }
+    }
+    if (md > eps) { keep[mi] = 1; stack.push([s, mi], [mi, e]); }
+  }
+  return pts.filter((_, i) => keep[i]);
+}
+
+function polyLength(pts) { let L = 0; for (let i = 1; i < pts.length; i++) L += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y); return L; }
+
+// cut a polyline to its first `frac` of arc length (for "being drawn" reveals)
+function partial(pts, frac) {
+  if (frac >= 1) return pts; if (frac <= 0) return [];
+  const total = polyLength(pts), target = total * frac; let acc = 0; const out = [pts[0]];
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1], b = pts[i], l = Math.hypot(b.x - a.x, b.y - a.y);
+    if (acc + l >= target) { const t = (target - acc) / (l || 1); out.push({ x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) }); return out; }
+    acc += l; out.push(b);
+  }
+  return out;
+}
+
+// cooperative scripts (generators receive dt from each `yield`)
+function* wait(t) { while (t > 0) t -= yield; }
+function* tween(dur, fn, ease = easeInOut) { let t = 0; fn(0); while (t < dur) { t += yield; fn(ease(Math.min(1, t / dur))); } }
+function* until(cond, timeout = 1e9) { let t = 0; while (!cond() && t < timeout) t += yield; }
+function* all(...gens) {
+  let live = gens.slice();
+  for (const g of live) g.next();
+  while (live.length) { const dt = yield; live = live.filter(g => !g.next(dt).done); }
+}
+
+</script>
+<script>
+// ─── Tratto · sound: gibberish voice, sfx, little jazz combo, projector ─────
+'use strict';
+
+const Audio = (() => {
+  let ac = null, master, sfxBus, musicBus, voiceBus, noiseBuf, scratch = null, ambient = null;
+  let musicOn = true, started = false;
+  const now = () => ac ? ac.currentTime : performance.now() / 1000;
+
+  function init() {
+    if (started) return; started = true;
+    try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { ac = null; return; }
+    master = ac.createGain(); master.gain.value = 0.85;
+    const comp = ac.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 3;
+    // a little "optical soundtrack" colour: band-limit the whole mix
+    const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 70;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6500;
+    master.connect(hp); hp.connect(lp); lp.connect(comp); comp.connect(ac.destination);
+    sfxBus = ac.createGain(); sfxBus.gain.value = 0.5; sfxBus.connect(master);
+    voiceBus = ac.createGain(); voiceBus.gain.value = 0.62; voiceBus.connect(master);
+    musicBus = ac.createGain(); musicBus.gain.value = musicOn ? 0.16 : 0; musicBus.connect(master);
+    noiseBuf = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    startScratch(); startAmbient(); Music.start();
+  }
+  function resume() { if (ac && ac.state === 'suspended') ac.resume(); }
+
+  function noiseSrc() { const s = ac.createBufferSource(); s.buffer = noiseBuf; s.loop = true; s.loopStart = Math.random(); return s; }
+  function env(g, t, a, peak, dec, sus = 0.0001) {
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a);
+    g.gain.exponentialRampToValueAtTime(Math.max(sus, 0.0001), t + a + dec);
+  }
+  function tone(type, f0, f1, dur, vol, bus = sfxBus, t = now()) {
+    if (!ac) return;
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+    env(g, t, 0.008, vol, dur); o.connect(g); g.connect(bus); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function burst(freq, q, dur, vol, type = 'bandpass', t = now()) {
+    if (!ac) return;
+    const s = noiseSrc(), f = ac.createBiquadFilter(), g = ac.createGain();
+    f.type = type; f.frequency.value = freq; f.Q.value = q; env(g, t, 0.004, vol, dur);
+    s.connect(f); f.connect(g); g.connect(sfxBus); s.start(t); s.stop(t + dur + 0.05);
+  }
+
+  // continuous pencil / eraser texture, driven every frame
+  function startScratch() {
+    const s = noiseSrc(), f = ac.createBiquadFilter(), g = ac.createGain();
+    const am = ac.createGain(); f.type = 'bandpass'; f.frequency.value = 3800; f.Q.value = 1.4; g.gain.value = 0;
+    s.connect(f); f.connect(am); am.connect(g); g.connect(sfxBus); s.start();
+    scratch = { f, g, am };
+  }
+  function setScratch(speed, erasing) {
+    if (!scratch) return;
+    const t = now(), v = clamp(speed / 900, 0, 1);
+    scratch.g.gain.setTargetAtTime(v * (erasing ? 0.55 : 0.35), t, 0.03);
+    scratch.f.frequency.setTargetAtTime(erasing ? 900 : 3200 + v * 1800, t, 0.05);
+    scratch.f.Q.value = erasing ? 0.7 : 1.4;
+    scratch.am.gain.setTargetAtTime(0.6 + Math.random() * 0.8, t, 0.01); // graphite grain
+  }
+
+  // projector whirr: quiet filtered noise pulsing at 24 Hz
+  function startAmbient() {
+    const s = noiseSrc(), f = ac.createBiquadFilter(), g = ac.createGain(), lfo = ac.createOscillator(), lg = ac.createGain();
+    f.type = 'bandpass'; f.frequency.value = 1400; f.Q.value = 0.6; g.gain.value = 0.012;
+    lfo.frequency.value = 24; lg.gain.value = 0.008; lfo.connect(lg); lg.connect(g.gain);
+    s.connect(f); f.connect(g); g.connect(musicBus); s.start(); lfo.start(); ambient = g;
+  }
+
+  const sfx = {
+    jump() { tone('triangle', 260, 620, 0.16, 0.22); },
+    land(h = 1) { burst(380, 0.8, 0.09, 0.25 * h, 'lowpass'); tone('sine', 120, 60, 0.12, 0.25 * h); },
+    step() { burst(900, 2, 0.03, 0.05); },
+    drop() { const t = now(); tone('sine', 620, 1240, 0.12, 0.25, sfxBus, t); tone('sine', 930, 1860, 0.14, 0.12, sfxBus, t + 0.06); },
+    poke() { tone('square', 520, 380, 0.08, 0.08); burst(1500, 3, 0.04, 0.12); },
+    whoosh() { if (!ac) return; const t = now(), s = noiseSrc(), f = ac.createBiquadFilter(), g = ac.createGain();
+      f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(400, t); f.frequency.exponentialRampToValueAtTime(2200, t + 0.25);
+      env(g, t, 0.08, 0.18, 0.3); s.connect(f); f.connect(g); g.connect(sfxBus); s.start(t); s.stop(t + 0.5); },
+    fall() { tone('sine', 1400, 180, 1.1, 0.12); },
+    boing() { if (!ac) return; const t = now(), o = ac.createOscillator(), g = ac.createGain(), l = ac.createOscillator(), lg = ac.createGain();
+      o.type = 'triangle'; o.frequency.value = 180; l.frequency.value = 18; lg.gain.value = 60; l.connect(lg); lg.connect(o.frequency);
+      env(g, t, 0.005, 0.25, 0.45); o.connect(g); g.connect(sfxBus); o.start(t); l.start(t); o.stop(t + 0.5); l.stop(t + 0.5); },
+    rumble() { tone('sine', 70, 45, 0.5, 0.18); burst(200, 0.7, 0.3, 0.08, 'lowpass'); },
+    erase() { burst(700, 0.8, 0.1, 0.1, 'lowpass'); },
+    jingle() { const t = now(); [0, 4, 7, 12, 16].forEach((s, i) => Music.vibe(349.2 * Math.pow(2, s / 12), t + i * 0.09, 0.9, 0.22)); },
+    tap() { burst(2400, 4, 0.02, 0.08); },
+    pop() { tone('sine', 300, 900, 0.07, 0.15); },
+  };
+
+  return {
+    init, resume, now, sfx, setScratch, tone, burst,
+    get ctx() { return ac; }, get voiceBus() { return voiceBus; }, get musicBus() { return musicBus; }, noiseSrc,
+    get musicOn() { return musicOn; },
+    toggleMusic() { musicOn = !musicOn; if (musicBus) musicBus.gain.setTargetAtTime(musicOn ? 0.16 : 0, now(), 0.1); return musicOn; },
+  };
+})();
+
+// ─── gibberish voice: formant synth + analytic mouth curve ──────────────────
+const Voice = (() => {
+  // vowel: [F1, F2, F3, mouth openness]
+  const VOW = { a: [780, 1250, 2500, 1], e: [480, 1900, 2550, .65], i: [320, 2250, 2900, .35], o: [520, 880, 2450, .8], u: [360, 720, 2350, .45] };
+  const CONS = {
+    b: ['plo', 500], d: ['plo', 1800], g: ['plo', 1200], p: ['plo', 700], t: ['plo', 3500], k: ['plo', 2200],
+    m: ['nas', 0], n: ['nas', 0], l: ['liq', 0], r: ['rol', 0], s: ['fri', 6000], h: ['fri', 1500], f: ['fri', 4000],
+  };
+  let sylls = [];          // {t0, t1, open} in audio time
+  let active = [];          // live node groups
+  let lastEnd = 0;
+
+  function mouth(t = Audio.now()) {
+    let m = 0;
+    for (const s of sylls) {
+      if (t < s.t0 - 0.02 || t > s.t1 + 0.06) continue;
+      const a = clamp((t - s.t0) / 0.035, 0, 1), r = clamp((s.t1 + 0.06 - t) / 0.08, 0, 1);
+      m = Math.max(m, s.open * Math.min(a, r) * (0.85 + 0.15 * Math.sin(t * 60)));
+    }
+    return m;
+  }
+  const speaking = (t = Audio.now()) => t < lastEnd;
+
+  // a phrase is an array of {c, v, d, p} (consonant, vowel, duration, pitch)
+  const MOODS = {
+    grumble: () => phrase(rand(3, 6) | 0, 'bmnrg', 'ouao', [.14, .22], f => 95 + 20 * (1 - f) + rand(-6, 6)),
+    call: () => [{ c: 'h', v: 'e', d: .16, p: 190 }, { c: '', v: 'e', d: .12, p: 175 }, { c: 'h', v: 'e', d: .34, p: [200, 290] }],
+    question: () => [{ c: 'm', v: 'e', d: .12, p: 150 }, { c: '', v: 'e', d: .26, p: [170, 260] }],
+    angry: () => phrase(rand(7, 12) | 0, 'tkprsbd', 'aeoa', [.07, .11], () => rand(190, 290)),
+    rant: () => phrase(rand(10, 15) | 0, 'tkprsbdg', 'aeaoi', [.065, .1], f => 210 + 70 * Math.sin(f * 9) + rand(-20, 20)),
+    happy: () => { const sc = [0, 2, 4, 7, 9, 12]; return Array.from({ length: rand(4, 7) | 0 }, (_, i) => ({ c: 'l', v: pick('aai'), d: rand(.1, .16), p: 170 * Math.pow(2, sc[Math.min(sc.length - 1, i + (rand(2) | 0))] / 12) })); },
+    surprised: () => [{ c: '', v: 'o', d: .22, p: [230, 330] }],
+    hurt: () => [{ c: '', v: 'a', d: .1, p: 320 }, { c: '', v: 'i', d: .2, p: [340, 260] }, { c: '', v: 'a', d: .1, p: 320 }, { c: '', v: 'i', d: .22, p: [340, 240] }],
+    scream: () => [{ c: '', v: 'a', d: 1.1, p: [400, 150] }],
+    hup: () => [{ c: 'h', v: 'u', d: .07, p: 165 }],
+    uff: () => [{ c: '', v: 'u', d: .08, p: 140 }, { c: 'f', v: 'u', d: .12, p: 110 }],
+    whoa: () => [{ c: '', v: 'o', d: .12, p: 220 }, { c: 'h', v: 'o', d: .12, p: 260 }, { c: 'h', v: 'o', d: .16, p: [240, 300] }],
+    yawn: () => [{ c: 'h', v: 'a', d: .9, p: [180, 100], breath: .6 }, { c: 'm', v: 'u', d: .18, p: 95 }],
+    hmm: () => [{ c: 'm', v: 'u', d: .4, p: [120, 140] }],
+    thanks: () => [{ c: 'g', v: 'a', d: .1, p: 190 }, { c: 'r', v: 'a', d: .12, p: 210 }, { c: 'tsi', v: 'e', d: .26, p: [230, 200] }],
+  };
+  function phrase(n, cons, vows, [dmin, dmax], pitchFn) {
+    return Array.from({ length: n }, (_, i) => ({ c: rand() < .8 ? pick(cons) : '', v: pick(vows), d: rand(dmin, dmax) * (i === n - 1 ? 1.6 : 1), p: pitchFn(i / Math.max(1, n - 1)) }));
+  }
+
+  function say(mood, { pitchMul = 1, at = null } = {}) {
+    const ph = (MOODS[mood] || MOODS.grumble)();
+    const ac = Audio.ctx;
+    let t = at ?? Math.max(Audio.now() + 0.02, lastEnd + 0.05);
+    const start = t;
+    // schedule mouth curve regardless of audio availability
+    let tt = t;
+    for (const s of ph) {
+      const cd = s.c ? 0.035 : 0;
+      sylls.push({ t0: tt + cd, t1: tt + s.d, open: (VOW[s.v] || VOW.a)[3] * (mood === 'scream' || mood === 'yawn' ? 1.15 : 1) });
+      tt += s.d + 0.012;
+    }
+    lastEnd = tt;
+    sylls = sylls.filter(s => s.t1 > Audio.now() - 1);
+    if (!ac) return tt - start;
+
+    const src = ac.createOscillator(); src.type = 'sawtooth';
+    const src2 = ac.createOscillator(); src2.type = 'square'; const g2 = ac.createGain(); g2.gain.value = 0.18;
+    const vib = ac.createOscillator(), vg = ac.createGain(); vib.frequency.value = 5.5 + rand(2); vg.gain.value = 3;
+    vib.connect(vg); vg.connect(src.frequency); vg.connect(src2.frequency);
+    const rasp = ac.createWaveShaper(); const curve = new Float32Array(256);
+    for (let i = 0; i < 256; i++) { const x = i / 128 - 1; curve[i] = Math.tanh(x * 2.2); } rasp.curve = curve;
+    const pre = ac.createGain(); pre.gain.value = 0.6;
+    src.connect(pre); src2.connect(g2); g2.connect(pre); pre.connect(rasp);
+    const amp = ac.createGain(); amp.gain.value = 0.0001;
+    const forms = [0, 1, 2].map(k => { const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = [7, 11, 13][k]; const g = ac.createGain(); g.gain.value = [1, .55, .25][k]; rasp.connect(f); f.connect(g); g.connect(amp); return f; });
+    const breath = Audio.noiseSrc(), bf = ac.createBiquadFilter(), bg = ac.createGain(); bf.type = 'bandpass'; bf.frequency.value = 1600; bf.Q.value = .8; bg.gain.value = 0.0001;
+    breath.connect(bf); bf.connect(bg); bg.connect(Audio.voiceBus);
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3600;
+    amp.connect(lp); lp.connect(Audio.voiceBus);
+
+    for (const s of ph) {
+      const vw = VOW[s.v] || VOW.a, p0 = (Array.isArray(s.p) ? s.p[0] : s.p) * pitchMul, p1 = (Array.isArray(s.p) ? s.p[1] : s.p) * pitchMul;
+      const ct = CONS[s.c] ? CONS[s.c][0] : (s.c === 'tsi' ? 'fri' : null);
+      let vt = t;
+      if (ct === 'plo') { consBurst(ac, t, CONS[s.c][1], 0.025, 0.35); vt = t + 0.03; }
+      else if (ct === 'fri') { consBurst(ac, t, s.c === 'tsi' ? 5500 : CONS[s.c][1], 0.06, 0.18); vt = t + 0.055; }
+      else if (ct === 'nas') { forms.forEach((f, k) => f.frequency.setValueAtTime([280, 1100, 2400][k], t)); amp.gain.setTargetAtTime(0.32, t, 0.01); vt = t + 0.04; }
+      else if (ct === 'liq') { forms.forEach((f, k) => f.frequency.setValueAtTime([380, 1000, 2600][k], t)); amp.gain.setTargetAtTime(0.4, t, 0.008); vt = t + 0.03; }
+      else if (ct === 'rol') { for (let k = 0; k < 3; k++) { amp.gain.setValueAtTime(0.5, t + k * 0.018); amp.gain.setValueAtTime(0.12, t + k * 0.018 + 0.009); } vt = t + 0.055; }
+      src.frequency.setValueAtTime(p0 * (ct === 'nas' ? .95 : 1), t); src2.frequency.setValueAtTime(p0 * 1.005, t);
+      src.frequency.linearRampToValueAtTime(p1 + rand(-4, 4), t + s.d); src2.frequency.linearRampToValueAtTime(p1 * 1.005, t + s.d);
+      forms.forEach((f, k) => f.frequency.setTargetAtTime(vw[k] * (0.97 + rand(.06)), vt, 0.018));
+      amp.gain.setTargetAtTime(0.85, vt, 0.012);
+      amp.gain.setTargetAtTime(0.08, t + s.d - 0.02, 0.018);
+      if (s.breath) { bg.gain.setTargetAtTime(0.12 * s.breath, vt, 0.05); bg.gain.setTargetAtTime(0.0001, t + s.d, 0.05); }
+      t += s.d + 0.012;
+    }
+    amp.gain.setTargetAtTime(0.0001, t, 0.03);
+    [src, src2, vib, breath].forEach(n => { n.start(start); n.stop(t + 0.3); });
+    return t - start;
+  }
+  function consBurst(ac, t, freq, dur, vol) {
+    const s = Audio.noiseSrc(), f = ac.createBiquadFilter(), g = ac.createGain();
+    f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = 1.5;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f); f.connect(g); g.connect(Audio.voiceBus); s.start(t); s.stop(t + dur + 0.02);
+  }
+  return { say, mouth, speaking, get busyUntil() { return lastEnd; } };
+})();
+
+// ─── a small original walking-bass combo (I–VI–ii–V in F) ───────────────────
+const Music = (() => {
+  const BPM = 104, beat = 60 / BPM;
+  const chords = [ // root midi, chord tones (semitones)
+    { r: 41, t: [0, 4, 7, 11] }, { r: 38, t: [0, 4, 7, 10] }, { r: 43, t: [0, 3, 7, 10] }, { r: 36, t: [0, 4, 7, 10] },
+    { r: 41, t: [0, 4, 7, 11] }, { r: 46, t: [0, 4, 7, 11] }, { r: 43, t: [0, 3, 7, 10] }, { r: 36, t: [0, 4, 7, 10] },
+  ];
+  let nextT = 0, step = 0, timer = null;
+  const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+
+  function bass(m, t) {
+    const ac = Audio.ctx, o = ac.createOscillator(), g = ac.createGain(), f = ac.createBiquadFilter();
+    o.type = 'triangle'; o.frequency.value = hz(m); f.type = 'lowpass'; f.frequency.setValueAtTime(1400, t); f.frequency.exponentialRampToValueAtTime(300, t + 0.3);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.9, t + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, t + beat * 0.95);
+    o.connect(f); f.connect(g); g.connect(Audio.musicBus); o.start(t); o.stop(t + beat);
+  }
+  function vibe(f0, t, vol = 0.35, dur = 1.4) {
+    const ac = Audio.ctx; if (!ac) return;
+    const o = ac.createOscillator(), o2 = ac.createOscillator(), g = ac.createGain(), trem = ac.createOscillator(), tg = ac.createGain();
+    o.type = 'sine'; o.frequency.value = f0; o2.type = 'sine'; o2.frequency.value = f0 * 4.01;
+    const g2 = ac.createGain(); g2.gain.value = 0.08; trem.frequency.value = 5.2; tg.gain.value = 0.25;
+    trem.connect(tg); tg.connect(g.gain);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(dur < 1 ? Audio.voiceBus : Audio.musicBus);
+    [o, o2, trem].forEach(n => { n.start(t); n.stop(t + dur + 0.05); });
+  }
+  function brush(t, long) {
+    const ac = Audio.ctx, s = Audio.noiseSrc(), f = ac.createBiquadFilter(), g = ac.createGain();
+    f.type = 'bandpass'; f.frequency.value = long ? 5000 : 7000; f.Q.value = 0.7;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(long ? 0.12 : 0.06, t + (long ? 0.04 : 0.005)); g.gain.exponentialRampToValueAtTime(0.0001, t + (long ? 0.22 : 0.06));
+    s.connect(f); f.connect(g); g.connect(Audio.musicBus); s.start(t); s.stop(t + 0.3);
+  }
+  function schedule() {
+    const ac = Audio.ctx; if (!ac) return;
+    while (nextT < ac.currentTime + 0.2) {
+      const bar = (step >> 2) % chords.length, b = step & 3, ch = chords[bar], nx = chords[(bar + 1) % chords.length];
+      let m;
+      if (b === 0) m = ch.r; else if (b === 3) m = nx.r + (rand() < .5 ? 1 : -1); else m = ch.r + ch.t[1 + ((rand(3)) | 0)] - (rand() < .3 ? 12 : 0);
+      bass(m, nextT);
+      brush(nextT, b === 1 || b === 3);
+      brush(nextT + beat * 0.66, false); // swung upbeat
+      if (b === 0 && rand() < .8) ch.t.forEach((s, i) => vibe(hz(ch.r + 24 + s), nextT + beat * (rand() < .5 ? 0 : 0.66) + i * 0.012, 0.09, 1.6));
+      if ((b === 2 || b === 1) && rand() < .35) vibe(hz(ch.r + 36 + pick(ch.t)), nextT + beat * 0.66, 0.08, 0.9);
+      nextT += beat; step++;
+    }
+  }
+  return {
+    start() { if (!Audio.ctx || timer) return; nextT = Audio.ctx.currentTime + 0.3; timer = setInterval(schedule, 40); },
+    vibe,
+  };
+})();
+
+</script>
+<script>
+// ─── Tratto · the line renderer and the film print ─────────────────────────
+'use strict';
+
+const INK = '#f6f1e4';             // chalky warm white of the line
+const LINE_W = 4.5;
+
+// Line batch: every white line in the frame is collected, then stroked twice
+// (warm halation pass + crisp pass), with "boil" — the hand-redrawn shimmer
+// that changes on twos (12 fps).
+const Lines = {
+  paths: [], boilFrame: 0, amp: 1.05, ph: [0, 0, 0, 0],
+  begin(boilFrame) {
+    this.paths.length = 0;
+    if (boilFrame !== this.boilFrame || !this.ph[0]) {
+      this.boilFrame = boilFrame;
+      this.ph = [0, 1, 2, 3].map(k => hash1(boilFrame * 4.13 + k * 17.7) * TAU);
+    }
+  },
+  // pts in world space; (ox,oy) defines the local frame the boil noise lives in
+  add(pts, { closed = false, ox = 0, oy = 0, amp = 1, width = 1, alpha = 1 } = {}) {
+    if (!pts || pts.length < 2) return;
+    this.paths.push({ pts, closed, ox, oy, amp, width, alpha });
+  },
+  wob(lx, ly) {
+    const p = this.ph, a = this.amp;
+    return {
+      x: a * (Math.sin(lx * 0.061 + ly * 0.034 + p[0]) * 0.62 + Math.sin(lx * 0.019 - ly * 0.047 + p[1]) * 0.38),
+      y: a * (Math.sin(lx * 0.042 - ly * 0.057 + p[2]) * 0.62 + Math.sin(-lx * 0.026 + ly * 0.021 + p[3]) * 0.38),
+    };
+  },
+  build(path) {
+    const P = new Path2D(), pts = path.pts;
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i], w = this.wob(p.x - path.ox, p.y - path.oy);
+      const x = p.x + w.x * path.amp, y = p.y + w.y * path.amp;
+      i ? P.lineTo(x, y) : P.moveTo(x, y);
+    }
+    if (path.closed) P.closePath();
+    return P;
+  },
+  flush(ctx) {
+    const groups = new Map();
+    for (const p of this.paths) {
+      const k = p.width + '|' + p.alpha;
+      if (!groups.has(k)) groups.set(k, { w: p.width, a: p.alpha, P: new Path2D() });
+      groups.get(k).P.addPath(this.build(p));
+    }
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (const g of groups.values()) {
+      ctx.globalAlpha = g.a;
+      ctx.strokeStyle = 'rgba(255,214,186,0.07)'; ctx.lineWidth = LINE_W * g.w * 2.8; ctx.stroke(g.P);   // halation
+      ctx.strokeStyle = 'rgba(255,248,236,0.13)'; ctx.lineWidth = LINE_W * g.w * 1.5; ctx.stroke(g.P);  // soft edge
+      ctx.strokeStyle = INK; ctx.lineWidth = LINE_W * g.w; ctx.stroke(g.P);
+    }
+    ctx.globalAlpha = 1;
+  },
+};
+
+// filled dots / small shapes in line colour (eyes etc.)
+const Dots = {
+  list: [],
+  begin() { this.list.length = 0; },
+  add(x, y, r, ox = 0, oy = 0) { this.list.push({ x, y, r, ox, oy }); },
+  flush(ctx) {
+    ctx.fillStyle = INK;
+    for (const d of this.list) { const w = Lines.wob(d.x - d.ox, d.y - d.oy); ctx.beginPath(); ctx.arc(d.x + w.x * .6, d.y + w.y * .6, d.r, 0, TAU); ctx.fill(); }
+  },
+};
+
+// handwritten type in line colour, optionally revealed left→right
+const FONT = '"Caveat Brush", "Caveat", "Marker Felt", "Comic Sans MS", cursive';
+function drawWords(ctx, str, x, y, size, { alpha = 1, reveal = 1, align = 'center' } = {}) {
+  if (reveal <= 0 || alpha <= 0) return;
+  ctx.save();
+  ctx.font = `${size}px ${FONT}`; ctx.textAlign = align; ctx.textBaseline = 'middle';
+  const w = ctx.measureText(str).width, x0 = align === 'center' ? x - w / 2 : align === 'right' ? x - w : x;
+  if (reveal < 1) { ctx.beginPath(); ctx.rect(x0 - 10, y - size, (w + 20) * reveal, size * 2); ctx.clip(); }
+  ctx.globalAlpha = alpha * 0.25; ctx.fillStyle = 'rgba(255,214,186,1)';
+  ctx.shadowColor = 'rgba(255,214,186,0.6)'; ctx.shadowBlur = 8; ctx.fillText(str, x, y);
+  ctx.shadowBlur = 0; ctx.globalAlpha = alpha; ctx.fillStyle = INK; ctx.fillText(str, x, y);
+  ctx.restore();
+  return { x0, w };
+}
+
+// ─── the film print ─────────────────────────────────────────────────────────
+const Film = (() => {
+  const grains = [], scratches = [];
+  let vignette = null, frame = -1, weave = { x: 0, y: 0 }, flick = 0, dust = [], jolt = 0, enabled = true;
+
+  function makeGrain() {
+    for (let k = 0; k < 6; k++) {
+      const c = document.createElement('canvas'); c.width = 320; c.height = 240;
+      const g = c.getContext('2d'), img = g.createImageData(320, 240), d = img.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const v = 128 + (Math.random() + Math.random() + Math.random() - 1.5) * 95;
+        d[i] = v; d[i + 1] = v * 0.98; d[i + 2] = v * 0.95; d[i + 3] = 255;
+      }
+      g.putImageData(img, 0, 0); grains.push(c);
+    }
+    vignette = document.createElement('canvas'); vignette.width = W; vignette.height = H;
+    const v = vignette.getContext('2d');
+    const rg = v.createRadialGradient(W / 2, H * 0.47, H * 0.22, W / 2, H / 2, H * 0.92);
+    rg.addColorStop(0, '#ffffff'); rg.addColorStop(0.55, '#f4ede6'); rg.addColorStop(0.85, '#a8968a'); rg.addColorStop(1, '#5e4f46');
+    v.fillStyle = rg; v.fillRect(0, 0, W, H);
+  }
+
+  // advance once per film frame (24 fps)
+  function tick(f) {
+    if (f === frame) return; frame = f;
+    weave = { x: (noise1(f * 0.21) - .5) * 2.4, y: (noise1(f * 0.17 + 40) - .5) * 2.0 };
+    if (jolt > 0) { weave.y += jolt; jolt = 0; } else if (rand() < 0.004) jolt = rand(3, 6);
+    flick = Math.max(0, (noise1(f * 0.9) - .45)) * 0.07 + (rand() < 0.03 ? 0.04 : 0);
+    // dust & hair specks live exactly one frame
+    dust = [];
+    const n = rand() < 0.55 ? (rand(3) | 0) : 0;
+    for (let i = 0; i < n; i++) dust.push({ x: rand(W), y: rand(H), r: rand(0.6, 2.4), dark: rand() < 0.7, hair: rand() < 0.18, a: rand(TAU), l: rand(8, 26) });
+    // long vertical scratches persist and drift
+    if (rand() < 0.035 && scratches.length < 2) scratches.push({ x: rand(40, W - 40), life: (rand(6, 40)) | 0, dark: rand() < 0.5, w: rand(0.6, 1.4), drift: rand(-0.6, 0.6) });
+    for (const s of scratches) { s.life--; s.x += s.drift + rand(-0.4, 0.4); }
+    for (let i = scratches.length - 1; i >= 0; i--) if (scratches[i].life <= 0) scratches.splice(i, 1);
+  }
+
+  function post(ctx, t) {
+    if (!enabled) return;
+    // uneven exposure — a warm breathing hot spot
+    ctx.globalCompositeOperation = 'screen';
+    const hx = W * (0.45 + 0.08 * Math.sin(t * 0.13)), hy = H * (0.42 + 0.05 * Math.cos(t * 0.11));
+    const lg = ctx.createRadialGradient(hx, hy, 10, hx, hy, H * 0.7);
+    lg.addColorStop(0, 'rgba(255,236,205,0.10)'); lg.addColorStop(1, 'rgba(255,236,205,0)');
+    ctx.fillStyle = lg; ctx.fillRect(0, 0, W, H);
+    // vignette (multiplied, warm brown falloff)
+    ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = 0.85; ctx.drawImage(vignette, 0, 0);
+    // grain
+    ctx.globalCompositeOperation = 'overlay'; ctx.globalAlpha = 0.17;
+    ctx.drawImage(grains[((frame % grains.length) + grains.length) % grains.length], (frame * 37) % 7 - 6, (frame * 53) % 5 - 4, W + 12, H + 10);
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    // scratches
+    for (const s of scratches) {
+      ctx.strokeStyle = s.dark ? 'rgba(25,12,4,0.32)' : 'rgba(255,250,235,0.35)'; ctx.lineWidth = s.w;
+      ctx.beginPath(); ctx.moveTo(s.x, 0);
+      for (let y = 0; y <= H; y += 60) ctx.lineTo(s.x + Math.sin(y * 0.01 + s.x) * 1.5, y);
+      ctx.stroke();
+    }
+    // dust & hairs
+    for (const d of dust) {
+      ctx.fillStyle = ctx.strokeStyle = d.dark ? 'rgba(20,10,4,0.55)' : 'rgba(255,250,240,0.6)';
+      if (d.hair) { ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.quadraticCurveTo(d.x + Math.cos(d.a) * d.l, d.y + Math.sin(d.a) * d.l * 0.3, d.x + Math.cos(d.a + 1) * d.l, d.y + Math.sin(d.a + 1) * d.l); ctx.stroke(); }
+      else { ctx.beginPath(); ctx.ellipse(d.x, d.y, d.r, d.r * rand(0.6, 1.2), d.a, 0, TAU); ctx.fill(); }
+    }
+    // exposure flicker
+    if (flick > 0) { ctx.fillStyle = `rgba(18,8,0,${flick})`; ctx.fillRect(0, 0, W, H); }
+  }
+
+  return {
+    init: makeGrain, tick, post,
+    get weave() { return enabled ? weave : { x: 0, y: 0 }; },
+    get enabled() { return enabled; }, toggle() { enabled = !enabled; return enabled; },
+  };
+})();
+
+</script>
+<script>
+// ─── Tratto · single-stroke handwriting font data ──────────────────────────
+// Glyphs from "Hershey Script 1-stroke" (SVG font conversion by Windell H. Oskay,
+// Evil Mad Scientist), reduced to the characters this game uses. Each glyph is
+// [advance, "x y x y …;x y …"]: pen strokes in drawing order, font units, y up.
+//
+// The Hershey Fonts were originally created by Dr. A. V. Hershey while working at
+// the U. S. National Bureau of Standards.
+// The format of the Font data in this distribution was originally created by
+//   James Hurt, Cognition, Inc., 900 Technology Park Drive, Billerica, MA 01821
+//   (mit-eddie!ci-dandelion!hurt)
+'use strict';
+const HERSHEY_SCRIPT = {" ":[378,""],"!":[346,"353 662 321 630 258 252;353 630 258 252;353 662 384 630 258 252;195 63 164 32 195 0 227 32 195 63"],"\"":[567,"252 662 189 441;284 662 189 441;536 662 472 441;567 662 472 441"],"#":[662,"378 788 158 -220;567 788 346 -220;158 378 598 378;126 189 567 189"],"$":[662,"410 788 158 -126;567 788 315 -126;598 536 567 504 598 472 630 504 630 536 598 598 567 630 472 662 346 662 252 630 189 567 189 504 220 441 252 410 472 284 536 220;189 504 252 441 472 315 504 284 536 220 536 126 504 63 472 32 378 0 252 0 158 32 126 63 94 126 94 158 126 189 158 158 126 126"],"%":[756,"693 662 126 0;284 662 346 598 346 536 315 472 252 441 189 441 126 504 126 567 158 630 220 662 284 662 346 630 441 598 536 598 630 630 693 662;567 220 504 189 472 126 472 63 536 0 598 0 662 32 693 94 693 158 630 220 567 220"],"&":[819,"756 410 724 378 756 346 788 378 788 410 756 441 724 441 662 410 598 346 441 94 378 32 315 0 220 0 126 32 94 94 94 158 126 220 158 252 220 284 378 346 441 378 504 441 536 504 536 567 504 630 441 662 378 630 346 567 346 472 378 284 410 189 472 94 536 32 598 0 662 0 693 63 693 94;220 0 158 32 126 94 126 158 158 220 189 252 378 346;346 472 378 315 410 220 472 126 536 63 598 32 662 32 693 63"],"'":[346,"284 598 252 630 284 662 315 630 315 598 284 536 220 472"],"(":[472,"504 788 378 693 284 598 220 504 158 378 126 220 126 94 158 -63 189 -158 220 -220;378 693 284 567 220 441 189 346 158 189 158 32 189 -126 220 -220"],")":[472,"315 788 346 724 378 630 410 472 410 346 378 189 315 63 252 -32 158 -126 32 -220;315 788 346 693 378 536 378 378 346 220 315 126 252 0 158 -126"],"*":[536,"346 662 346 284;189 567 504 378;504 567 189 378"],"+":[819,"441 567 441 0;158 284 724 284"],",":[346,"126 0 94 32 126 63 158 32 158 0 126 -63 63 -126"],"-":[819,"158 284 724 284"],".":[315,"189 63 158 32 189 0 220 32 189 63"],"/":[693,"788 788 -32 -220"],"0":[662,"410 662 315 630 252 567 189 472 158 378 126 252 126 158 158 63 189 32 252 0 315 0 410 32 472 94 536 189 567 284 598 410 598 504 567 598 536 630 472 662 410 662;410 662 346 630 284 567 220 472 189 378 158 252 158 158 189 63 252 0;315 0 378 32 441 94 504 189 536 284 567 410 567 504 536 598 472 662"],"1":[662,"410 536 252 0;472 662 284 0;472 662 378 567 284 504 220 472;441 567 315 504 220 472"],"2":[662,"252 536 284 504 252 472 220 504 220 536 252 598 284 630 378 662 472 662 567 630 598 567 598 504 567 441 504 378 410 315 284 252 189 189 126 126 63 0;472 662 536 630 567 567 567 504 536 441 472 378 284 252;94 63 126 94 189 94 346 32 441 32 504 63 536 126;189 94 346 0 441 0 504 32 536 126"],"3":[662,"252 536 284 504 252 472 220 504 220 536 252 598 284 630 378 662 472 662 567 630 598 567 598 504 567 441 472 378 378 346;472 662 536 630 567 567 567 504 536 441 472 378;315 346 378 346 472 315 504 284 536 220 536 126 504 63 472 32 378 0 252 0 158 32 126 63 94 126 94 158 126 189 158 158 126 126;378 346 441 315 472 284 504 220 504 126 472 63 441 32 378 0"],"4":[662,"536 630 346 0;567 662 378 0;567 662 94 189 598 189"],"5":[662,"315 662 158 346;315 662 630 662;315 630 472 630 630 662;158 346 189 378 284 410 378 410 472 378 504 346 536 284 536 189 504 94 441 32 346 0 252 0 158 32 126 63 94 126 94 158 126 189 158 158 126 126;378 410 441 378 472 346 504 284 504 189 472 94 410 32 346 0"],"6":[662,"567 567 536 536 567 504 598 536 598 567 567 630 504 662 410 662 315 630 252 567 189 472 158 378 126 252 126 126 158 63 189 32 252 0 346 0 441 32 504 94 536 158 536 252 504 315 472 346 410 378 315 378 252 346 189 284 158 220;410 662 346 630 284 567 220 472 189 378 158 252 158 94 189 32;346 0 410 32 472 94 504 158 504 284 472 346"],"7":[662,"220 662 158 472;630 662 598 567 536 472 378 284 315 189 284 126 252 0;536 472 346 284 284 189 252 126 220 0;189 567 284 662 346 662 504 567;220 598 284 630 346 630 504 567 567 567 598 598 630 662"],"8":[662,"378 662 284 630 252 598 220 536 220 441 252 378 315 346 410 346 536 378 567 410 598 472 598 567 567 630 472 662 378 662;378 662 315 630 284 598 252 536 252 441 284 378 315 346;410 346 504 378 536 410 567 472 567 567 536 630 472 662;315 346 189 315 126 252 94 189 94 94 126 32 220 0 346 0 472 32 504 63 536 126 536 220 504 284 472 315 410 346;315 346 220 315 158 252 126 189 126 94 158 32 220 0;346 0 441 32 472 63 504 126 504 252 472 315"],"9":[662,"567 441 536 378 472 315 410 284 315 284 252 315 220 346 189 410 189 504 220 567 284 630 378 662 472 662 536 630 567 598 598 536 598 410 567 284 536 189 472 94 410 32 315 0 220 0 158 32 126 94 126 126 158 158 189 126 158 94;252 315 220 378 220 504 252 567 315 630 378 662;536 630 567 567 567 410 536 284 504 189 441 94 378 32 315 0"],":":[346,"220 441 189 410 220 378 252 410 220 441;126 63 94 32 126 0 158 32"],";":[346,"220 441 189 410 220 378 252 410 220 441;126 0 94 32 126 63 158 32 158 0 126 -63 63 -126"],"<":[756,"662 567 158 284 662 0"],"=":[819,"158 378 724 378;158 189 724 189"],">":[756,"158 567 662 284 158 0"],"?":[662,"252 536 284 504 252 472 220 504 220 536 252 598 284 630 378 662 504 662 598 630 630 567 630 504 598 441 567 410 378 346 315 315 315 252 346 220 410 220;504 662 567 630 598 567 598 504 567 441 536 410 472 378;284 63 252 32 284 0 315 32 284 63"],"@":[850,"598 410 567 472 504 504 410 504 346 472 315 441 284 346 284 252 315 189 378 158 472 158 536 189 567 252;410 504 346 441 315 346 315 252 346 189 378 158;598 504 567 252 567 189 630 158 693 158 756 220 788 315 788 378 756 472 724 536 662 598 598 630 504 662 410 662 315 630 252 598 189 536 158 472 126 378 126 284 158 189 189 126 252 63 315 32 410 0 504 0 598 32 662 63 693 94;630 504 598 252 598 189 630 158"],"A":[630,"32 0 94 32 189 126 284 252 410 472 504 662 504 0 472 94 410 189 346 252 252 315 189 315 158 284 158 220 189 158 252 94 346 32 441 0 598 0"],"B":[724,"441 598 472 567 472 472 441 346 410 252 378 189 315 94 252 32 189 0 158 0 126 32 126 126 158 284 189 378 220 441 284 536 346 598 410 630 504 662 598 662 662 630 693 567 693 504 662 441 630 410 567 378 472 346;441 346 472 346 567 315 598 284 630 220 630 126 598 63 567 32 504 0 410 0 346 32 315 94"],"C":[630,"410 472 410 441 441 410 504 410 567 441 598 504 598 567 567 630 504 662 410 662 315 630 252 567 189 472 158 410 126 284 126 158 158 63 189 32 252 0 315 0 410 32 472 94 504 158"],"D":[724,"441 662 378 630 346 567 315 441 284 252 252 158 220 94 158 32 94 0 32 0 0 32 0 94 32 126 94 126 158 94 220 32 315 0 410 0 504 32 567 94 630 220 662 378 662 504 630 598 598 630 536 662 441 662 378 598 378 536 410 441 472 346 536 284 630 220 693 189"],"E":[630,"472 536 472 504 504 472 567 472 598 504 598 567 567 630 472 662 346 662 252 630 220 567 220 472 252 410 284 378 378 346 284 346 189 315 158 284 126 220 126 126 158 63 189 32 284 0 378 0 472 32 536 94 567 158"],"F":[630,"346 472 284 472 220 504 189 567 220 630 315 662 410 662 536 630 630 630 693 662;536 630 472 410 410 220 346 94 284 32 220 0 158 0 94 32 63 94 63 158 94 189 158 189 220 158;315 346 598 346"],"G":[724,"32 0 94 32 220 158 315 315 346 410 378 536 378 630 346 662 315 662 284 630 252 567 252 472 284 410 346 378 472 378 567 410 598 441 630 504 630 315 598 158 567 94 504 32 410 0 284 0 189 32 126 94 94 158 94 220"],"H":[756,"252 441 189 472 158 536 158 567 189 630 252 662 284 662 346 630 378 567 378 504 346 378 284 189 220 63 158 0 94 0 63 32 63 94;252 284 536 378 598 410 693 472 756 536 788 598 788 630 756 662 724 662 662 598 598 472 536 284 504 126 504 32 536 0 567 0 630 32 662 63 724 158"],"I":[536,"472 158 410 220 346 315 315 378 284 472 284 567 315 630 346 662 410 662 441 630 472 567 472 472 441 315 378 158 346 94 284 32 220 0 158 0 94 32 63 94 63 158 94 189 158 189 220 158"],"J":[472,"346 -94 284 0 220 158 189 346 189 536 220 630 284 662 346 662 378 630 410 536 410 441 378 284 284 0 220 -189 189 -284 158 -346 94 -378 63 -346 63 -284 94 -189 158 -94 220 -32 315 32 441 94"],"K":[756,"252 441 189 472 158 536 158 567 189 630 252 662 284 662 346 630 378 567 378 504 346 378 284 189 220 63 158 0 94 0 63 32 63 94;788 567 788 630 756 662 724 662 662 630 598 567 536 472 472 410 410 378 346 378;410 378 441 315 441 94 472 32 504 0 536 0 598 32 630 63 693 158"],"L":[598,"158 284 220 284 346 315 441 378 504 441 536 504 536 598 504 662 441 662 410 630 378 567 346 410 315 252 284 158 252 94 189 32 126 0 63 0 32 32 32 94 63 126 126 126 189 94 284 32 378 0 441 0 536 32 598 94"],"M":[1040,"189 441 126 472 94 536 94 567 126 630 189 662 220 662 284 630 315 567 315 504 284 346 252 220 189 0;252 220 346 472 410 598 441 630 504 662 536 662 598 630 630 567 630 504 598 346 567 220 504 0;567 220 662 472 724 598 756 630 819 662 850 662 914 630 945 567 945 504 914 346 850 126 850 32 882 0 914 0 976 32 1008 63 1071 158"],"N":[756,"189 441 126 472 94 536 94 567 126 630 189 662 220 662 284 630 315 567 315 504 284 346 252 220 189 0;252 220 346 472 410 598 441 630 504 662 567 662 630 630 662 567 662 504 630 346 567 126 567 32 598 0 630 0 693 32 724 63 788 158"],"O":[662,"410 662 315 630 252 567 189 472 158 410 126 284 126 158 158 63 189 32 252 0 315 0 410 32 472 94 536 189 567 252 598 378 598 504 567 598 536 630 472 662 410 662 346 598 346 504 378 410 441 315 504 252 598 189 662 158"],"P":[788,"441 598 472 567 472 472 441 346 410 252 378 189 315 94 252 32 189 0 158 0 126 32 126 126 158 284 189 378 220 441 284 536 346 598 410 630 504 662 662 662 724 630 756 598 788 536 788 441 756 378 724 346 662 315 567 315 504 346 472 378"],"Q":[693,"441 472 410 410 378 378 315 346 252 346 220 410 220 472 252 567 315 630 410 662 504 662 567 630 598 567 598 441 567 346 504 252 378 126 284 63 220 32 126 0 63 0 32 32 32 94 63 126 126 126 189 94 284 32 378 0 472 0 567 32 630 94"],"R":[788,"441 598 472 567 472 472 441 346 410 252 378 189 315 94 252 32 189 0 158 0 126 32 126 126 158 284 189 378 220 441 284 536 346 598 410 630 504 662 630 662 693 630 724 598 756 536 756 441 724 378 693 346 630 315 536 315 441 346 472 315 504 252 504 94 536 32 598 0 662 32 693 63 756 158"],"S":[630,"32 0 94 32 158 94 252 220 315 315 378 441 410 536 410 630 378 662 346 662 315 630 284 567 284 504 315 441 378 378 472 315 536 252 567 189 567 126 536 63 504 32 410 0 284 0 189 32 126 94 94 158 94 220"],"T":[598,"346 472 284 472 220 504 189 567 220 630 315 662 410 662 536 630 630 630 693 662;536 630 472 410 410 220 346 94 284 32 220 0 158 0 94 32 63 94 63 158 94 189 158 189 220 158"],"U":[756,"189 441 126 472 94 536 94 567 126 630 189 662 220 662 284 630 315 567 315 504 284 378 252 284 220 158 220 94 252 32 315 0 378 0 441 32 472 63 536 189 630 441 693 662;630 441 598 315 567 126 567 32 598 0 630 0 693 32 724 63 788 158"],"V":[724,"189 441 126 472 94 536 94 567 126 630 189 662 220 662 284 630 315 567 315 504 284 378 252 284 220 158 220 63 252 0 315 0 378 32 472 126 536 220 598 346 630 441 662 567 662 630 630 662 598 662 567 630 536 567 536 504 567 410 630 346 693 315"],"W":[882,"189 441 126 472 94 536 94 567 126 630 189 662 220 662 284 630 315 567 315 472 284 0;598 662 284 0;598 662 536 0;976 662 914 630 819 536 724 410 630 220 536 0"],"X":[756,"284 472 220 472 189 504 189 567 220 630 284 662 346 662 410 630 441 567 441 472 378 189 378 94 410 32 472 0 536 0 598 32 630 94 630 158 598 189 536 189;756 567 756 630 724 662 662 662 598 630 536 567 472 472 346 189 284 94 220 32 158 0 94 0 63 32 63 94"],"Y":[724,"189 441 126 472 94 536 94 567 126 630 189 662 220 662 284 630 315 567 315 504 284 378 252 284 220 158 220 94 252 32 284 0 346 0 410 32 472 94 536 189 567 252 630 441;693 662 630 441 536 126 472 -63 410 -220 346 -346 284 -378 252 -346 252 -284 284 -189 346 -94 441 0 536 63 693 158"],"Z":[662,"441 472 410 410 378 378 315 346 252 346 220 410 220 472 252 567 315 630 410 662 504 662 567 630 598 567 598 441 567 346 504 220 410 126 284 32 220 0 126 0 94 32 94 94 126 126 220 126 284 94 315 63 346 0 346 -94 315 -189 284 -252 220 -346 158 -378 126 -346 126 -284 158 -189 220 -94 315 0 410 63 598 158"],"[":[441,"158 788 158 -220;189 788 189 -220;158 788 378 788;158 -220 378 -220"],"\\":[441,"32 662 472 -94"],"]":[441,"315 788 315 -220;346 788 346 -220;126 788 346 788;126 -220 346 -220"],"^":[504,"284 724 32 284;284 724 536 284"],"_":[504,"32 -63 536 -63"],"`":[346,"315 662 252 598 220 536 220 504 252 472 284 504 252 536"],"a":[504,"315 189 284 252 220 284 158 284 94 252 63 220 32 158 32 94 63 32 126 0 189 0 252 32 284 94 346 284 315 126 315 32 346 0 378 0 441 32 472 63 536 158"],"b":[441,"32 158 94 252 189 410 220 472 252 567 252 630 220 662 158 630 126 567 94 441 63 220 63 32 94 0 126 0 189 32 252 94 284 189 284 284 315 158 346 126 410 126 472 158"],"c":[346,"252 220 252 252 220 284 158 284 94 252 63 220 32 158 32 94 63 32 126 0 220 0 315 63 378 158"],"d":[504,"315 189 284 252 220 284 158 284 94 252 63 220 32 158 32 94 63 32 126 0 189 0 252 32 284 94 472 662;346 284 315 126 315 32 346 0 378 0 441 32 472 63 536 158"],"e":[315,"63 63 126 94 158 126 189 189 189 252 158 284 126 284 63 252 32 189 32 94 63 32 126 0 189 0 252 32 284 63 346 158"],"f":[252,"32 158 158 315 220 410 252 472 284 567 284 630 252 662 189 630 158 567 94 315 0 32 -94 -189 -126 -284 -126 -346 -94 -378 -32 -346 0 -252 32 32 63 0 126 0 189 32 220 63 284 158"],"g":[472,"315 189 284 252 220 284 158 284 94 252 63 220 32 158 32 94 63 32 126 0 189 0 252 32 284 63;346 284 284 63 158 -284 126 -346 63 -378 32 -346 32 -284 63 -189 158 -94 252 -32 315 0 410 63 504 158"],"h":[472,"32 158 94 252 189 410 220 472 252 567 252 630 220 662 158 630 126 567 94 441 63 252 32 0;32 0 63 94 94 158 158 252 220 284 284 284 315 252 315 189 284 94 284 32 315 0 346 0 410 32 441 63 504 158"],"i":[220,"126 441 126 410 158 410 158 441 126 441;32 158 94 284 32 94 32 32 63 0 94 0 158 32 189 63 252 158"],"j":[220,"126 441 126 410 158 410 158 441 126 441;32 158 94 284 -94 -284 -126 -346 -189 -378 -220 -346 -220 -284 -189 -189 -94 -94 0 -32 63 0 158 63 252 158"],"k":[441,"32 158 94 252 189 410 220 472 252 567 252 630 220 662 158 630 126 567 94 441 63 252 32 0;32 0 63 94 94 158 158 252 220 284 284 284 315 252 315 189 252 158 158 158;158 158 220 126 252 32 284 0 315 0 378 32 410 63 472 158"],"l":[252,"32 158 94 252 189 410 220 472 252 567 252 630 220 662 158 630 126 567 94 441 63 220 63 32 94 0 126 0 189 32 220 63 284 158"],"m":[788,"32 158 94 252 158 284 189 252 189 220 158 94 126 0;158 94 189 158 252 252 315 284 378 284 410 252 410 220 378 94 346 0;378 94 410 158 472 252 536 284 598 284 630 252 630 189 598 94 598 32 630 0 662 0 724 32 756 63 819 158"],"n":[567,"32 158 94 252 158 284 189 252 189 220 158 94 126 0;158 94 189 158 252 252 315 284 378 284 410 252 410 189 378 94 378 32 410 0 441 0 504 32 536 63 598 158"],"o":[441,"220 284 158 284 94 252 63 220 32 158 32 94 63 32 126 0 189 0 252 32 284 63 315 126 315 189 284 252 220 284 189 252 189 189 220 126 284 94 378 94 441 126 472 158"],"p":[472,"32 158 94 252 126 315 94 189 -94 -378;94 189 126 252 189 284 252 284 315 252 346 189 346 126 315 63 284 32 220 0;94 32 158 0 252 0 346 32 410 63 504 158"],"q":[472,"315 189 284 252 220 284 158 284 94 252 63 220 32 158 32 94 63 32 126 0 189 0 252 32;346 284 315 189 252 32 158 -189 126 -284 126 -346 158 -378 220 -346 252 -252 252 -32 315 0 410 63 504 158"],"r":[410,"32 158 94 252 126 315 126 252 220 252 252 220 252 158 220 63 220 32 252 0 284 0 346 32 378 63 441 158"],"s":[346,"32 158 94 252 126 315 126 252 189 158 220 94 220 32 158 0;32 32 94 0 220 0 284 32 315 63 378 158"],"t":[284,"32 158 94 252 158 378;252 662 63 94 63 32 94 0 158 0 220 32 252 63 315 158;63 410 284 410"],"u":[472,"32 158 94 284 32 94 32 32 63 0 126 0 189 32 252 94 315 189;346 284 284 94 284 32 315 0 346 0 410 32 441 63 504 158"],"v":[472,"32 158 94 284 63 126 63 32 94 0 126 0 220 32 284 94 315 189 315 284;315 284 346 158 378 126 441 126 504 158"],"w":[662,"126 284 63 220 32 126 32 63 63 0 126 0 189 32 252 94;315 284 252 94 252 32 284 0 346 0 410 32 472 94 504 189 504 284;504 284 536 158 567 126 630 126 693 158"],"x":[504,"32 158 94 252 158 284 220 284 252 252 252 32 284 0 378 0 472 63 536 158;441 252 410 284 346 284 315 252 189 32 158 0 94 0 63 32"],"y":[472,"32 158 94 284 32 94 32 32 63 0 126 0 189 32 252 94 315 189;346 284 158 -284 126 -346 63 -378 32 -346 32 -284 63 -189 158 -94 252 -32 315 0 410 63 504 158"],"z":[441,"32 158 94 252 158 284 220 284 284 220 284 158 252 94 189 32 94 0 158 -32 189 -94 189 -189 158 -284 126 -346 63 -378 32 -346 32 -284 63 -189 158 -94 252 -32 378 63 472 158"],"{":[441,"315 788 252 756 220 724 189 662 189 598 220 536 252 504 284 441 284 378 220 315;252 756 220 693 220 630 252 567 284 536 315 472 315 410 284 346 158 284 284 220 315 158 315 94 284 32 252 0 220 -63 220 -126 252 -189;220 252 284 189 284 126 252 63 220 32 189 -32 189 -94 220 -158 252 -189 315 -220"],"|":[252,"158 788 158 -220"],"}":[441,"189 788 252 756 284 724 315 662 315 598 284 536 252 504 220 441 220 378 284 315;252 756 284 693 284 630 252 567 220 536 189 472 189 410 220 346 346 284 220 220 189 158 189 94 220 32 252 0 284 -63 284 -126 252 -189;284 252 220 189 220 126 252 63 284 32 315 -32 315 -94 284 -158 252 -189 189 -220"],"~":[756,"126 189 126 252 158 346 220 378 284 378 346 346 472 252 536 220 598 220 662 252 693 315;126 252 158 315 220 346 284 346 346 315 472 220 536 189 598 189 662 220 693 315 693 378"],"·":[340,"340 378 302 340 340 302 378 340 340 378"],"–":[614,"118 284 543 284"],"—":[819,"158 284 724 284"],"“":[378,"213 850 184 794 170 737 170 709 184 680 198 709 184 737;354 850 326 794 312 737 312 709 326 680 340 709 326 737"],"”":[378,"184 539 170 567 184 595 198 567 198 539 184 482 156 425;326 539 312 567 326 595 340 567 340 539 326 482 298 425"]};
+
+</script>
+<script>
+// ─── Tratto · handwriting from single-stroke font data ─────────────────────
+// Every letter is a list of pen strokes in the order a plotter (or a hand)
+// draws them, so the animator's hand can write text stroke by stroke.
+'use strict';
+
+const StrokeFont = (() => {
+  const CAP = 662;                                   // cap height in font units
+  const cache = new Map(), layouts = new Map();
+  // glyphs the font lacks, drawn in the same units (y up, baseline 0)
+  const CUSTOM = {
+    '→': [760, [[[40, 300], [660, 300]], [[480, 440], [680, 300], [480, 160]]]],
+    '←': [760, [[[700, 300], [80, 300]], [[260, 440], [60, 300], [260, 160]]]],
+    '↑': [520, [[[260, 0], [260, 600]], [[110, 440], [260, 640], [410, 440]]]],
+    '♪': [520, [[[330, 120], [330, 640], [420, 560], [470, 470], [450, 380]], [[330, 120], [290, 60], [210, 40], [150, 80], [170, 150], [250, 170], [320, 140], [330, 120]]]],
+    '…': [700, [[[90, 30], [110, 50], [130, 30], [110, 10], [90, 30]], [[310, 30], [330, 50], [350, 30], [330, 10], [310, 30]], [[530, 30], [550, 50], [570, 30], [550, 10], [530, 30]]]],
+  };
+
+  function glyph(ch) {
+    if (cache.has(ch)) return cache.get(ch);
+    let g;
+    if (CUSTOM[ch]) g = { adv: CUSTOM[ch][0], strokes: CUSTOM[ch][1].map(s => s.map(([x, y]) => ({ x, y }))) };
+    else {
+      const raw = HERSHEY_SCRIPT[ch] || HERSHEY_SCRIPT[ch === '’' ? "'" : '?'];
+      const strokes = raw[1] ? raw[1].split(';').map(s => { const v = s.split(' ').map(Number), p = []; for (let i = 0; i < v.length; i += 2) p.push({ x: v[i], y: v[i + 1] }); return p; }) : [];
+      g = { adv: raw[0], strokes };
+    }
+    cache.set(ch, g); return g;
+  }
+
+  // Lay text out in world space. `size` ≈ the old CSS font size; (x, y) is the
+  // centre of the cap height. Returns strokes in writing order.
+  function layout(text, x, y, size, align = 'center') {
+    const key = text + '|' + x + '|' + y + '|' + size + '|' + align;
+    if (layouts.has(key)) return layouts.get(key);
+    const k = size / 900, chars = [...text];
+    const width = chars.reduce((w, c) => w + glyph(c).adv, 0) * k;
+    const x0 = align === 'center' ? x - width / 2 : align === 'right' ? x - width : x;
+    const base = y + CAP * k / 2;
+    const strokes = []; let pen = 0;
+    for (const c of chars) {
+      const g = glyph(c);
+      for (const s of g.strokes) {
+        const pts = s.map(p => ({ x: x0 + (pen + p.x) * k, y: base - p.y * k }));
+        // smooth the plotter polyline at screen scale; tiny strokes (dots) stay as they are
+        strokes.push(polyLength(pts) > 12 ? spline(pts, false, Math.max(2, size / 40)) : pts);
+      }
+      pen += g.adv;
+    }
+    const lens = strokes.map(polyLength);
+    const out = { strokes, lens, total: lens.reduce((a, b) => a + b, 0), width, x0, size, lineW: clamp(size / 110, .42, 1) };
+    if (layouts.size > 300) layouts.clear();
+    layouts.set(key, out);
+    return out;
+  }
+
+  // draw all strokes, or only up to (cur, frac) while being written
+  function draw(L, { alpha = 1, cur = Infinity, frac = 1, ox = null } = {}) {
+    if (!L || alpha <= 0) return;
+    const o = ox ?? L.x0;
+    for (let i = 0; i < L.strokes.length && i <= cur; i++) {
+      const s = i < cur ? L.strokes[i] : partial(L.strokes[i], frac);
+      if (s.length < 2) { if (s.length === 1) Dots.add(s[0].x, s[0].y, L.lineW * LINE_W * .5, o, 0); continue; }
+      Lines.add(s, { width: L.lineW, alpha, ox: o, amp: .8 });
+    }
+  }
+  function text(str, x, y, size, opts = {}) { const L = layout(str, x, y, size, opts.align); draw(L, opts); return L; }
+
+  // writing progress after `len` px of pen travel → {cur, frac}
+  function progress(L, len) {
+    for (let i = 0; i < L.lens.length; i++) { if (len < L.lens[i]) return { cur: i, frac: len / Math.max(1e-3, L.lens[i]) }; len -= L.lens[i]; }
+    return { cur: Infinity, frac: 1 };
+  }
+  // text that writes itself in pen order (no hand), e.g. hints
+  function selfWrite(str, x, y, size, t, speed, opts = {}) { const L = layout(str, x, y, size); draw(L, { ...opts, ...progress(L, t * speed) }); }
+
+  return { layout, draw, text, glyph, progress, selfWrite };
+})();
+
+</script>
+<script>
+// ─── Tratto · the world: one line, its gaps, teeth, ripples, and your ink ───
+'use strict';
+
+const P = (x, y) => ({ x, y });
+const LEVELS = [
+  { name: 'A Walk', color: '#3b63ae', start: 90, ink: 220,
+    chains: [[P(-40, 520), P(300, 520), P(300, 465), P(520, 465), P(520, 520), P(640, 520)], [P(725, 520), P(1000, 520)]],
+    drops: [P(410, 372), P(683, 418)],
+    hints: [{ x: -1e9, text: '← →  walk      ↑ or space  jump' }, { x: 560, text: 'mind the gap' }] },
+  { name: 'The Gap', color: '#c0472f', start: 80, ink: 340,
+    chains: [[P(-40, 520), P(370, 520)], [P(640, 520), P(1000, 520)]],
+    drops: [P(505, 392)],
+    hints: [{ x: 240, text: 'the line ends… drag with the mouse to draw a bridge' }] },
+  { name: 'Steps', color: '#c28a2c', start: 80, ink: 520,
+    chains: [[P(-40, 520), P(250, 520), P(250, 350), P(470, 350)], [P(620, 420), P(760, 420), P(760, 250), P(1000, 250)]],
+    drops: [P(360, 252), P(545, 330), P(700, 330)],
+    hints: [{ x: 100, text: 'too tall to jump — draw a ramp' }, { x: 560, text: 'right-drag, or hold E, to erase your own lines' }] },
+  { name: 'Ripples', color: '#3e8752', start: 70, ink: 200,
+    chains: [[P(-40, 520), P(560, 520)], [P(660, 520), P(1000, 520)]],
+    spikes: [{ x0: 290, x1: 350, y: 520 }],
+    ripples: [{ chain: 1, from: 1000, to: 660, every: 2.6, speed: 230, amp: 34, w: 26, t: 0.6 }, { chain: 0, from: 560, to: -40, every: 3.2, speed: 200, amp: 30, w: 24, t: 1.9 }],
+    drops: [P(320, 392), P(610, 420), P(850, 392)],
+    hints: [{ x: -1e9, text: 'hop over the teeth and the ripples' }] },
+  { name: 'Mischief', color: '#84458a', start: 80, ink: 380,
+    chains: [[P(-40, 520), P(1000, 520)]],
+    drops: [P(520, 380)],
+    events: [{ x: 210, run: 'mischiefErase', a: [400, 640] }, { x: 690, run: 'mischiefWall', a: [830] }],
+    hints: [] },
+  { name: 'The Flower', color: '#2a8384', start: 70, ink: 320,
+    chains: [[P(-40, 520), P(330, 520)], [P(470, 520), P(600, 520), P(600, 386), P(1000, 386)]],
+    spikes: [{ x0: 160, x1: 215, y: 520 }, { x0: 700, x1: 752, y: 386 }],
+    ripples: [{ chain: 1, from: 1000, to: 600, every: 3.4, speed: 200, amp: 28, w: 24, t: 2.2 }],
+    drops: [P(400, 420), P(726, 282)],
+    flower: P(880, 386),
+    hints: [{ x: -1e9, text: 'something is growing at the end of the line' }] },
+];
+
+const World = {
+  chains: [], segs: [], drops: [], ripples: [], emitters: [], spikes: [], events: [], hints: [],
+  flower: null, ink: 0, inkMax: 0, level: null, idSeq: 1, t: 0,
+
+  load(idx) {
+    const L = LEVELS[idx]; this.level = L; this.levelIdx = idx; this.t = 0;
+    this.chains = L.chains.map(pts => this.makeChain(pts.map(p => ({ ...p })), 'level'));
+    this.spikes = (L.spikes || []).map(s => ({ ...s }));
+    this.emitters = (L.ripples || []).map(r => ({ ...r }));
+    this.ripples = [];
+    this.drops = (L.drops || []).map(d => ({ x: d.x, y: d.y, taken: false, pop: 0, ph: rand(TAU), reveal: 1 }));
+    this.events = (L.events || []).map(e => ({ ...e, fired: false }));
+    this.hints = (L.hints || []).map(h => ({ ...h, shown: false }));
+    this.flower = L.flower ? { ...L.flower, grow: 0, bloom: 0 } : null;
+    this.ink = this.inkMax = L.ink;
+    this.rebuild();
+  },
+
+  makeChain(pts, kind) {
+    const c = { id: this.idSeq++, pts, kind, reveal: 1, erasable: kind !== 'level', rpts: null, dirty: true };
+    return c;
+  },
+  addChain(pts, kind) { const c = this.makeChain(pts, kind); this.chains.push(c); this.rebuild(); return c; },
+  chain(id) { return this.chains.find(c => c.id === id); },
+
+  // physics segments from the logical points
+  rebuild() {
+    this.segs = [];
+    for (const c of this.chains) {
+      c.dirty = true;
+      for (let i = 0; i < c.pts.length - 1; i++) {
+        const a = c.pts[i], b = c.pts[i + 1], dx = b.x - a.x, dy = b.y - a.y;
+        if (Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01) continue;
+        const floor = Math.abs(dy) <= Math.abs(dx) * 1.25;
+        const s = floor
+          ? (dx >= 0 ? { x1: a.x, y1: a.y, x2: b.x, y2: b.y } : { x1: b.x, y1: b.y, x2: a.x, y2: a.y })
+          : (dy >= 0 ? { x1: a.x, y1: a.y, x2: b.x, y2: b.y } : { x1: b.x, y1: b.y, x2: a.x, y2: a.y });
+        s.floor = floor; s.chain = c.id; s.kind = c.kind;
+        this.segs.push(s);
+      }
+    }
+  },
+
+  // highest floor at x between yTop and yBot; returns {y, seg} or null
+  floorAt(x, yTop, yBot, halfW = 7) {
+    let best = null;
+    for (const s of this.segs) {
+      if (!s.floor) continue;
+      if (x + halfW < s.x1 || x - halfW > s.x2) continue;
+      const cx = clamp(x, s.x1, s.x2), t = (s.x2 - s.x1) ? (cx - s.x1) / (s.x2 - s.x1) : 0;
+      const y = lerp(s.y1, s.y2, t);
+      if (y < yTop || y > yBot) continue;
+      if (!best || y < best.y) best = { y, seg: s };
+    }
+    return best;
+  },
+
+  // walls crossing height hy; returns x positions
+  wallsAt(hy) {
+    const out = [];
+    for (const s of this.segs) {
+      if (s.floor || hy < s.y1 || hy > s.y2) continue;
+      const t = (s.y2 - s.y1) ? (hy - s.y1) / (s.y2 - s.y1) : 0;
+      out.push(lerp(s.x1, s.x2, t));
+    }
+    return out;
+  },
+
+  spikeAt(x, y) { return this.spikes.find(s => x > s.x0 - 6 && x < s.x1 + 6 && Math.abs(y - s.y) < 4); },
+
+  rippleAt(chainId, x) {
+    let h = 0;
+    for (const r of this.ripples) if (r.chain === chainId) h += r.amp * r.env * Math.exp(-Math.pow((x - r.x) / r.w, 2));
+    return h;
+  },
+
+  update(dt) {
+    this.t += dt;
+    for (const e of this.emitters) {
+      e.t -= dt;
+      if (e.t <= 0) { e.t += e.every; this.ripples.push({ chain: this.chainIdAt(e), x: e.from, dir: Math.sign(e.to - e.from), speed: e.speed, amp: e.amp, w: e.w, to: e.to, from: e.from, env: 0 }); Audio.sfx.rumble(); }
+    }
+    for (const r of this.ripples) {
+      r.x += r.dir * r.speed * dt;
+      const span = Math.abs(r.to - r.from), done = Math.abs(r.x - r.from);
+      r.env = clamp(done / 60, 0, 1) * clamp((span - done) / 60, 0, 1);
+    }
+    this.ripples = this.ripples.filter(r => Math.abs(r.x - r.from) < Math.abs(r.to - r.from));
+    for (const d of this.drops) if (d.taken) d.pop = Math.min(1, d.pop + dt * 3);
+    if (this.flower && this.flower.grow < 1 && this.t > 0.5) this.flower.grow = Math.min(1, this.flower.grow + dt * 0.5);
+  },
+  chainIdAt(e) { const lv = this.chains.filter(c => c.kind === 'level'); return (lv[e.chain] || lv[0]).id; },
+
+  // ── drawing & erasing ────────────────────────────────────────────────────
+  inkUse(len) { const u = Math.min(this.ink, len); this.ink -= u; return u; },
+
+  eraseAt(x, y, r, who = 'player') {
+    let changed = false, refund = 0;
+    const next = [];
+    for (const c of this.chains) {
+      if (who === 'player' && !c.erasable) { next.push(c); continue; }
+      const bb = this.bbox(c);
+      if (x < bb.x0 - r || x > bb.x1 + r || y < bb.y0 - r || y > bb.y1 + r) { next.push(c); continue; }
+      const dense = densify(c.pts, 4);
+      const hit = dense.map(p => Math.hypot(p.x - x, p.y - y) < r);
+      if (!hit.some(Boolean)) { next.push(c); continue; }
+      changed = true;
+      let run = [];
+      const flush = () => { if (run.length > 1 && polyLength(run) > 6) next.push({ ...this.makeChain(simplify(run, 0.6), c.kind), erasable: c.erasable, reveal: 1 }); run = []; };
+      for (let i = 0; i < dense.length; i++) {
+        if (hit[i]) { if (c.kind === 'stroke' && i) refund += Math.hypot(dense[i].x - dense[i - 1].x, dense[i].y - dense[i - 1].y); flush(); }
+        else run.push(dense[i]);
+      }
+      flush();
+    }
+    if (changed) { this.chains = next; this.rebuild(); this.ink = Math.min(this.inkMax, this.ink + refund); }
+    return changed;
+  },
+  bbox(c) {
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const p of c.pts) { x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y); }
+    return { x0, y0, x1, y1 };
+  },
+
+  // ── render points: rounded corners, teeth, ripples ───────────────────────
+  renderPts(c) {
+    if (c.dirty) {
+      const base = c.kind === 'level' ? roundCorners(c.pts, 6) : c.kind === 'stroke' ? c.pts : roundCorners(c.pts, 3);
+      const withTeeth = [];
+      for (let i = 0; i < base.length; i++) {
+        const a = base[i], b = base[i + 1];
+        withTeeth.push(a);
+        if (!b || Math.abs(a.y - b.y) > 0.5) continue;
+        const lo = Math.min(a.x, b.x), hi = Math.max(a.x, b.x), dir = Math.sign(b.x - a.x);
+        const zs = this.spikes.filter(s => Math.abs(s.y - a.y) < 1 && s.x0 >= lo && s.x1 <= hi).sort((p, q) => dir * (p.x0 - q.x0));
+        for (const s of zs) {
+          const n = Math.max(2, Math.round((s.x1 - s.x0) / 15)), w = (s.x1 - s.x0) / n;
+          const xs = dir > 0 ? s.x0 : s.x1;
+          withTeeth.push({ x: xs, y: a.y, c: 1 });
+          for (let k = 0; k < n; k++) {
+            withTeeth.push({ x: xs + dir * (k + 0.5) * w, y: a.y - 21, c: 1 });
+            withTeeth.push({ x: xs + dir * (k + 1) * w, y: a.y, c: 1 });
+          }
+        }
+      }
+      // densify per segment, flagging horizontal runs for ripple displacement
+      const out = [];
+      for (let i = 0; i < withTeeth.length - 1; i++) {
+        const a = withTeeth[i], b = withTeeth[i + 1], flat = Math.abs(a.y - b.y) < 0.5 && !a.c && !b.c;
+        const k = Math.max(1, Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / 7));
+        for (let j = 0; j < k; j++) out.push({ x: lerp(a.x, b.x, j / k), y: lerp(a.y, b.y, j / k), h: flat || (j > 0 && Math.abs(a.y - b.y) < .5), by: lerp(a.y, b.y, j / k) });
+      }
+      const l = withTeeth[withTeeth.length - 1]; out.push({ x: l.x, y: l.y, h: false, by: l.y });
+      c.rpts = out; c.dirty = false;
+    }
+    const pts = c.rpts;
+    if (this.ripples.some(r => r.chain === c.id)) for (const p of pts) p.y = p.h ? p.by - this.rippleAt(c.id, p.x) : p.by;
+    else for (const p of pts) p.y = p.by;
+    return c.reveal < 1 ? partial(pts, c.reveal) : pts;
+  },
+
+  // splice an open figure path (left foot → right foot, world coords) into a chain
+  splice(pts, fig, cx, fy, xL, xR) {
+    let k = -1, bd = 1e9;
+    for (let i = 0; i < pts.length; i++) { const d = Math.abs(pts[i].x - cx) + Math.abs(pts[i].y - fy) * 2; if (d < bd) { bd = d; k = i; } }
+    if (k < 0 || bd > 40) return null;
+    const near = p => Math.abs(p.y - fy) < 12;
+    const a = pts[Math.max(0, k - 1)], b = pts[Math.min(pts.length - 1, k + 1)];
+    const dir = (b.x - a.x) >= 0 ? 1 : -1;
+    let i = k, j = k;
+    if (dir > 0) { while (i > 0 && pts[i].x > xL && near(pts[i - 1])) i--; while (j < pts.length - 1 && pts[j].x < xR && near(pts[j + 1])) j++; }
+    else { while (i > 0 && pts[i].x < xR && near(pts[i - 1])) i--; while (j < pts.length - 1 && pts[j].x > xL && near(pts[j + 1])) j++; }
+    const f = dir > 0 ? fig : fig.slice().reverse();
+    const left = pts.slice(0, i + 1), right = pts.slice(j);
+    // drop chain points that sit underneath the figure's foot span
+    const trimL = left.filter((p, n) => n < left.length - 1 || (dir > 0 ? p.x <= xL + 1 : p.x >= xR - 1));
+    const trimR = right.filter((p, n) => n > 0 || (dir > 0 ? p.x >= xR - 1 : p.x <= xL + 1));
+    return trimL.concat(f, trimR);
+  },
+
+  draw(ctx, ch) {
+    for (const c of this.chains) {
+      let pts = this.renderPts(c);
+      if (pts.length < 2) continue;
+      if (ch && ch.attach && ch.attach.chain === c.id && c.reveal >= 1) {
+        const s = this.splice(pts, ch.attach.fig, ch.attach.cx, ch.attach.fy, ch.attach.xL, ch.attach.xR);
+        if (s) { pts = s; ch.attach.used = true; }
+      }
+      Lines.add(pts, { width: c.kind === 'stroke' ? 0.92 : 1 });
+    }
+    for (const d of this.drops) drawDrop(d, this.t);
+    if (this.flower) drawFlower(this.flower, this.t);
+  },
+};
+
+// teardrop outline, starting at the pointed top and going round clockwise
+function dropShape(d, t) {
+  const s = d.taken ? 1 + d.pop * 1.6 : 1, y = d.y + Math.sin(t * 2.4 + d.ph) * 5, pts = [];
+  for (let i = 0; i <= 20; i++) {
+    const u = i / 20 * TAU, r = 9 * s;
+    const px = Math.sin(u) * r * (1 - 0.55 * Math.pow(Math.cos(u / 2), 6)) * 0.85, py = -Math.cos(u) * r * 1.15 - (Math.cos(u) > 0 ? Math.pow(Math.cos(u), 3) * 6 * s : 0);
+    pts.push({ x: d.x + px, y: y + py });
+  }
+  return pts;
+}
+function drawDrop(d, t) {
+  if (d.pop >= 1 || d.reveal <= 0) return;
+  const a = d.taken ? 1 - d.pop : 1, pts = dropShape(d, t), y = d.y + Math.sin(t * 2.4 + d.ph) * 5;
+  if (d.reveal !== undefined && d.reveal < 1) { Lines.add(partial(pts, d.reveal), { ox: d.x, oy: d.y, width: 0.75 }); return; }
+  Lines.add(pts, { closed: true, ox: d.x, oy: d.y, width: 0.75, alpha: a });
+  if (!d.taken) Lines.add([{ x: d.x - 2.5, y: y + 2 }, { x: d.x - 3, y: y - 2 }], { width: 0.55, alpha: 0.8 });
+  else for (let k = 0; k < 6; k++) { const an = k / 6 * TAU, r0 = 14 + d.pop * 18, r1 = r0 + 8; Lines.add([{ x: d.x + Math.cos(an) * r0, y: y + Math.sin(an) * r0 }, { x: d.x + Math.cos(an) * r1, y: y + Math.sin(an) * r1 }], { width: 0.6, alpha: a }); }
+}
+
+function drawFlower(f, t) {
+  const g = smooth(f.grow), sway = Math.sin(t * 1.3) * 3 * g, h = 52 * g;
+  const top = { x: f.x + sway, y: f.y - h };
+  Lines.add([{ x: f.x, y: f.y }, { x: f.x + sway * 0.3 + 2, y: f.y - h * 0.5 }, top].map((p, i, a) => p), { width: 0.8, ox: f.x, oy: f.y });
+  if (g > 0.4) { // leaf
+    const lg = smooth((g - 0.4) / 0.6);
+    Lines.add(spline([{ x: f.x + 1, y: f.y - 18 }, { x: f.x + 12 * lg, y: f.y - 30 * lg - 6 }, { x: f.x + 20 * lg, y: f.y - 24 }, { x: f.x + 2, y: f.y - 20 }], false), { width: 0.7, ox: f.x, oy: f.y });
+  }
+  if (g > 0.85) {
+    const b = Math.min(1, (g - 0.85) / 0.15) * (0.92 + f.bloom * 0.35), n = 6;
+    for (let k = 0; k < n; k++) {
+      const an = k / n * TAU + t * 0.2 * f.bloom, r = 13 * b;
+      const c = { x: top.x + Math.cos(an) * r, y: top.y + Math.sin(an) * r };
+      const pts = [];
+      for (let i = 0; i <= 10; i++) { const u = i / 10 * TAU; pts.push({ x: c.x + Math.cos(u) * 7 * b * (0.8 + 0.2 * Math.cos(u - an)), y: c.y + Math.sin(u) * 7 * b }); }
+      Lines.add(pts, { closed: true, width: 0.62, ox: f.x, oy: f.y });
+    }
+    Dots.add(top.x, top.y, 4.2 * b, f.x, f.y);
+  }
+}
+
+</script>
+<script>
+// ─── Tratto · the figure: a skeleton turned into ONE continuous outline ─────
+// Local frame: origin on the ground between the feet, facing +x, y down.
+'use strict';
+
+const FIG = {
+  ankleH: 7, heel: 8, toe: 18, thigh: 23, shin: 22, wThigh: 8, wKnee: 6.6, wAnkle: 5.6,
+  torso: 36, headR: 24, upperArm: 20, foreArm: 18, wArm: 4.9,
+};
+
+function basePose() {
+  return {
+    hipX: 0, hipY: -50, lean: 0.04, squash: 1,
+    legs: [{ fx: -12, fy: -FIG.ankleH, fa: 0 }, { fx: 12, fy: -FIG.ankleH, fa: 0 }],
+    arms: [{ a1: -0.45, a2: 0.25, shape: 'mitt' }, { a1: 0.55, a2: 0.45, shape: 'mitt' }],
+    hdx: 0, hdy: 0, tilt: 0,
+    open: 0, smile: 0.2, brow: 0, browUp: 0, eye: 1, wide: 0, squint: 0, lookX: 0.4, lookY: 0,
+    curlLen: 1, curlAng: 0.15,
+  };
+}
+const POSE_KEYS = ['hipX', 'hipY', 'lean', 'squash', 'hdx', 'hdy', 'tilt', 'open', 'smile', 'brow', 'browUp', 'eye', 'wide', 'squint', 'lookX', 'lookY', 'curlLen', 'curlAng'];
+function blendPose(a, b, t) {
+  const o = { legs: [], arms: [] };
+  for (const k of POSE_KEYS) o[k] = lerp(a[k], b[k], t);
+  for (let i = 0; i < 2; i++) {
+    o.legs[i] = { fx: lerp(a.legs[i].fx, b.legs[i].fx, t), fy: lerp(a.legs[i].fy, b.legs[i].fy, t), fa: lerp(a.legs[i].fa, b.legs[i].fa, t) };
+    o.arms[i] = { a1: angLerp(a.arms[i].a1, b.arms[i].a1, t), a2: lerp(a.arms[i].a2, b.arms[i].a2, t), shape: t < 0.5 ? a.arms[i].shape : b.arms[i].shape };
+  }
+  return o;
+}
+function clonePose(p) { return blendPose(p, p, 0); }
+
+const nLeft = d => ({ x: d.y, y: -d.x });
+const norm = v => { const l = Math.hypot(v.x, v.y) || 1; return { x: v.x / l, y: v.y / l }; };
+const add = (a, b, s = 1) => ({ x: a.x + b.x * s, y: a.y + b.y * s });
+const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
+
+function ik(root, target, L1, L2) {
+  let d = sub(target, root), D = Math.hypot(d.x, d.y);
+  D = clamp(D, Math.abs(L1 - L2) + 0.5, L1 + L2 - 0.3);
+  const dir = norm(d), a = Math.acos(clamp((L1 * L1 + D * D - L2 * L2) / (2 * L1 * D), -1, 1));
+  const kd = rot(dir.x, dir.y, -a);
+  const knee = add(root, kd, L1), end = add(root, dir, D);
+  return { knee, end };
+}
+
+// build the outline + features for a pose (local coordinates)
+function buildFigure(p) {
+  const pts = [], mark = {};
+  const push = (q, c) => { pts.push(c ? { x: q.x, y: q.y, c: true } : { x: q.x, y: q.y }); return pts.length - 1; };
+  const sq = p.squash;
+  const hip = { x: p.hipX, y: p.hipY * sq };
+  const u = { x: Math.sin(p.lean), y: -Math.cos(p.lean) }, nF = { x: -u.y, y: u.x };
+  const T = FIG.torso * (0.85 + 0.15 * sq);
+  const C = add(hip, u, T);
+  const at = (base, a, b) => ({ x: base.x + u.x * a + nF.x * b, y: base.y + u.y * a + nF.y * b });
+
+  // legs
+  const legs = p.legs.map((l, i) => {
+    const root = at(hip, 0, i ? 2 : -2);
+    const A0 = { x: l.fx, y: l.fy };
+    const { knee, end: A } = ik(root, A0, FIG.thigh, FIG.shin);
+    const d1 = norm(sub(knee, root)), d2 = norm(sub(A, knee));
+    const n1 = nLeft(d1), n2 = nLeft(d2), nk = norm(add(n1, n2));
+    const f = rot(1, 0, l.fa), g = rot(0, 1, l.fa);
+    const F = (a, b) => ({ x: A.x + f.x * a + g.x * b, y: A.y + f.y * a + g.y * b });
+    return {
+      root, knee, A,
+      rootF: add(root, n1, FIG.wThigh), kneeF: add(knee, nk, FIG.wKnee), ankF: add(A, n2, FIG.wAnkle),
+      rootR: add(root, n1, -FIG.wThigh), kneeR: add(knee, nk, -FIG.wKnee), ankR: add(A, n2, -FIG.wAnkle),
+      heelB: F(-FIG.heel, FIG.ankleH), heelBk: F(-FIG.heel - 2, FIG.ankleH * 0.2),
+      instep: F(7, -1.2), toeTop: F(FIG.toe - 4, FIG.ankleH * 0.15), toeTip: F(FIG.toe + 0.5, FIG.ankleH * 0.62), toeB: F(FIG.toe - 3, FIG.ankleH),
+    };
+  });
+  const [B, Fr] = legs;
+
+  // arms
+  const arm = (i) => {
+    const a = p.arms[i];
+    const S = at(C, -4, i ? 4 : -6);
+    const d1 = { x: Math.sin(a.a1), y: Math.cos(a.a1) };
+    const E = add(S, d1, FIG.upperArm);
+    const d2 = rot(d1.x, d1.y, -a.a2);
+    const Wr = add(E, d2, FIG.foreArm);
+    const n1 = nLeft(d1), n2 = nLeft(d2), ne = norm(add(n1, n2)), w = FIG.wArm;
+    const out = [add(S, n1, w), add(E, ne, w), add(Wr, n2, w)];
+    const back = [add(Wr, n2, -w), add(E, ne, -w), add(S, n1, -w)];
+    const H = (fx, lx) => ({ x: Wr.x + d2.x * fx + n2.x * lx, y: Wr.y + d2.y * fx + n2.y * lx });
+    const shapes = {
+      mitt: [[2, 7.6], [5, 10.4], [8, 8.2], [11.5, 6.2], [14.5, 1.2], [13, -4.6], [8.5, -7], [3, -6.6]],
+      fist: [[2, 6.8], [6, 8.6], [10.5, 7], [12.5, 1], [10.5, -5.4], [5.5, -7.2], [1.5, -6.2]],
+      open: [[2, 7], [4, 11], [7, 9.6], [8.5, 7.4], [16, 8.6], [11.5, 3.8], [18, 1.6], [12, -0.6], [16.5, -4.6], [9.5, -5.6], [4, -6.6]],
+      point: [[2, 6.8], [6, 8.6], [10.5, 7], [12, 4], [22, 3.6], [22.5, 0.2], [11.5, -0.6], [10.5, -5.4], [5.5, -7.2], [1.5, -6.2]],
+    };
+    const hand = (shapes[a.shape] || shapes.mitt).map(([fx, lx]) => H(fx, lx));
+    return { S, E, Wr, d2, list: out.concat(hand, back), tip: H(12, 0) };
+  };
+  const armB = arm(0), armF = arm(1);
+
+  // head
+  const R = FIG.headR;
+  const Hc = add(at(C, R + 1, 4), { x: p.hdx, y: p.hdy });
+  const tilt = p.tilt;
+  const hp = (x, y) => { const r = rot(x, y, tilt); return { x: Hc.x + r.x, y: Hc.y + r.y }; };
+  const ha = deg => { const t = deg * Math.PI / 180; return hp(Math.cos(t) * R * (1 + 0.07 * Math.cos(t - Math.PI)), Math.sin(t) * R * 1.03); };
+
+  // ── trace ────────────────────────────────────────────────────────────────
+  mark.heel0 = push(B.heelB, true); push(B.heelBk);
+  push(B.ankR); push(B.kneeR); push(B.rootR);
+  push(at(hip, -3, -16.5)); push(at(hip, 12, -15)); push(at(hip, 26, -13.5));
+  armB.list.forEach(q => push(q));
+  push(at(C, 6, -10));
+  for (const d of [130, 155, 180, 205, 230, 250]) push(ha(d));
+  // the sprout: up, a curl, and back down the same path (reads as one strand)
+  const base = ha(262), up = rot(0, -1, tilt + p.curlAng), side = { x: -up.y, y: up.x };
+  const L = 15 * p.curlLen, bend = Math.sin(p.curlAng) * 3;
+  const mid = { x: base.x + up.x * L * 0.5 + side.x * bend, y: base.y + up.y * L * 0.5 + side.y * bend };
+  const tip = { x: base.x + up.x * L, y: base.y + up.y * L };
+  const cc = { x: tip.x + side.x * 5.2, y: tip.y + side.y * 5.2 };
+  const strand = [base, mid, tip];
+  strand.forEach(q => push(q));
+  const a0 = Math.atan2(tip.y - cc.y, tip.x - cc.x);
+  for (let k = 1; k < 9; k++) { const a = a0 - k / 8 * TAU * 0.92; push({ x: cc.x + Math.cos(a) * 5.2, y: cc.y + Math.sin(a) * 5.2 }); }
+  push(tip); push(mid); push(base);
+  for (const d of [280, 305, 330, 350]) push(ha(d));
+  // nose (a round button)
+  [[R + 0.5, -1], [R + 6, 0.2], [R + 9.6, 4.4], [R + 8.2, 9], [R + 3, 10.2]].forEach(([x, y]) => push(hp(x, y)));
+  // mouth
+  const op = p.open, sm = p.smile;
+  push(hp(R + 3, 13.5));
+  mark.mouth = push(hp(R - 5 - op * 5 - sm * 1.5, 16.5 - sm * 3.6 + op * 3), true);
+  push(hp(R + 2 - op * 1.5, 19.5 + op * 13 - sm * 0.5));
+  push(hp(R - 1, 26.5 + op * 12)); push(hp(R - 9, 31 + op * 8)); push(hp(R - 16, 31 + op * 3.5));
+  // chest, front arm, belly
+  push(at(C, 3, 10)); push(at(C, -4, 13));
+  armF.list.forEach(q => push(q));
+  push(at(hip, 21, 17)); push(at(hip, 10, 21)); push(at(hip, 0, 15));
+  // front leg, foot, back up the inside
+  push(Fr.rootF); push(Fr.kneeF); push(Fr.ankF);
+  push(Fr.instep); push(Fr.toeTop); push(Fr.toeTip); mark.toe1 = push(Fr.toeB, true);
+  mark.heel1 = push(Fr.heelB, true); push(Fr.heelBk);
+  push(Fr.ankR); push(Fr.kneeR);
+  push(at(hip, -10, 0));
+  push(B.kneeF); push(B.ankF);
+  push(B.instep); push(B.toeTop); push(B.toeTip); mark.toe0 = push(B.toeB, true);
+
+  // features
+  const eye = hp(R * 0.47 + p.lookX * 2.4, -R * 0.2 + p.lookY * 2.2);
+  const browY = -13 - p.browUp * 5 - p.wide * 2;
+  const brow = [hp(5.5, browY - p.brow * 2), hp(11.5, browY - 1.2 - p.brow * 0.5), hp(17, browY + p.brow * 4.5)];
+  return { pts, mark, eye, brow, tip: cc, head: Hc, mouth: pts[mark.mouth], hands: [armB.tip, armF.tip], hip };
+}
+
+</script>
+<script>
+// ─── Tratto · the little man: physics, gait, moods, acts, drawing ──────────
+'use strict';
+
+const PHYS = { G: 2300, JUMP: 845, WALK: 178, ACC: 1700, AIR: 1150, DEC: 2300, STEP: 11, SNAP: 15, HW: 14, HT: 160 };
+const STRIDE = 75;                       // world px per full gait cycle (two steps)
+
+const FACES = {
+  neutral: { smile: .2, brow: 0, browUp: 0, wide: 0, squint: 0, eye: 1, open: 0 },
+  happy: { smile: 1, brow: -.1, browUp: .35, wide: 0, squint: .7, eye: 1, open: .1 },
+  angry: { smile: -.75, brow: 1, browUp: -.25, wide: 0, squint: .2, eye: 1, open: 0 },
+  sad: { smile: -.8, brow: -.9, browUp: .3, wide: 0, squint: 0, eye: .85, open: 0 },
+  surprised: { smile: 0, brow: -.2, browUp: 1, wide: 1, squint: 0, eye: 1, open: .45 },
+  worried: { smile: -.45, brow: -.7, browUp: .5, wide: .3, squint: 0, eye: 1, open: 0 },
+  bored: { smile: -.15, brow: .1, browUp: -.35, wide: 0, squint: 0, eye: .5, open: 0 },
+  effort: { smile: -.45, brow: .6, browUp: 0, wide: 0, squint: 1, eye: 1, open: 0 },
+  sleepy: { smile: 0, brow: 0, browUp: -.2, wide: 0, squint: 0, eye: .1, open: 0 },
+};
+
+const FX = {
+  list: [],
+  puff(x, y, n = 5, s = 1) { for (let i = 0; i < n; i++) this.list.push({ k: 'puff', x: x + rand(-14, 14), y: y - rand(2, 8), vx: rand(-60, 60) * s, vy: rand(-40, -10), r: rand(3, 6) * s, t: 0, life: rand(.35, .6) }); },
+  stars(x, y) { for (let i = 0; i < 5; i++) { const a = i / 5 * TAU; this.list.push({ k: 'star', x, y, vx: Math.cos(a) * 140, vy: Math.sin(a) * 140 - 60, r: 5, t: 0, life: .5 }); } },
+  sweat(x, y, dir) { this.list.push({ k: 'drop', x, y, vx: -dir * rand(40, 90), vy: -rand(60, 120), r: 4, t: 0, life: .7 }); },
+  lines(x, y) { for (let i = 0; i < 3; i++) this.list.push({ k: 'dash', x: x + rand(-6, 6), y: y - 20 - i * 18, vx: 0, vy: 0, r: 0, t: 0, life: .25, dir: rand() < .5 ? -1 : 1 }); },
+  update(dt) {
+    for (const p of this.list) { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; if (p.k !== 'puff') p.vy += 500 * dt; else { p.vx *= .92; p.vy *= .92; } }
+    this.list = this.list.filter(p => p.t < p.life);
+  },
+  draw() {
+    for (const p of this.list) {
+      const f = p.t / p.life, a = 1 - f;
+      if (p.k === 'puff') { const r = p.r * (1 + f * 1.6), pts = []; for (let i = 0; i <= 10; i++) { const u = i / 10 * TAU; pts.push({ x: p.x + Math.cos(u) * r, y: p.y + Math.sin(u) * r * .8 }); } Lines.add(pts, { closed: true, width: .5, alpha: a }); }
+      else if (p.k === 'star') { const r = 6; Lines.add([{ x: p.x - r, y: p.y }, { x: p.x + r, y: p.y }], { width: .5, alpha: a }); Lines.add([{ x: p.x, y: p.y - r }, { x: p.x, y: p.y + r }], { width: .5, alpha: a }); }
+      else if (p.k === 'drop') { const pts = []; for (let i = 0; i <= 10; i++) { const u = i / 10 * TAU; pts.push({ x: p.x + Math.sin(u) * 3, y: p.y - Math.cos(u) * 4 - (Math.cos(u) > 0 ? Math.cos(u) * 3 : 0) }); } Lines.add(pts, { closed: true, width: .45, alpha: a }); }
+      else if (p.k === 'dash') Lines.add([{ x: p.x - 10 * p.dir, y: p.y }, { x: p.x + 8 * p.dir, y: p.y - 4 }], { width: .5, alpha: a });
+    }
+  },
+};
+
+const Char = {
+  reset(x, y) {
+    Object.assign(this, {
+      x, y, vx: 0, vy: 0, facing: 1, grounded: true, ground: null, coyote: 0, jumpBuf: 0, jumpHeld: false,
+      ctrl: 'player', auto: { dir: 0, jump: false }, phase: 0, airT: 0, peakY: y, landT: 0, hurtT: 0, pushT: 0,
+      idleT: 0, fidget: 0, blinkT: 2, blink: 1, curlA: .15, curlV: 0, prevVx: 0,
+      face: { ...FACES.neutral }, mood: 'neutral', moodT: 0, act: null, actT: 0, actDur: 0,
+      lookAt: null, symbol: null, reveal: 1, visible: true, attach: null, carry: null, teeter: false,
+      pose: basePose(), snap: null, animAcc: 0, scale: 1.14, edgeT: 0, screamed: false, walkSound: 0, stance: 0,
+      lastSafe: { x, y }, onFall: null, hidden: false, faceLock: false,
+    });
+  },
+
+  setMood(m, dur = 1.5) { this.mood = m; this.moodT = dur; },
+  doAct(name, dur = 1.2) { this.act = name; this.actT = 0; this.actDur = dur; },
+  say(m, opts) { const d = Voice.say(m, opts); return d; },
+  show(sym, dur = 1.2) { this.symbol = { s: sym, t: 0, dur }; },
+
+  get head() { return this.snap ? this.snap.headW : { x: this.x, y: this.y - 125 }; },
+  get box() { return { x0: this.x - 26, x1: this.x + 26, y0: this.y - 175, y1: this.y }; },
+
+  // ── physics ──────────────────────────────────────────────────────────────
+  update(dt, keys) {
+    if (this.moodT > 0 && (this.moodT -= dt) <= 0) this.mood = 'neutral';
+    if (this.act) { this.actT += dt; if (this.actT >= this.actDur) this.act = null; }
+    if (this.symbol && (this.symbol.t += dt) > this.symbol.dur) this.symbol = null;
+    this.blinkT -= dt; if (this.blinkT < 0) { this.blinkT = rand(1.8, 4.8); this.blink = 0; }
+    this.blink = Math.min(1, this.blink + dt * 9);
+
+    if (this.ctrl === 'carried') return this.updateCarried(dt);
+    if (this.ctrl === 'none') return;
+
+    const inp = this.ctrl === 'player' ? keys : this.auto;
+    const stunned = this.hurtT > 0;
+    let dir = stunned ? 0 : (inp.dir || 0);
+    if (this.hurtT > 0) this.hurtT -= dt;
+    if (inp.jump && !this.jumpHeld) this.jumpBuf = 0.13;
+    this.jumpHeld = !!inp.jump;
+    this.jumpBuf -= dt; this.coyote -= dt;
+
+    if (dir) { if (!this.act || this.act === 'teeter') this.facing = dir; this.idleT = 0; if (this.act && this.act !== 'teeter' && this.ctrl === 'player') this.act = null; }
+    const target = dir * PHYS.WALK;
+    const acc = this.grounded ? (dir ? PHYS.ACC : PHYS.DEC) : PHYS.AIR;
+    this.prevVx = this.vx;
+    this.vx = this.vx < target ? Math.min(target, this.vx + acc * dt) : Math.max(target, this.vx - acc * dt);
+
+    if (this.jumpBuf > 0 && (this.grounded || this.coyote > 0) && !stunned) {
+      this.vy = -PHYS.JUMP; this.grounded = false; this.coyote = 0; this.jumpBuf = 0; this.ground = null;
+      Audio.sfx.jump(); if (rand() < .45) this.say('hup'); FX.puff(this.x, this.y, 3, .6); this.peakY = this.y;
+    }
+    if (!this.grounded) {
+      this.vy += PHYS.G * dt;
+      if (!this.jumpHeld && this.vy < -260) this.vy += PHYS.G * dt * 1.4; // short hop
+      this.vy = Math.min(this.vy, 1500);
+    }
+
+    // horizontal move against walls
+    let nx = this.x + this.vx * dt;
+    this.pushing = false;
+    for (const hy of [this.y - 9, this.y - 50, this.y - 95, this.y - 140]) {
+      for (const xw of World.wallsAt(hy)) {
+        if (this.x + PHYS.HW <= xw + 0.5 && nx + PHYS.HW > xw) { nx = xw - PHYS.HW; if (dir > 0) this.pushing = true; this.vx = 0; }
+        if (this.x - PHYS.HW >= xw - 0.5 && nx - PHYS.HW < xw) { nx = xw + PHYS.HW; if (dir < 0) this.pushing = true; this.vx = 0; }
+      }
+    }
+    nx = clamp(nx, -60, W + 120);
+    const dx = nx - this.x; this.x = nx;
+
+    // vertical
+    if (this.grounded) {
+      const f = World.floorAt(this.x, this.y - PHYS.STEP, this.y + PHYS.SNAP);
+      if (f) { this.y = f.y; this.ground = f.seg; }
+      else { this.grounded = false; this.ground = null; this.coyote = 0.09; this.vy = 0; this.peakY = this.y; }
+    } else {
+      const ny = this.y + this.vy * dt;
+      if (this.vy >= 0) {
+        const f = World.floorAt(this.x, this.y - 2, ny + 1);
+        if (f) { this.y = f.y; this.land(f.seg); }
+        else this.y = ny;
+      } else this.y = ny;
+      this.peakY = Math.min(this.peakY, this.y);
+      this.airT += dt;
+    }
+    if (this.grounded) this.airT = 0;
+
+    // gait phase advances with distance (feet stay planted)
+    if (this.grounded) {
+      const before = Math.floor(this.phase * 2);
+      this.phase = (this.phase + (dx * this.facing) / STRIDE + 10) % 1;
+      if (Math.floor(this.phase * 2) !== before && Math.abs(this.vx) > 40) Audio.sfx.step();
+    }
+    this.landT = Math.max(0, this.landT - dt);
+
+    // hazards & pickups
+    if (this.grounded && this.ctrl === 'player') {
+      if (World.spikeAt(this.x, this.y) && this.hurtT <= 0) this.hurt(-this.facing);
+      for (const r of World.ripples) if (this.ground && r.chain === this.ground.chain && r.env > 0.5 && Math.abs(r.x - this.x) < r.w * 0.9 && this.hurtT <= 0) this.knock(r.dir);
+      if (this.ground && this.ground.kind === 'level' && !World.spikeAt(this.x, this.y) && World.floorAt(this.x - 30, this.y - 4, this.y + 4) && World.floorAt(this.x + 30, this.y - 4, this.y + 4)) this.lastSafe = { x: this.x, y: this.y };
+    }
+    for (const d of World.drops) if (!d.taken && dist(this.x, this.y - 70, d.x, d.y) < 42) {
+      d.taken = true; World.ink = World.ink + 150; World.inkMax = Math.max(World.inkMax, World.ink);
+      Audio.sfx.drop(); this.setMood('happy', 1); Game.flashInk();
+    }
+
+    // edge awareness
+    this.teeter = false;
+    if (this.grounded && !dir && Math.abs(this.vx) < 5 && !World.floorAt(this.x + this.facing * 17, this.y - 6, this.y + 16, 0)) this.teeter = true;
+    this.edgeT = this.teeter ? this.edgeT + dt : 0;
+
+    // idle clock
+    if (!dir && this.grounded && Math.abs(this.vx) < 5 && this.ctrl === 'player') this.idleT += dt; else this.idleT = 0;
+
+    // death
+    if (this.y > H + 180 && this.onFall) { const f = this.onFall; this.onFall = null; f(); }
+    if (!this.grounded && this.vy > 900 && this.y > GROUND + 60 && !this.screamed && !World.floorAt(this.x, this.y, H + 200)) { this.screamed = true; this.say('scream'); Audio.sfx.fall(); }
+
+    // sprout spring (secondary motion)
+    const ax = (this.vx - this.prevVx) / Math.max(dt, 1e-3);
+    const tgt = 0.15 - this.vx * this.facing * 0.0012 + (this.grounded ? 0 : clamp(this.vy * 0.0006, -0.4, 0.4));
+    this.curlV += ((tgt - this.curlA) * 140 - this.curlV * 9 - ax * this.facing * 0.018) * dt;
+    this.curlA = clamp(this.curlA + this.curlV * dt, -1.3, 1.3);
+  },
+
+  land(seg) {
+    const h = this.y - this.peakY;
+    this.grounded = true; this.ground = seg; this.vy = 0; this.screamed = false;
+    if (h > 40) { this.landT = clamp(h / 900, 0.1, 0.22); FX.puff(this.x, this.y, h > 200 ? 7 : 4, h > 200 ? 1.2 : .8); Audio.sfx.land(clamp(h / 250, .4, 1.2)); if (h > 260 && rand() < .6) this.say('uff'); }
+  },
+  hurt(dir) {
+    this.hurtT = 0.55; this.vy = -640; this.vx = dir * 250; this.grounded = false; this.ground = null; this.peakY = this.y;
+    this.setMood('angry', 1.6); this.say('hurt'); FX.stars(this.x, this.y - 10); Audio.sfx.boing(); this.doAct('hurt', 0.6);
+  },
+  knock(dir) {
+    this.hurtT = 0.45; this.vy = -720; this.vx = dir * 260; this.grounded = false; this.ground = null; this.peakY = this.y;
+    this.setMood('surprised', 1); this.say('whoa'); this.doAct('flail', 0.7); this.show('!', .8);
+  },
+
+  updateCarried(dt) {
+    const c = this.carry;
+    // pendulum around the pinch point, driven by hand acceleration
+    const hax = (c.x - c.px) / Math.max(dt, 1e-3), acc = (hax - c.pvx) / Math.max(dt, 1e-3);
+    c.pvx = hax; c.px = c.x;
+    c.av += (-Math.sin(c.ang) * 26 - c.av * 2.2 - acc * 0.0009) * dt;
+    c.ang = clamp(c.ang + c.av * dt, -1.1, 1.1);
+  },
+
+  // ── pose (evaluated on film frames, 24 fps) ─────────────────────────────
+  computePose(t, dt) {
+    const p = basePose(), sp = Math.abs(this.vx) / PHYS.WALK, F = FIG.ankleH;
+    const air = !this.grounded && this.ctrl !== 'carried';
+    // locomotion
+    if (this.ctrl === 'carried') {
+      const k = Math.sin(t * 13), k2 = Math.sin(t * 13 + 2);
+      p.legs[0] = { fx: -6 + k * 7, fy: -4 + Math.max(0, k) * -12, fa: .5 };
+      p.legs[1] = { fx: 8 - k2 * 7, fy: -4 + Math.max(0, k2) * -12, fa: .5 };
+      p.hipY = -54; p.lean = -.05;
+      p.arms[1] = { a1: 2.5 + Math.sin(t * 21) * .35, a2: .5, shape: 'fist' };
+      p.arms[0] = { a1: -1.3 + Math.sin(t * 17) * .4, a2: .4, shape: 'mitt' };
+      p.curlLen = 1.5; p.curlAng = 0;
+    } else if (air) {
+      const up = this.vy < 0, fallLong = this.vy > 700;
+      if (up) {
+        p.legs[0] = { fx: -11, fy: -24, fa: .25 }; p.legs[1] = { fx: 13, fy: -31, fa: -.2 };
+        p.arms[1] = { a1: 2.3, a2: .35, shape: 'mitt' }; p.arms[0] = { a1: -2.5, a2: .3, shape: 'mitt' };
+        p.hipY = -52; p.lean = .1; p.open = .25;
+      } else {
+        const fl = fallLong ? Math.sin(t * 24) : 0;
+        p.legs[0] = { fx: -9, fy: -10 - fl * 6, fa: .2 }; p.legs[1] = { fx: 12, fy: -6 + fl * 6, fa: -.15 };
+        p.arms[1] = { a1: 1.6 + fl * .8, a2: .2, shape: fallLong ? 'open' : 'mitt' }; p.arms[0] = { a1: -1.6 - fl * .8, a2: .2, shape: fallLong ? 'open' : 'mitt' };
+        p.hipY = -51; p.lean = .02; p.curlLen = 1.25 + (fallLong ? .45 : 0);
+        if (fallLong) { p.open = .9; p.browUp = 1; p.wide = 1; }
+      }
+    } else if (sp > 0.06) {
+      const S = 18;
+      for (let i = 0; i < 2; i++) {
+        const ph = (this.phase + i * .5) % 1;
+        if (ph < .55) { const s = ph / .55; p.legs[i] = { fx: lerp(S, -S, s), fy: -F, fa: s < .15 ? -.2 * (1 - s / .15) : s > .8 ? .45 * (s - .8) / .2 : 0 }; }
+        else { const s = (ph - .55) / .45; p.legs[i] = { fx: lerp(-S, S, easeInOut(s)), fy: -F - Math.sin(s * Math.PI) * 13 * clamp(sp, .5, 1), fa: -.3 * Math.sin(s * Math.PI) }; }
+        p.legs[i].fx *= clamp(sp, .35, 1);
+      }
+      const sw = Math.sin(this.phase * TAU);
+      p.hipY = -49 - 3 * sp * Math.cos(4 * Math.PI * (this.phase - .275));
+      p.lean = .05 + .1 * sp;
+      p.arms[1] = { a1: .25 + .55 * sw * sp, a2: .55, shape: 'mitt' };
+      p.arms[0] = { a1: -.2 - .5 * sw * sp, a2: .45, shape: 'mitt' };
+      p.hdy = 1.2 * Math.cos(4 * Math.PI * (this.phase - .2));
+      p.smile = .35;
+    } else {
+      const br = Math.sin(t * 2.1);
+      p.hipY = -49.5 + br * .6; p.lean = .04 + br * .012; p.hdy = br * .5;
+    }
+    if (this.landT > 0 && this.grounded) { const k = this.landT / .22; p.hipY += 11 * k; p.legs[0].fx -= 4 * k; p.legs[1].fx += 4 * k; p.arms[1].a1 = .9; p.arms[0].a1 = -.8; p.squash = 1 - .1 * k; }
+    if (this.pushing) {
+      p.lean = .42; p.hipX = -3; p.legs[0] = { fx: -22 + Math.sin(t * 9) * 3, fy: -F, fa: .35 }; p.legs[1] = { fx: 6, fy: -F, fa: 0 };
+      p.arms[1] = { a1: 1.45, a2: .25, shape: 'mitt' }; p.arms[0] = { a1: 1.2, a2: .3, shape: 'mitt' };
+      Object.assign(p, FACES.effort);
+      if ((this.pushT += dt) > 2.2) { this.pushT = 0; this.say('grumble'); FX.sweat(this.head.x, this.head.y - 20, this.facing); }
+    } else this.pushT = 1.4;
+
+    // face
+    const face = FACES[this.mood] || FACES.neutral;
+    for (const k in face) this.face[k] = damp(this.face[k], face[k], 14, dt);
+    if (!this.pushing && !(air && this.vy > 700) && this.ctrl !== 'carried') Object.assign(p, this.face);
+    if (this.ctrl === 'carried') Object.assign(p, FACES.angry, { open: 0 });
+
+    // idle fidgets & edge worry
+    if (this.ctrl === 'player' && this.grounded && sp < .06 && !this.act) this.fidgets(p, t);
+    if (this.teeter && this.grounded) this.applyAct(p, 'teeter', t, this.edgeT);
+
+    // acts layer on top
+    if (this.act) this.applyAct(p, this.act, t, this.actT);
+    if (this.hurtT > 0 && !this.grounded && this.act === 'hurt') this.applyAct(p, 'hurt', t, 0);
+
+    // sprout & mouth
+    p.curlAng = this.curlA + (p.curlAng - .15);
+    p.curlLen *= 1 + this.face.wide * .5;
+    const vm = Voice.mouth();
+    p.open = Math.max(p.open, vm * (this.mood === 'angry' ? 1.05 : .85));
+    p.eye *= this.blink;
+
+    // looking at things (usually the hand)
+    if (this.lookAt) {
+      const hx = this.x, hy = this.y - 125;
+      const dxl = (this.lookAt.x - hx) * this.facing, dyl = this.lookAt.y - hy;
+      p.lookX = clamp(dxl / 90, -1, 1); p.lookY = clamp(dyl / 90, -1, 1);
+      p.tilt += clamp(-dyl / 260, -.1, .38) * -1 * (dxl > -40 ? 1 : 0);
+      if (dxl < -60 && this.grounded && sp < .06 && this.ctrl === 'player' && !this.act) this.facing *= -1;
+    }
+    return p;
+  },
+
+  fidgets(p, t) {
+    const T = this.idleT;
+    if (T > 3.5 && T < 7) { p.lookX = Math.sin(T * 1.7) > 0 ? 1 : -.4; p.tilt = Math.sin(T * 1.7) * .08; }
+    if (T > 7 && T < 12) {
+      p.legs[1].fa = -Math.max(0, Math.sin(T * 14)) * .4; p.legs[1].fy = -FIG.ankleH;
+      p.arms[1] = { a1: .7, a2: -1.9, shape: 'fist' }; p.arms[0] = { a1: -.65, a2: 1.9, shape: 'fist' };
+      Object.assign(p, FACES.bored, { lookX: .3 });
+      if (this.fidget === 0) { this.fidget = 1; this.say('grumble'); }
+    }
+    if (T > 12 && T < 14.5) { this.applyAct(p, 'yawn', t, T - 12); if (this.fidget === 1) { this.fidget = 2; this.say('yawn'); } }
+    if (T > 14.5 && T < 18) { p.tilt = .1; p.eye = .35; p.lookY = .6; }
+    if (T > 18) { this.idleT = 3.6; this.fidget = 0; }
+  },
+
+  applyAct(p, a, t, at) {
+    const set = (o) => Object.assign(p, o);
+    switch (a) {
+      case 'teeter': {
+        const w = t * 13;
+        p.arms[1] = { a1: w % TAU, a2: .3, shape: 'open' }; p.arms[0] = { a1: (w + Math.PI) % TAU, a2: .3, shape: 'open' };
+        p.lean = .18 * Math.sin(t * 7); p.legs[1].fa = -.25; set(FACES.worried); p.lookY = .9; p.lookX = .8;
+        if (at > 0.05 && at < 0.1 && rand() < .5) this.say('whoa');
+        break;
+      }
+      case 'fist': set(FACES.angry); p.arms[1] = { a1: 2.55 + Math.sin(t * 26) * .28, a2: .7, shape: 'fist' }; p.arms[0] = { a1: -.5, a2: 1.6, shape: 'fist' }; p.lean = -.06; p.tilt = -.22; p.lookY = -1; p.lookX = .7; break;
+      case 'stomp': { set(FACES.angry); const s = Math.max(0, Math.sin(at * 16)); p.legs[1] = { fx: 10, fy: -FIG.ankleH - s * 16, fa: -.2 }; p.arms[1] = { a1: .25, a2: .2, shape: 'fist' }; p.arms[0] = { a1: -.25, a2: .2, shape: 'fist' }; p.hipY += s * 2; if (s > .97) FX.puff(this.x + this.facing * 12, this.y, 1, .5); break; }
+      case 'shrug': set(FACES.worried); p.arms[1] = { a1: 1.05, a2: -1.5, shape: 'open' }; p.arms[0] = { a1: -1.05, a2: 1.5, shape: 'open' }; p.tilt = .14; p.lookX = 0; p.smile = -.3; break;
+      case 'point': p.arms[1] = { a1: .95, a2: 0, shape: 'point' }; p.tilt = -.25; p.lookY = -1; p.lookX = .2; set({ brow: .5, smile: -.4 }); break;
+      case 'lookUp': p.tilt = -.34; p.lookY = -1; p.lookX = .4; break;
+      case 'wave': set(FACES.happy); p.arms[1] = { a1: 2.75, a2: .3 + Math.sin(t * 13) * .55, shape: 'open' }; p.tilt = -.2; p.lookY = -.8; break;
+      case 'cheer': { set(FACES.happy); const j = Math.abs(Math.sin(at * 9)); p.arms[1] = { a1: 2.7 + Math.sin(t * 14) * .2, a2: .2, shape: 'open' }; p.arms[0] = { a1: -2.7 - Math.sin(t * 14) * .2, a2: .2, shape: 'open' }; p.hipY -= j * 6; p.legs[0].fy -= j * 6; p.legs[1].fy -= j * 6; p.tilt = -.15; break; }
+      case 'scared': set(FACES.surprised); p.lean = -.22; p.hipX = -4; p.arms[1] = { a1: 1.9, a2: 1.1, shape: 'open' }; p.arms[0] = { a1: 1.4, a2: 1.2, shape: 'open' }; break;
+      case 'flail': set(FACES.surprised); p.arms[1] = { a1: t * 16 % TAU, a2: .3, shape: 'open' }; p.arms[0] = { a1: (t * 16 + 2) % TAU, a2: .3, shape: 'open' }; break;
+      case 'hurt': set(FACES.angry); p.open = Math.max(p.open, .6); p.legs[1] = { fx: 13, fy: -30, fa: -.3 }; p.arms[1] = { a1: 2.4, a2: .5, shape: 'open' }; p.arms[0] = { a1: -2.4, a2: .5, shape: 'open' }; p.curlLen = 1.8; break;
+      case 'yawn': { const k = Math.sin(clamp(at / 2.4, 0, 1) * Math.PI); p.arms[1] = { a1: lerp(.2, 2.8, k), a2: .3, shape: 'fist' }; p.arms[0] = { a1: lerp(-.2, -2.8, k), a2: .3, shape: 'fist' }; p.open = Math.max(p.open, k * .9); p.eye = 1 - k; p.tilt = -.2 * k; p.lean = -.08 * k; break; }
+      case 'dust': p.arms[1] = { a1: .6 + Math.sin(t * 22) * .3, a2: 1.2, shape: 'mitt' }; p.arms[0] = { a1: .3, a2: 1.4, shape: 'mitt' }; p.lean = .25; p.tilt = .25; p.lookY = .8; set({ brow: .4, smile: -.3 }); break;
+      case 'sniff': set(FACES.happy); p.lean = .38; p.tilt = .3; p.eye = .1; p.squint = 0; p.arms[0] = { a1: -1.2, a2: .4, shape: 'open' }; p.arms[1] = { a1: .2, a2: .5, shape: 'mitt' }; break;
+      case 'hold': set(FACES.happy); p.arms[1] = { a1: 1.6, a2: 1.2, shape: 'fist' }; p.arms[0] = { a1: -.3, a2: .5, shape: 'mitt' }; break;
+      case 'sit': set(FACES.sleepy); p.hipY = -20; p.legs[0] = { fx: 14, fy: -FIG.ankleH, fa: 0 }; p.legs[1] = { fx: 24, fy: -FIG.ankleH, fa: 0 }; p.arms[1] = { a1: .5, a2: .6, shape: 'mitt' }; p.lean = -.05; break;
+    }
+  },
+
+  // ── drawing ─────────────────────────────────────────────────────────────
+  filmTick(t, dt) {
+    if (this.hidden) { this.snap = null; return; }
+    const target = this.computePose(t, dt);
+    this.pose = blendPose(this.pose, target, this.grounded && Math.abs(this.vx) > 10 ? .85 : .55);
+    if (Math.abs(this.vx) > 10 && this.grounded) this.pose.legs = target.legs; // keep planted feet exact
+    const fig = buildFigure(this.pose);
+    const fx = this.facing, sc = this.scale;
+    let ox = this.x, oy = this.y, ang = 0, piv = null;
+    if (this.ctrl === 'carried' && this.carry) { ang = this.carry.ang; piv = { x: this.carry.x, y: this.carry.y }; ox = piv.x - fig.tip.x * fx * sc; oy = piv.y - fig.tip.y * sc; }
+    const T = q => {
+      let x = ox + q.x * fx * sc, y = oy + q.y * sc;
+      if (piv) { const r = rot(x - piv.x, y - piv.y, ang); x = piv.x + r.x; y = piv.y + r.y; }
+      return { x, y };
+    };
+    const stance = this.pickStance();
+    const attach = this.grounded && this.ctrl !== 'carried' && this.reveal >= 1 && this.ground && this.pose.legs[stance].fy > -FIG.ankleH - 1.5;
+    let open = null, closed = null;
+    if (attach) {
+      const L = fig.pts, m = fig.mark;
+      const seq = stance === 0 ? L : L.slice(m.heel1).concat(L.slice(0, m.toe1 + 1));
+      open = spline(seq, false, 3).map(T);
+      if (fx < 0) open.reverse();
+    }
+    closed = spline(fig.pts, true, 3).map(T);
+    this.snap = {
+      open, closed, attach, ox, oy, fig, chain: this.ground ? this.ground.chain : null,
+      eye: T(fig.eye), brow: fig.brow.map(T), headW: T(fig.head), mouthW: T(fig.mouth), tipW: T(fig.tip), hands: fig.hands.map(T),
+      pose: this.pose, x: this.x, y: this.y,
+    };
+  },
+  pickStance() {
+    const l = this.pose.legs; return l[0].fy >= l[1].fy - 0.5 ? (Math.abs(this.vx) > 10 ? ((this.phase % 1) < .55 && ((this.phase + .5) % 1) >= .55 ? 0 : (((this.phase + .5) % 1) < .55 && (this.phase % 1) >= .55 ? 1 : (this.phase % 1) < ((this.phase + .5) % 1) ? 0 : 1)) : 0) : 1;
+  },
+
+  prepare() {
+    const s = this.snap; this.attach = null;
+    if (!s || !this.visible || this.hidden) return;
+    if (s.attach && s.open && s.open.length > 2) this.attach = { chain: s.chain, fig: s.open, cx: s.x, fy: s.y, xL: s.open[0].x, xR: s.open[s.open.length - 1].x, used: false };
+  },
+
+  draw() {
+    const s = this.snap; if (!s || !this.visible || this.hidden) return;
+    if (!(this.attach && this.attach.used)) {
+      const pts = this.reveal < 1 ? partial(s.closed, this.reveal) : s.closed;
+      Lines.add(pts, { closed: this.reveal >= 1, ox: s.ox, oy: s.oy });
+    }
+    if (this.reveal < 0.92) return;
+    const p = s.pose, e = s.eye, fx = this.facing;
+    // eye
+    if (p.eye < 0.3) Lines.add([{ x: e.x - 3.5, y: e.y + .5 }, { x: e.x + 3.5, y: e.y + .5 }], { width: .55, ox: s.ox, oy: s.oy });
+    else if (p.squint > 0.55) Lines.add([{ x: e.x - 4, y: e.y + 2 }, { x: e.x, y: e.y - 2.4 }, { x: e.x + 4, y: e.y + 2 }], { width: .5, ox: s.ox, oy: s.oy });
+    else if (p.wide > 0.5) {
+      const ring = []; for (let i = 0; i <= 12; i++) { const u = i / 12 * TAU; ring.push({ x: e.x + Math.cos(u) * 5, y: e.y + Math.sin(u) * 5.6 }); }
+      Lines.add(ring, { closed: true, width: .4, ox: s.ox, oy: s.oy }); Dots.add(e.x + p.lookX * 1.4 * fx, e.y + p.lookY * 1.4, 1.9, s.ox, s.oy);
+    } else Dots.add(e.x, e.y, 2.9 * (0.7 + 0.3 * p.eye), s.ox, s.oy);
+    // brow
+    Lines.add(spline(s.brow, false, 2), { width: .5, ox: s.ox, oy: s.oy });
+    // symbol
+    if (this.symbol) {
+      const k = this.symbol.t / this.symbol.dur, a = k < .15 ? k / .15 : k > .8 ? (1 - k) / .2 : 1;
+      const hx = s.headW.x + fx * 6, hy = s.headW.y - 58 - easeOut(Math.min(1, k * 4)) * 8;
+      if (this.symbol.s === 'scribble') drawScribble(hx, hy, Game.t, a);
+      else StrokeFont.text(this.symbol.s, hx, hy, 52, { alpha: a });
+    }
+  },
+};
+
+// the cartoon swear-cloud: a tangled line above the head
+function drawScribble(x, y, t, a) {
+  const pts = [], f = Math.floor(t * 12);
+  for (let i = 0; i < 26; i++) { const u = i * 1.9 + f * .7; pts.push({ x: x + Math.cos(u) * (12 + hash1(i + f) * 10), y: y + Math.sin(u * 1.3) * (6 + hash1(i * 3 + f) * 6) }); }
+  Lines.add(spline(pts, false, 3), { width: .45, alpha: a });
+}
+
+</script>
+<script>
+// ─── Tratto · the animator's hand (from the real world, above the paper) ───
+'use strict';
+
+const HAND_FILL = '#efe6d8', HAND_LINE = '#2b211c', SLEEVE = '#d9d0c2';
+// finger bases on the palm edge (local: wrist at origin, fingers toward +y)
+const FINGERS = [
+  { bx: -19, by: 12, L: [25, 17, 13], w: 15.5 },
+  { bx: -5, by: 16, L: [27, 18, 13], w: 15 },
+  { bx: 9, by: 15, L: [25, 17, 12], w: 14 },
+  { bx: 21, by: 10, L: [19, 13, 10], w: 12.5 },
+];
+const THUMB = { bx: -26, by: -4, L: [22, 18], w: 17 };
+
+// Seen from the back of the hand: f[i] = [spread, bend (in-plane), curl (folding under → foreshortened)]
+// t = [angle, bend, curl]; pen = [gripX, gripY, angle(tip→end), fromTip, flip]
+const HPOSE = {
+  draw: { f: [[.5, .28, .2], [.3, .2, .8], [.12, .1, 1.2], [-.02, .1, 1.3]], t: [.55, .45, 0], pen: [-14, 52, -1.05, 56, 0], hot: 'tip' },
+  erase: { f: [[.5, .28, .2], [.3, .2, .8], [.12, .1, 1.2], [-.02, .1, 1.3]], t: [.55, .45, 0], pen: [-14, 52, -1.05 + Math.PI, 56, 1], hot: 'end' },
+  point: { f: [[.12, .04, 0], [.05, 0, 1.3], [-.04, 0, 1.35], [-.12, 0, 1.35]], t: [.75, .5, .2], pen: [8, 22, -.55, 44, 0], hot: 'index' },
+  pinch: { f: [[.38, .55, .45], [.12, .1, 1.25], [-.02, 0, 1.35], [-.1, 0, 1.35]], t: [.2, -.25, 0], pen: [8, 22, -.55, 44, 0], hot: 'pinch' },
+  open: { f: [[.36, 0, 0], [.12, 0, 0], [-.1, 0, 0], [-.32, 0, 0]], t: [1.15, -.15, 0], pen: [8, 12, -.55, 34, 0], hot: 'palm' },
+};
+const lerpHP = (a, b, t) => ({
+  f: a.f.map((r, i) => r.map((v, j) => lerp(v, b.f[i][j], t))),
+  t: a.t.map((v, i) => lerp(v, b.t[i], t)),
+  pen: a.pen.map((v, i) => lerp(v, b.pen[i], t)),
+  hotA: a.hot || (a.k < .5 ? a.hotA : a.hotB), hotB: b.hot, k: t,
+});
+
+const AWAY = { x: W + 260, y: -300 };
+
+const Hand = {
+  x: AWAY.x, y: AWAY.y, rot: .5, lift: 1, scale: 1.18, mode: 'away', poseName: 'draw', from: lerpHP(HPOSE.draw, HPOSE.draw, 0), poseT: 1,
+  cur: null, vx: 0, vy: 0, px: AWAY.x, py: AWAY.y, down: false, idle: 99, wagT: 0, extraRot: 0, penLen: 150,
+  target: { x: AWAY.x, y: AWAY.y }, holding: null,
+
+  setPose(name, dur = 0.18) {
+    if (name === this.poseName && this.poseT >= 1) return;
+    this.from = this.cur || this.from; this.poseName = name; this.poseT = dur > 0 ? 0 : 1; this.poseDur = dur;
+  },
+
+  update(dt) {
+    this.poseT = Math.min(1, this.poseT + dt / Math.max(0.01, this.poseDur || 0.18));
+    this.cur = lerpHP(this.from, HPOSE[this.poseName], easeInOut(this.poseT));
+    if (this.mode === 'player') {
+      this.x = damp(this.x, this.target.x, this.down ? 34 : 22, dt);
+      this.y = damp(this.y, this.target.y, this.down ? 34 : 22, dt);
+    } else if (this.mode === 'away') {
+      this.x = damp(this.x, AWAY.x, 5, dt); this.y = damp(this.y, AWAY.y, 5, dt);
+    }
+    this.vx = (this.x - this.px) / Math.max(dt, 1e-3); this.vy = (this.y - this.py) / Math.max(dt, 1e-3);
+    this.px = this.x; this.py = this.y;
+    // forearm reaches in from above-right; hand tilts with the drag of motion
+    const sx = W + 380, sy = -460;
+    const armA = Math.atan2(sx - this.x, this.y - sy);
+    const want = clamp(lerp(.32, armA, .55), .05, 1.05) + clamp(-this.vx * .00028, -.22, .22) + this.extraRot;
+    this.rot = damp(this.rot, want, 10, dt);
+    this.lift = damp(this.lift, this.down ? .12 : 1, 14, dt);
+    this.penLen = damp(this.penLen, 70 + 90 * clamp(World.ink / Math.max(1, World.level ? World.level.ink : 300), 0, 1.2), 4, dt);
+    if (this.holding) { this.holding.x = this.hot.pinch.x; this.holding.y = this.hot.pinch.y; }
+  },
+
+  // forward kinematics for fingers in local space
+  finger(base, L, spread, bend, curl, w) {
+    let d = rot(0, 1, spread), p = { x: base.x, y: base.y }; const pts = [p];
+    const fold = [.55, 1, 1.35];
+    for (let i = 0; i < L.length; i++) {
+      d = rot(d.x, d.y, bend / L.length);
+      const k = Math.max(.12, Math.cos(Math.min(1.45, curl * fold[i])));
+      p = { x: p.x + d.x * L[i] * k, y: p.y + d.y * L[i] * k }; pts.push(p);
+    }
+    return { pts, w: w * (1 + curl * .06), curl };
+  },
+  local() {
+    const c = this.cur || lerpHP(HPOSE.draw, HPOSE.draw, 0);
+    const fingers = FINGERS.map((F, i) => this.finger({ x: F.bx, y: F.by }, F.L, c.f[i][0], c.f[i][1], c.f[i][2], F.w));
+    const thumb = this.finger({ x: THUMB.bx, y: THUMB.by }, THUMB.L, c.t[0], c.t[1], c.t[2], THUMB.w);
+    const [gx, gy, pa, fromTip] = c.pen; const pd = { x: Math.cos(pa), y: Math.sin(pa) };
+    const L = this.penLen;
+    const tip = { x: gx - pd.x * fromTip, y: gy - pd.y * fromTip };
+    const end = { x: tip.x + pd.x * L, y: tip.y + pd.y * L };
+    const hots = {
+      tip, end,
+      index: fingers[0].pts[3],
+      pinch: { x: (fingers[0].pts[3].x + thumb.pts[2].x) / 2, y: (fingers[0].pts[3].y + thumb.pts[2].y) / 2 },
+      palm: { x: 0, y: 70 },
+    };
+    // a flipped pencil draws with whichever end is lower
+    const pick = n => n === 'tip' ? (c.pen[4] > .5 ? end : tip) : n === 'end' ? (c.pen[4] > .5 ? end : tip) : hots[n];
+    const hA = pick(c.hotA), hB = pick(c.hotB);
+    const hot = { x: lerp(hA.x, hB.x, c.k), y: lerp(hA.y, hB.y, c.k) };
+    return { fingers, thumb, tip, end, pd, hot, hots, c };
+  },
+  toWorld(l) {
+    const s = this.scale + this.lift * .05, r = this.rot, hx = l.hot.x, hy = l.hot.y;
+    return q => { const v = rot((q.x - hx) * s, (q.y - hy) * s, r); return { x: this.x + v.x, y: this.y + v.y }; };
+  },
+  get hot() {
+    const l = this.local(), T = this.toWorld(l);
+    return { x: this.x, y: this.y, pinch: T(l.hots.pinch), index: T(l.hots.index), tip: T(l.tip), end: T(l.end) };
+  },
+  get onScreen() { return this.x > -80 && this.x < W + 80 && this.y > -60 && this.y < H + 80; },
+
+  draw(ctx) {
+    if (this.x > W + 200 && this.y < -200) return;
+    const l = this.local(), T = this.toWorld(l), s = this.scale + this.lift * .05;
+    const tube = (pts, w) => ({ k: 't', pts: pts.map(T), w: w * s });
+    const poly = (pts) => ({ k: 'p', pts: pts.map(T) });
+    const parts = [
+      poly([{ x: -26, y: -40 }, { x: -33, y: -620 }, { x: 33, y: -620 }, { x: 25, y: -40 }]),
+      poly(spline([{ x: -27, y: -34 }, { x: 0, y: -40 }, { x: 27, y: -34 }, { x: 31, y: 0 }, { x: 25, y: 16 }, { x: 0, y: 21 }, { x: -24, y: 18 }, { x: -31, y: 0 }], true, 4)),
+      tube(l.thumb.pts, l.thumb.w),
+      ...l.fingers.slice().reverse().map(f => tube(f.pts, f.w)),
+    ];
+    const cuff = poly(spline([{ x: -30, y: -64 }, { x: 0, y: -67 }, { x: 30, y: -64 }, { x: 31, y: -38 }, { x: 0, y: -35 }, { x: -31, y: -38 }], true, 4));
+    const shadow = { x: (9 + 16 * this.lift) * s, y: (12 + 24 * this.lift) * s, b: 6 + 16 * this.lift };
+
+    const pathOf = p => { ctx.beginPath(); p.pts.forEach((q, i) => i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y)); if (p.k === 'p') ctx.closePath(); };
+    ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+    // pencil (held behind the fingers)
+    const pen = this.pencilParts(l, T, s);
+    // soft cast shadow of everything
+    ctx.save();
+    ctx.shadowColor = 'rgba(25,10,0,0.32)'; ctx.shadowBlur = shadow.b; ctx.shadowOffsetX = shadow.x; ctx.shadowOffsetY = shadow.y;
+    ctx.fillStyle = ctx.strokeStyle = 'rgba(25,10,0,0.9)';
+    for (const p of [...pen.shadow, ...parts, cuff]) { pathOf(p); if (p.k === 'p') ctx.fill(); else { ctx.lineWidth = p.w; ctx.stroke(); } }
+    ctx.restore();
+    pen.draw();
+    // outline pass, then fill pass → one silhouette with a clean outer contour
+    ctx.strokeStyle = HAND_LINE;
+    for (const p of [...parts, cuff]) { pathOf(p); if (p.k === 'p') { ctx.lineWidth = 3.2; ctx.stroke(); } else { ctx.lineWidth = p.w + 3.2; ctx.stroke(); } }
+    for (const p of parts) {
+      pathOf(p);
+      if (p.k === 'p') { ctx.fillStyle = p === parts[0] ? SLEEVE : HAND_FILL; ctx.fill(); }
+      else { ctx.strokeStyle = HAND_FILL; ctx.lineWidth = p.w; ctx.stroke(); }
+    }
+    // cuff on top of the sleeve/palm seam
+    pathOf(cuff); ctx.fillStyle = '#f4efe6'; ctx.fill(); ctx.strokeStyle = HAND_LINE; ctx.lineWidth = 2.4; ctx.stroke();
+    const b = T({ x: 16, y: -50 }); ctx.fillStyle = HAND_LINE; ctx.beginPath(); ctx.arc(b.x, b.y, 2.2 * s, 0, TAU); ctx.fill();
+    // soft shading on the back of the hand
+    const shc = T({ x: 14, y: -6 }), g = ctx.createRadialGradient(shc.x, shc.y, 4, shc.x, shc.y, 46 * s);
+    g.addColorStop(0, 'rgba(120,80,50,0)'); g.addColorStop(1, 'rgba(120,80,50,0.16)');
+    pathOf(parts[1]); ctx.fillStyle = g; ctx.fill();
+    // knuckles and nails, kept sparse
+    ctx.strokeStyle = 'rgba(43,33,28,0.45)'; ctx.lineWidth = 1.2;
+    for (const f of [...l.fingers, l.thumb]) {
+      if (f.pts.length > 3) {
+        const a = f.pts[1], m = f.pts[2], n = norm(sub(m, a)), side = { x: -n.y, y: n.x }, hw = f.w * .22;
+        const p1 = T({ x: m.x + side.x * hw, y: m.y + side.y * hw }), p2 = T({ x: m.x - side.x * hw, y: m.y - side.y * hw });
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+      }
+      if (f.curl > .6) continue;
+      const e = f.pts[f.pts.length - 1], q = f.pts[f.pts.length - 2], d = norm(sub(e, q)), sd = { x: -d.y, y: d.x }, nw = f.w * .26;
+      const n0 = T({ x: e.x - d.x * 7 + sd.x * nw, y: e.y - d.y * 7 + sd.y * nw }), n1 = T({ x: e.x - d.x * 1.5, y: e.y - d.y * 1.5 }), n2 = T({ x: e.x - d.x * 7 - sd.x * nw, y: e.y - d.y * 7 - sd.y * nw });
+      ctx.beginPath(); ctx.moveTo(n0.x, n0.y); ctx.quadraticCurveTo(n1.x, n1.y, n2.x, n2.y); ctx.stroke();
+    }
+    ctx.restore();
+  },
+
+  pencilParts(l, T, s) {
+    const { tip, end, pd } = l, n = { x: -pd.y, y: pd.x }, r = 6.2;
+    const at = (d, w) => ({ x: tip.x + pd.x * d + n.x * w, y: tip.y + pd.y * d + n.y * w });
+    const L = Math.hypot(end.x - tip.x, end.y - tip.y);
+    const body = { k: 'p', pts: [at(20, r), at(L - 16, r), at(L - 16, -r), at(20, -r)].map(T) };
+    const cone = { k: 'p', pts: [at(5, 2), at(20, r), at(20, -r), at(5, -2)].map(T) };
+    const lead = { k: 'p', pts: [at(0, 0), at(5, 2.2), at(5, -2.2)].map(T) };
+    const ferrule = { k: 'p', pts: [at(L - 16, r + .5), at(L - 7, r + .5), at(L - 7, -r - .5), at(L - 16, -r - .5)].map(T) };
+    const rubber = { k: 'p', pts: spline([at(L - 7, r), at(L - 1, r - .5), at(L, 0), at(L - 1, -r + .5), at(L - 7, -r)], false, 2).map(T) };
+    const all = [body, cone, lead, ferrule, rubber];
+    return {
+      shadow: all,
+      draw: () => {
+        const ctx = Game.lineCtx;
+        const fill = (p, c, lw = 2.2) => { ctx.beginPath(); p.pts.forEach((q, i) => i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y)); ctx.closePath(); ctx.fillStyle = c; ctx.fill(); ctx.strokeStyle = HAND_LINE; ctx.lineWidth = lw; ctx.stroke(); };
+        fill(body, '#2e2a27'); fill(cone, '#d8b88a'); fill(lead, INK, 1.6); fill(ferrule, '#b9b2a4'); fill(rubber, '#d48f7f');
+        const h0 = T(at(24, -2.2)), h1 = T(at(L - 20, -2.2));
+        ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(h0.x, h0.y); ctx.lineTo(h1.x, h1.y); ctx.stroke();
+        const f0 = T(at(L - 12, r)), f1 = T(at(L - 12, -r)); ctx.strokeStyle = 'rgba(43,33,28,0.6)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(f0.x, f0.y); ctx.lineTo(f1.x, f1.y); ctx.stroke();
+      },
+    };
+  },
+
+  // ── scripted moves (generators) ───────────────────────────────────────────
+  *moveTo(x, y, dur = .6, pose = null, ease = easeInOut) {
+    this.mode = 'script'; if (pose) this.setPose(pose, Math.min(.25, dur * .5));
+    const x0 = this.x, y0 = this.y;
+    if (dist(x0, y0, x, y) > 200) Audio.sfx.whoosh();
+    yield* tween(dur, k => { this.x = lerp(x0, x, k); this.y = lerp(y0, y, k); }, ease);
+  },
+  *exit(dur = .7) { yield* this.moveTo(AWAY.x, AWAY.y, dur, null, easeIn); this.mode = 'away'; this.down = false; },
+  // trace a polyline with the pencil; onProgress(frac) reveals the line
+  *trace(pts, speed = 900, onProgress = null, erase = false) {
+    this.mode = 'script'; this.setPose(erase ? 'erase' : 'draw', .15);
+    // arc length at every vertex, and how sharply the path turns there (a real hand slows on tight curves)
+    const acc = [0], turn = [0];
+    for (let i = 1; i < pts.length; i++) acc.push(acc[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y));
+    for (let i = 1; i < pts.length - 1; i++) {
+      const a = Math.atan2(pts[i].y - pts[i - 1].y, pts[i].x - pts[i - 1].x), b = Math.atan2(pts[i + 1].y - pts[i].y, pts[i + 1].x - pts[i].x);
+      turn.push(Math.abs(((b - a + Math.PI * 3) % TAU) - Math.PI) / Math.max(1, acc[i + 1] - acc[i - 1]) * 12);
+    }
+    turn.push(0);
+    const total = acc[acc.length - 1]; let d = 0, i = 0; this.down = true;
+    if (total <= 0.5) { if (onProgress) onProgress(1, pts[0]); this.x = pts[0].x; this.y = pts[0].y; yield* wait(.05); }
+    while (d < total) {
+      const dt = yield;
+      while (i < acc.length - 2 && acc[i + 1] < d) i++;
+      const slow = 1 / (1 + clamp(turn[i] || 0, 0, 2.2)), ramp = Math.min(1, .45 + d / 30);
+      const v = speed * slow * ramp;
+      d = Math.min(total, d + v * dt);
+      const p = partial(pts, d / total), q = p[p.length - 1];
+      this.x = q.x; this.y = q.y + Math.sin(d * .08) * (erase ? 4 : 0);
+      if (onProgress) onProgress(d / total, q);
+      Audio.setScratch(v, erase);
+    }
+    this.down = false; Audio.setScratch(0, false);
+  },
+  // write a StrokeFont layout: pen down for each stroke, lifted hops in between
+  *write(L, speed, onStroke) {
+    for (let i = 0; i < L.strokes.length; i++) {
+      const s = L.strokes[i], p0 = s[0], d = dist(this.x, this.y, p0.x, p0.y);
+      if (d > 2) { this.down = false; Audio.setScratch(0); yield* this.moveTo(p0.x, p0.y, clamp(d / 1600, .05, .3), 'draw', d > 60 ? easeInOut : easeOut); }
+      yield* this.trace(s, speed * (.9 + rand(.2)), f => onStroke(i, f));
+    }
+    onStroke(L.strokes.length, 1);
+  },
+  *wag(dur = 1.2) {
+    this.setPose('point', .15); let t = 0;
+    while (t < dur) { t += yield; this.extraRot = Math.sin(t * 16) * .32; }
+    this.extraRot = 0;
+  },
+  *waveBye(dur = 1) {
+    this.setPose('open', .2); const x0 = this.x; let t = 0;
+    while (t < dur) { t += yield; this.x = x0 + Math.sin(t * 14) * 14; this.extraRot = Math.sin(t * 14) * .12; }
+    this.extraRot = 0;
+  },
+  *poke(x, y) {
+    this.mode = 'script'; this.setPose('point', .1);
+    const bx = this.x, by = this.y, ax = x + 34, ay = y - 30;
+    yield* tween(.12, k => { this.x = lerp(bx, ax, k); this.y = lerp(by, ay, k); }, easeOut);
+    yield* tween(.07, k => { this.x = lerp(ax, x + 6, k); this.y = lerp(ay, y - 4, k); }, easeIn);
+    Audio.sfx.poke();
+    yield* tween(.25, k => { this.x = lerp(x + 6, ax + 20, k); this.y = lerp(y - 4, ay - 30, k); }, easeOut);
+  },
+};
+
+</script>
+<script>
+// ─── Tratto · the director: cutscenes and the hand's little dramas ─────────
+'use strict';
+
+const Director = {
+  main: null, side: [], skipFn: null,
+  get busy() { return !!this.main; },
+  run(gen, onSkip = null) { this.main = gen; this.skipFn = onSkip; gen.next(); },
+  aside(gen) { gen.next(); this.side.push(gen); },
+  update(dt) {
+    if (this.main && this.main.next(dt).done) { this.main = null; this.skipFn = null; }
+    this.side = this.side.filter(g => !g.next(dt).done);
+  },
+  skip() { if (!this.main || !this.skipFn) return; const f = this.skipFn; this.main = null; this.skipFn = null; f(); },
+  clear() { this.main = null; this.side = []; this.skipFn = null; },
+};
+
+// helpers ------------------------------------------------------------------
+function* writeCard(text, size = 64, y = 250) {
+  const L = StrokeFont.layout(text, W / 2, y, size);
+  Game.card = { text, size, y, cur: 0, frac: 0, alpha: 1 };
+  const p0 = L.strokes[0][0];
+  yield* Hand.moveTo(p0.x, p0.y, .55, 'draw');
+  yield* Hand.write(L, 260 + size * 3.2, (i, f) => { Game.card.cur = i; Game.card.frac = f; });
+  Game.card.cur = Infinity;
+}
+function cardDone(text, size, y) { Game.card = { text, size, y, cur: Infinity, frac: 1, alpha: 1 }; }
+// the hand draws each ink drop: a quick teardrop loop where it will hang
+function* drawDrops() {
+  for (const d of World.drops) {
+    const pts = dropShape(d, World.t);
+    yield* Hand.moveTo(pts[0].x, pts[0].y, clamp(dist(Hand.x, Hand.y, pts[0].x, pts[0].y) / 1500, .1, .4), 'draw');
+    yield* Hand.trace(pts, 260, f => { d.reveal = f; });
+    d.reveal = 1;
+  }
+}
+function* fadeCard(d = .5) { if (!Game.card) return; yield* tween(d, k => { Game.card.alpha = 1 - k; }); Game.card = null; }
+function* drawLevelLines(speed = 1300) {
+  for (const c of World.chains.filter(c => c.kind === 'level')) {
+    const pts = roundCorners(c.pts, 6).map(p => ({ x: clamp(p.x, -10, W + 10), y: p.y }));
+    yield* Hand.moveTo(pts[0].x, pts[0].y, .35, 'draw');
+    yield* Hand.trace(pts, speed, f => { c.reveal = f; });
+    c.reveal = 1;
+  }
+}
+function* drawCharacter(x, y, speed = 900) {
+  Object.assign(Char, { x, y, ctrl: 'none', hidden: false, reveal: 0, grounded: true });
+  Char.ground = World.floorAt(x, y - 5, y + 5)?.seg || null;
+  Char.filmTick(Game.t, 1 / 24);
+  const path = Char.snap.closed.slice();
+  yield* Hand.moveTo(path[0].x, path[0].y, .35, 'draw');
+  yield* Hand.trace(path, speed, f => { Char.reveal = f; });
+  Char.reveal = 1;
+}
+function* charWalkTo(x, speed = 1) {
+  Char.ctrl = 'script';
+  while (Math.abs(Char.x - x) > 4) { Char.auto.dir = Math.sign(x - Char.x) * speed; yield; if (Char.y > H) break; }
+  Char.auto.dir = 0;
+  yield* until(() => Math.abs(Char.vx) < 5, 1);
+}
+function* sayAndWait(mood, extra = .1) { const d = Char.say(mood); yield* wait(d + extra); }
+
+// title ----------------------------------------------------------------------
+const SUBTITLE = 'a line, a hand, and a little man';
+function* titleScript() {
+  Hand.mode = 'away';
+  yield* wait(.6);
+  yield* writeCard('Tratto', 150, 200);
+  Game.subtitle = { a: 1, cur: 0, frac: 0 };
+  yield* Hand.write(StrokeFont.layout(SUBTITLE, W / 2, 322, 40), 900, (i, f) => { Game.subtitle.cur = i; Game.subtitle.frac = f; });
+  Game.subtitle.cur = Infinity;
+  yield* drawLevelLines(1500);
+  yield* drawCharacter(470, GROUND, 1100);
+  yield* comeAlive();
+  Game.prompt = true;
+}
+function* comeAlive() {
+  Char.blink = 0; Char.curlV = 9; Char.lookAt = Hand.hot; Char.setMood('surprised', .8);
+  yield* Hand.moveTo(Char.x + 110, Char.y - 210, .4, 'open');
+  yield* wait(.2);
+  yield* sayAndWait('question');
+  Char.setMood('happy', 1.4); Char.doAct('wave', 1.2);
+  yield* Hand.waveBye(.9);
+  yield* Hand.exit(.6);
+  Char.ctrl = 'player'; Char.lookAt = null;
+}
+
+// level intro: card, lines, the little man strolls in ---------------------------
+function* levelIntro(i) {
+  World.load(i);
+  World.chains.forEach(c => { c.reveal = 0; });
+  World.drops.forEach(d => { d.reveal = 0; });
+  Char.reset(-40, GROUND); Char.hidden = true; Char.ctrl = 'none';
+  Game.hintQ = []; Game.hint = null;
+  yield* writeCard(`${i + 1} · ${LEVELS[i].name}`, 80, 250);
+  yield* wait(.5);
+  Director.aside(fadeCard(.6));
+  yield* drawLevelLines(1500);
+  World.drops.forEach(d => { d.reveal = 0; });
+  yield* drawDrops();
+  Director.aside(Hand.exit(.6));
+  const start = World.level.start, sy = World.floorAt(0, 0, H)?.y ?? GROUND;
+  Object.assign(Char, { x: -30, y: sy, hidden: false, ctrl: 'script', grounded: true });
+  Char.ground = World.floorAt(0, sy - 5, sy + 5)?.seg || null;
+  yield* charWalkTo(start);
+  Char.ctrl = 'player';
+  Game.queueHint(-1e9);
+}
+function finishIntro(i) {
+  return () => {
+    World.load(i); Char.reset(World.level.start, World.floorAt(World.level.start, 0, H)?.y ?? GROUND);
+    Char.ground = World.floorAt(Char.x, Char.y - 4, Char.y + 4)?.seg || null;
+    Game.card = null; Hand.mode = 'away'; Hand.down = false; Audio.setScratch(0); Game.queueHint(-1e9);
+  };
+}
+
+// the hand fishes him out of the void ------------------------------------------
+function* rescueScript() {
+  const s = Char.lastSafe;
+  Char.hidden = true; Char.ctrl = 'none'; Char.vx = Char.vy = 0;
+  yield* wait(.45);
+  Hand.mode = 'script'; Hand.setPose('pinch', 0);
+  Hand.x = s.x + 200; Hand.y = -260;
+  Char.carry = { x: Hand.x, y: Hand.y, px: Hand.x, pvx: 0, ang: .3, av: 0 };
+  Char.ctrl = 'carried'; Char.hidden = false; Char.reveal = 1; Char.grounded = false; Char.facing = 1;
+  Hand.holding = Char.carry; Char.setMood('angry', 4);
+  Char.lookAt = null;
+  const hang = 186;
+  Char.say('rant'); Char.show('scribble', 2.2);
+  yield* Hand.moveTo(s.x + 30, s.y - hang - 70, 1.0, 'pinch');
+  yield* Hand.moveTo(s.x, s.y - hang - 4, .5, 'pinch');
+  yield* wait(.25);
+  // let go
+  Hand.holding = null; Hand.setPose('open', .15);
+  Object.assign(Char, { ctrl: 'script', x: s.x, y: s.y - 4, vx: 0, vy: 0, grounded: false, peakY: s.y - 60, screamed: false });
+  Char.carry = null; Char.auto.dir = 0;
+  yield* Hand.moveTo(Hand.x + 40, Hand.y - 70, .3, 'open');
+  yield* until(() => Char.grounded, 1);
+  Char.lookAt = Hand.hot;
+  Char.doAct('dust', .8); yield* wait(.8);
+  Char.doAct('fist', 1.6); Char.say('angry'); Char.show('scribble', 1.4);
+  yield* Hand.waveBye(.7);
+  yield* wait(.4);
+  yield* Hand.exit(.6);
+  Char.ctrl = 'player'; Char.lookAt = null; Char.onFall = Game.fell;
+}
+function finishRescue() {
+  const s = Char.lastSafe;
+  Object.assign(Char, { x: s.x, y: s.y, vx: 0, vy: 0, ctrl: 'player', hidden: false, grounded: true, carry: null, act: null, onFall: Game.fell });
+  Char.ground = World.floorAt(s.x, s.y - 4, s.y + 4)?.seg || null;
+  Hand.holding = null; Hand.mode = 'away';
+}
+
+// he calls up to the animator when the line just ends -------------------------
+function* complainScript() {
+  Char.doAct('lookUp', .7); yield* wait(.15);
+  Char.say('call'); yield* wait(.7);
+  if (Char.act !== 'lookUp' && Char.act) return;
+  Char.doAct('point', 1.3); yield* wait(.2); Char.show('?', 1.2); yield* wait(1.1);
+  if (Char.act !== 'point') return;
+  Char.doAct('shrug', 1.1); Char.say('question');
+  Game.hintNow('drag with the mouse to draw him a way across');
+}
+
+// mischief: the hand rubs out the road ahead -----------------------------------------
+function* mischiefErase(x0, x1) {
+  Char.ctrl = 'script'; Char.auto.dir = 0;
+  yield* until(() => Math.abs(Char.vx) < 5, .6);
+  Char.lookAt = Hand.hot;
+  yield* Hand.moveTo(x0 + 10, GROUND - 120, .8, 'erase');
+  Char.setMood('surprised', 1); Char.show('!', 1); Char.say('surprised');
+  const pts = []; for (let x = x0; x <= x1; x += 14) pts.push({ x, y: GROUND + ((x / 14) % 2 ? -9 : 9) });
+  yield* Hand.trace([{ x: x0, y: GROUND }, ...pts], 520, (f, q) => { if (World.eraseAt(q.x, q.y, 17, 'script')) Audio.sfx.erase(); }, true);
+  yield* Hand.moveTo((x0 + x1) / 2, GROUND - 170, .4, 'point');
+  Char.setMood('angry', 3);
+  yield* Hand.wag(1.1);
+  Char.doAct('fist', 1.6); Char.say('rant'); Char.show('scribble', 1.6);
+  yield* Hand.waveBye(.6);
+  yield* Hand.exit(.6);
+  Char.doAct('stomp', .7); yield* wait(.7);
+  Char.ctrl = 'player'; Char.lookAt = null;
+  Game.hintNow('all right — draw your own bridge');
+}
+
+// mischief: a wall, just because ------------------------------------------------
+function* mischiefWall(x) {
+  Char.ctrl = 'script'; Char.auto.dir = 0;
+  Char.lookAt = Hand.hot;
+  yield* Hand.moveTo(x, GROUND, .7, 'draw');
+  const pts = [{ x, y: GROUND }, { x: x + 3, y: GROUND - 90 }, { x: x - 2, y: GROUND - 205 }];
+  const c = World.addChain(pts, 'mischief'); c.reveal = 0; World.rebuild();
+  yield* Hand.trace(pts, 700, f => { c.reveal = f; });
+  c.reveal = 1; World.rebuild();
+  yield* Hand.moveTo(x + 40, GROUND - 250, .3, 'open');
+  yield* Hand.waveBye(.7);
+  yield* Hand.exit(.6);
+  Char.doAct('shrug', 1.2); Char.say('grumble'); Char.show('?', 1.2);
+  yield* wait(1);
+  Char.ctrl = 'player'; Char.lookAt = null;
+  Game.hintNow('that wall is only ink — right-drag, or hold E, to rub it out');
+}
+
+// the hand prods him when clicked --------------------------------------------------
+function* pokeScript() {
+  const h = Char.head, side = Hand.x < h.x ? -1 : 1;
+  yield* Hand.poke(h.x + side * 20, h.y);
+  Game.pokes++;
+  const dir = -side;
+  Char.vx = dir * 170; Char.vy = -330; Char.grounded = false; Char.ground = null; Char.peakY = Char.y;
+  Char.doAct('flail', .45); Char.setMood('surprised', .5); Char.say('surprised'); FX.stars(h.x, h.y);
+  yield* wait(.45);
+  Hand.mode = 'player'; Hand.idle = 0;
+  yield* until(() => Char.grounded, 1);
+  Char.facing = Hand.x > Char.x ? 1 : -1;
+  if (Game.pokes % 3 === 0) { Char.doAct('sit', 2.4); Char.setMood('sad', 2.4); Char.say('grumble'); }
+  else { Char.doAct('fist', 1.3); Char.setMood('angry', 1.6); Char.say('angry'); Char.show('scribble', 1.2); }
+}
+
+// exit stage right → brush wipe to the next colour --------------------------------
+function* levelEnd() {
+  Char.ctrl = 'none'; Char.hidden = true; Audio.sfx.jingle();
+  const next = World.levelIdx + 1;
+  if (next >= LEVELS.length) return;
+  yield* wait(.3);
+  yield* wipeTo(LEVELS[next].color);
+  yield* levelIntro(next);
+}
+function* wipeTo(color) {
+  Game.wipe = { to: color, x: -60 };
+  Hand.mode = 'script'; Hand.setPose('open', .2); Hand.x = -80; Hand.y = 200;
+  let t = 0;
+  while (Game.wipe.x < W + 80) {
+    const dt = yield; t += dt;
+    Game.wipe.x += dt * 900;
+    Hand.x = Game.wipe.x + 10; Hand.y = H / 2 + Math.sin(t * 11) * 230;
+    Audio.setScratch(500, true);
+  }
+  Audio.setScratch(0);
+  Game.bg = color; Game.wipe = null;
+  World.chains = []; World.rebuild(); World.drops = []; World.flower = null; World.ripples = []; World.emitters = [];
+  yield* Hand.exit(.4);
+}
+
+// the flower --------------------------------------------------------------------------
+function* finaleScript() {
+  const f = World.flower;
+  World.emitters = []; World.ripples = [];
+  yield* charWalkTo(f.x - 38, .6);
+  Char.facing = 1; Char.doAct('sniff', 1.6); yield* wait(.7);
+  yield* tween(.8, k => { f.bloom = k; });
+  Char.show('♪', 1.5); Char.say('happy'); yield* wait(1);
+  Char.lookAt = Hand.hot;
+  yield* Hand.moveTo(Char.x + 6, Char.y - 210, .7, 'open');
+  for (let i = 0; i < 2; i++) {
+    yield* Hand.moveTo(Char.x + 4, Char.y - 168, .14, 'open'); Audio.sfx.tap();
+    yield* Hand.moveTo(Char.x + 6, Char.y - 200, .16, 'open');
+  }
+  Char.setMood('happy', 6); Char.say('thanks');
+  yield* Hand.exit(.6);
+  Char.doAct('cheer', 1.8); Char.say('happy'); yield* wait(1.8);
+  Char.doAct('wave', 4);
+  yield* writeCard('fine', 150, 200);
+  yield* Hand.exit(.6);
+  Game.state = 'end'; Game.hintNow('press R or tap to start again', 99);
+}
+
+</script>
+<script>
+// ─── Tratto · game loop, input, frame composition ──────────────────────────
+'use strict';
+
+const Game = {
+  t: 0, state: 'title', bg: '#cf6a32', card: null, subtitle: null, prompt: false, wipe: null,
+  hint: null, hintQueue: [], pokes: 0, inkFlash: 0, pen: null, eraseKey: false, touchErase: false,
+  complainCool: 0, filmFrame: -1, keys: { l: false, r: false, j: false },
+
+  init() {
+    this.cv = document.getElementById('film');
+    this.lineCtx = this.cv.getContext('2d');
+    Film.init();
+    this.fit(); addEventListener('resize', () => this.fit());
+    this.bindInput();
+    const q = new URLSearchParams(location.search);
+    World.load(0); World.chains = [World.makeChain([P(-40, GROUND), P(1000, GROUND)], 'level')]; World.rebuild();
+    World.drops = []; World.hints = []; World.events = [];
+    Char.reset(470, GROUND); Char.hidden = true; Char.ctrl = 'none';
+    if (q.has('gallery')) { this.gallery = true; } else if (q.has('hands')) { this.gallery = this.handsGallery = true; }
+    else if (q.has('level')) { const i = clamp(+q.get('level') - 1, 0, LEVELS.length - 1); this.state = 'play'; this.bg = LEVELS[i].color; finishIntro(i)(); if (q.has('x')) { Char.x = +q.get('x'); Char.y = World.floorAt(Char.x, 0, H)?.y ?? GROUND; } }
+    else Director.run(titleScript(), () => { World.chains.forEach(c => c.reveal = 1); cardDone('Tratto', 150, 200); this.subtitle = { a: 1, cur: Infinity }; Object.assign(Char, { hidden: false, reveal: 1, ctrl: 'player' }); Char.ground = World.floorAt(470, GROUND - 4, GROUND + 4)?.seg; Hand.mode = 'away'; this.prompt = true; });
+    Char.onFall = this.fell;
+    if (q.has('hold')) this.keys[q.get('hold')] = true; // test hook: hold a key from load
+    if (q.has('debug')) setInterval(() => console.log('DBG', JSON.stringify({ t: +this.t.toFixed(2), busy: Director.busy, side: Director.side.length, x: +Char.x.toFixed(1), y: +Char.y.toFixed(1), vx: +Char.vx.toFixed(1), g: Char.grounded, ctrl: Char.ctrl, hid: Char.hidden, rev: Char.reveal, hand: [Hand.mode, Math.round(Hand.x), Math.round(Hand.y)], card: this.card && this.card.reveal })), 500);
+    let last = performance.now();
+    const step = now => { const dt = clamp((now - last) / 1000, 0, .05); last = now; this.update(dt); this.render(); };
+    if (q.has('debug')) { // headless test runs: rAF is throttled there; ?stop=<s> freezes the frame for a capture
+      const stopAt = +(q.get('stop') || 1e9);
+      const id = setInterval(() => { step(performance.now()); if (this.t >= stopAt) { clearInterval(id); requestAnimationFrame(() => this.render()); } }, 16);
+    }
+    else { const loop = now => { step(now); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+  },
+
+  fit() {
+    const r = this.cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+    this.cv.width = Math.round(r.width * dpr) || W; this.cv.height = Math.round(r.width * dpr * H / W) || H;
+  },
+
+  start() {
+    if (this.state !== 'title') return;
+    Audio.init(); Audio.resume();
+    Director.skip();
+    this.state = 'play'; this.prompt = false;
+    Director.run((function* () {
+      Director.aside(fadeCard(.5)); yield* tween(.5, k => { if (Game.subtitle) Game.subtitle.a = 1 - k; }); Game.subtitle = null;
+      Char.say('happy'); Char.setMood('happy', 1.5);
+      yield* charWalkTo(W + 60);
+      yield* levelEnd();
+    })(), finishIntro(0));
+  },
+  toTitle() { location.search = ''; location.reload(); },
+  restartLevel() {
+    if (this.state === 'end') { this.state = 'play'; this.bg = LEVELS[0].color; Director.clear(); Director.run(levelIntro(0), finishIntro(0)); return; }
+    if (this.state !== 'play') return;
+    Director.clear(); Hand.holding = null; Hand.mode = 'away'; this.pen = null; Hand.down = false;
+    Director.run(levelIntro(World.levelIdx), finishIntro(World.levelIdx));
+  },
+  jumpTo(i) {
+    if (this.state === 'title') { Audio.init(); this.state = 'play'; this.prompt = false; this.subtitle = null; this.card = null; }
+    Director.clear(); this.state = 'play'; Hand.mode = 'away'; Hand.holding = null; this.bg = LEVELS[i].color;
+    Director.run(levelIntro(i), finishIntro(i));
+  },
+  fell() { Game.pen = null; Hand.down = false; Director.run(rescueScript(), finishRescue); },
+
+  queueHint(x) { for (const h of World.hints) if (!h.shown && x >= h.x) { h.shown = true; this.hintNow(h.text); } },
+  hintNow(text, dur = 5.5) { if (this.hint && this.hint.text === text) return; this.hint = { text, t: 0, dur }; },
+  flashInk() { this.inkFlash = 1; },
+
+  // ── input ────────────────────────────────────────────────────────────────
+  bindInput() {
+    const K = this.keys;
+    const map = { ArrowLeft: 'l', KeyA: 'l', ArrowRight: 'r', KeyD: 'r', ArrowUp: 'j', KeyW: 'j', Space: 'j' };
+    addEventListener('keydown', e => {
+      if (e.target && /INPUT|TEXTAREA|BUTTON/.test(e.target.tagName) && e.code === 'Space') e.target.blur();
+      if (map[e.code]) { K[map[e.code]] = true; e.preventDefault(); }
+      Audio.resume();
+      if (this.state === 'title' && !e.repeat && (map[e.code] || e.code === 'Enter')) { this.start(); return; }
+      if (e.repeat) return;
+      if (e.code === 'Escape' || e.code === 'Enter') Director.skip();
+      if (e.code === 'KeyR') this.restartLevel();
+      if (e.code === 'KeyM') UI.music();
+      if (e.code === 'KeyF') UI.film();
+      if (e.code === 'KeyE') this.eraseKey = true;
+      if (/^Digit[1-6]$/.test(e.code)) this.jumpTo(+e.code.slice(5) - 1);
+    });
+    addEventListener('keyup', e => { if (map[e.code]) K[map[e.code]] = false; if (e.code === 'KeyE') this.eraseKey = false; });
+    addEventListener('blur', () => { K.l = K.r = K.j = false; this.endPen(); });
+
+    const cv = this.cv;
+    const pos = e => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H }; };
+    cv.addEventListener('contextmenu', e => e.preventDefault());
+    cv.addEventListener('pointerdown', e => {
+      e.preventDefault(); Audio.resume();
+      try { cv.setPointerCapture(e.pointerId); } catch (_) { }
+      if (this.state === 'title') { this.start(); return; }
+      if (this.state === 'end') { this.restartLevel(); return; }
+      if (Director.busy) { Director.skip(); return; }
+      const p = pos(e); this.steer(p);
+      const b = Char.box;
+      if (e.button === 0 && !this.eraseKey && !this.touchErase && p.x > b.x0 && p.x < b.x1 && p.y > b.y0 && p.y < b.y1 && Char.ctrl === 'player' && Hand.mode === 'player') {
+        Director.aside(pokeScript()); return;
+      }
+      if (e.pointerType !== 'mouse') { Hand.x = p.x; Hand.y = p.y; }
+      this.pen = { erase: e.button === 2 || this.eraseKey || this.touchErase, chain: null, last: null };
+      Hand.down = true;
+    });
+    cv.addEventListener('pointermove', e => { if (this.state === 'play' && !Director.busy) this.steer(pos(e)); });
+    const up = () => this.endPen();
+    cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    cv.addEventListener('pointerleave', e => { if (!this.pen) Hand.idle = 9; });
+  },
+  steer(p) {
+    if (Hand.mode === 'script') return;
+    if (Hand.mode === 'away') { Hand.mode = 'player'; }
+    Hand.target = p; Hand.idle = 0;
+  },
+  endPen() {
+    const pen = this.pen; this.pen = null; Hand.down = false; Audio.setScratch(0);
+    if (pen && pen.chain) {
+      const c = pen.chain;
+      if (polyLength(c.pts) < 6) World.chains = World.chains.filter(x => x !== c);
+      else { c.pts = simplify(c.pts, 1.1); }
+      World.rebuild();
+    }
+  },
+
+  // ── simulation ───────────────────────────────────────────────────────────
+  update(dt) {
+    this.t += dt;
+    if (this.gallery) return;
+    Director.update(dt);
+    const K = this.keys, inp = { dir: (K.r ? 1 : 0) - (K.l ? 1 : 0) + (UI.dir || 0), jump: K.j || UI.jump };
+    inp.dir = clamp(inp.dir, -1, 1);
+    const playing = this.state === 'play' || this.state === 'title';
+
+    // hand under player control
+    if (Hand.mode === 'player') {
+      Hand.idle += dt;
+      if (!this.pen && Hand.idle > 2.6) Hand.mode = 'away';
+      const b = Char.box, over = Hand.x > b.x0 && Hand.x < b.x1 && Hand.y > b.y0 && Hand.y < b.y1;
+      const erasing = (this.pen && this.pen.erase) || (!this.pen && (this.eraseKey || this.touchErase));
+      Hand.setPose(erasing ? 'erase' : (over && !this.pen ? 'point' : 'draw'), .16);
+    }
+    Hand.update(dt);
+    if (this.pen && Hand.mode === 'player') this.penStep();
+
+    let left = dt;
+    while (left > 1e-6) { const h = Math.min(1 / 120, left); Char.update(h, this.state === 'play' ? inp : { dir: 0, jump: false }); left -= h; }
+    World.update(dt); FX.update(dt);
+
+    // who is he looking at?
+    Char.lookAt = Hand.onScreen && Hand.mode !== 'away' ? { x: Hand.x, y: Hand.y } : null;
+    if (Hand.mode === 'player' && Char.grounded && Char.ctrl === 'player' && !Char.act && Math.abs(Char.vx) < 5) {
+      const d = dist(Hand.x, Hand.y, Char.head.x, Char.head.y);
+      if (d < 70) Char.doAct('scared', .35); else if (d < 140) Char.setMood('worried', .3);
+    }
+
+    if (this.hint && (this.hint.t += dt) > this.hint.dur) this.hint = null;
+    this.inkFlash = Math.max(0, this.inkFlash - dt * 2);
+    this.complainCool = Math.max(0, this.complainCool - dt);
+
+    if (this.state !== 'play' || Director.busy) return;
+    this.queueHint(Char.x);
+    for (const e of World.events) if (!e.fired && Char.x > e.x && Char.grounded && Char.ctrl === 'player') {
+      e.fired = true; this.pen = null; Hand.down = false;
+      Director.run(e.run === 'mischiefErase' ? mischiefErase(...e.a) : mischiefWall(...e.a));
+      return;
+    }
+    if (Char.edgeT > 1.5 && this.complainCool <= 0 && World.levelIdx > 0 && Char.ctrl === 'player') { this.complainCool = 12; Director.aside(complainScript()); }
+    if (World.flower && Char.x > World.flower.x - 80 && Char.grounded && Char.ctrl === 'player') { Director.run(finaleScript()); return; }
+    if (Char.x > W + 30 && Char.ctrl === 'player' && World.levelIdx < LEVELS.length - 1) Director.run(levelEnd());
+  },
+
+  penStep() {
+    const pen = this.pen, p = { x: Hand.x, y: Hand.y }, sp = Math.hypot(Hand.vx, Hand.vy);
+    if (pen.erase) { if (World.eraseAt(p.x, p.y, 16, 'player')) { } Audio.setScratch(sp, true); return; }
+    if (World.ink <= 0) { Audio.setScratch(sp * .3, false); return; }
+    Audio.setScratch(sp, false);
+    if (!pen.chain) { pen.chain = World.addChain([{ ...p }], 'stroke'); pen.last = { ...p }; return; }
+    const d = dist(pen.last.x, pen.last.y, p.x, p.y);
+    if (d < 5) return;
+    const used = World.inkUse(d), k = used / d;
+    const q = { x: lerp(pen.last.x, p.x, k), y: lerp(pen.last.y, p.y, k) };
+    pen.chain.pts.push(q); pen.last = q; World.rebuild();
+    if (World.ink <= 0) this.hintNow('out of ink — erase a line to get some back, or catch an ink drop', 3.5);
+  },
+
+  // ── composition of one frame ─────────────────────────────────────────────
+  render() {
+    const ctx = this.lineCtx, S = this.cv.width / W;
+    const ff = Math.floor(this.t * 24);
+    if (ff !== this.filmFrame) { this.filmFrame = ff; if (!this.gallery) Char.filmTick(this.t, 1 / 24); Film.tick(ff); }
+    ctx.setTransform(S, 0, 0, S, 0, 0);
+    ctx.save();
+    const wv = Film.weave; ctx.translate(wv.x, wv.y);
+    ctx.fillStyle = this.bg; ctx.fillRect(-30, -30, W + 60, H + 60);
+    Lines.begin(Math.floor(this.t * 12)); Dots.begin();
+    if (this.handsGallery) { Lines.flush(ctx); Lines.begin(0); ['draw', 'erase', 'point', 'pinch', 'open'].forEach((n, i) => { Hand.cur = lerpHP(HPOSE[n], HPOSE[n], 0); Hand.x = 120 + i * 180; Hand.y = 330 + (i % 2) * 220; Hand.rot = .45; Hand.lift = i === 0 ? .1 : 1; Hand.draw(ctx); Dots.add(Hand.x, Hand.y, 4); }); }
+    else if (this.gallery) this.drawGallery(ctx);
+    else {
+      Char.prepare();
+      World.draw(ctx, Char);
+      Char.draw(); FX.draw();
+      if (this.state !== 'title' && World.level && !this.wipe) this.drawInk();
+    }
+    if (this.card) StrokeFont.draw(StrokeFont.layout(this.card.text, W / 2, this.card.y, this.card.size), { alpha: this.card.alpha, cur: this.card.cur, frac: this.card.frac });
+    if (this.subtitle) StrokeFont.draw(StrokeFont.layout(SUBTITLE, W / 2, 322, 40), { alpha: this.subtitle.a * .85, cur: this.subtitle.cur ?? Infinity, frac: this.subtitle.frac ?? 1 });
+    if (this.prompt && this.state === 'title') { this.promptT = (this.promptT || 0) + 1 / 60; StrokeFont.selfWrite('click, tap or press any key', W / 2, 640, 36, this.promptT, 700, { alpha: .45 + .4 * Math.cos(Math.max(0, this.promptT - 2) * 3) }); }
+    if (this.hint) { const h = this.hint, a = Math.min(1, h.t / .4, (h.dur - h.t) / .6); StrokeFont.selfWrite(h.text, W / 2, 666, 34, h.t, 900, { alpha: clamp((h.dur - h.t) / .6, 0, 1) * .9 }); }
+    Lines.flush(ctx); Dots.flush(ctx);
+    if (this.wipe) this.drawWipe(ctx);
+    Hand.draw(ctx);
+    ctx.restore();
+    ctx.setTransform(S, 0, 0, S, 0, 0);
+    Film.post(ctx, this.t);
+  },
+
+  drawInk() {
+    const k = clamp(World.ink / Math.max(1, World.inkMax), 0, 1), x0 = 58, y = 40, L = 170;
+    drawDrop({ x: 34, y: 42, taken: false, pop: 0, ph: 0 }, 0);
+    if (k > 0.005) Lines.add([{ x: x0, y }, { x: x0 + L * k, y }], { width: .75 + this.inkFlash * .5 });
+    for (let x = x0 + L * k + 10; x < x0 + L; x += 12) Lines.add([{ x, y }, { x: x + 3, y }], { width: .45, alpha: .45 });
+  },
+
+  drawWipe(ctx) {
+    const wx = this.wipe.x;
+    ctx.beginPath(); ctx.moveTo(-30, -30);
+    for (let y = -30; y <= H + 30; y += 12) ctx.lineTo(wx + Math.sin(y * .045) * 14 + (hash1(Math.floor(y / 12)) - .5) * 18, y);
+    ctx.lineTo(-30, H + 30); ctx.closePath();
+    ctx.fillStyle = this.wipe.to; ctx.fill();
+  },
+
+  // debug: pose sheet (open with ?gallery)
+  drawGallery(ctx) {
+    const acts = [null, 'walk', 'jump', 'fall', 'fist', 'shrug', 'point', 'wave', 'cheer', 'scared', 'teeter', 'sit', 'yawn', 'sniff'];
+    const moods = ['neutral', 'happy', 'happy', 'surprised', 'angry', 'worried', 'angry', 'happy', 'happy', 'surprised', 'worried', 'sad', 'bored', 'happy'];
+    acts.forEach((a, i) => {
+      const gx = 70 + (i % 7) * 135, gy = 250 + Math.floor(i / 7) * 230;
+      Char.reset(gx, gy); Char.mood = moods[i]; Char.face = { ...FACES[moods[i]] }; Char.blink = 1;
+      if (a === 'walk') { Char.vx = PHYS.WALK; Char.phase = .2; }
+      else if (a === 'jump') { Char.grounded = false; Char.vy = -400; }
+      else if (a === 'fall') { Char.grounded = false; Char.vy = 900; }
+      else if (a) { Char.act = a; Char.actT = .5; Char.actDur = 9; }
+      Char.lookAt = null; Char.ground = null;
+      const p = Char.computePose(1.3, 1 / 24); Char.pose = p; Char.snap = null; Char.pose = p;
+      Char.filmTick = Char.filmTick; Char.ctrl = 'player'; Char.grounded = false;
+      const save = Char.computePose; Char.computePose = () => p; Char.filmTick(1.3, 1); Char.computePose = save;
+      Char.prepare(); Char.draw();
+      Lines.add([{ x: gx - 50, y: gy }, { x: gx + 50, y: gy }], { width: .4, alpha: .4 });
+    });
+    Hand.mode = 'script';
+  },
+};
+
+// small DOM controls
+const UI = {
+  dir: 0, jump: false,
+  init() {
+    const $ = id => document.getElementById(id);
+    const hold = (el, on, off) => {
+      el.addEventListener('pointerdown', e => { e.preventDefault(); Audio.resume(); el.setPointerCapture(e.pointerId); on(); });
+      ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => el.addEventListener(n, off));
+    };
+    hold($('t-left'), () => this.dir = -1, () => { if (this.dir < 0) this.dir = 0; });
+    hold($('t-right'), () => this.dir = 1, () => { if (this.dir > 0) this.dir = 0; });
+    hold($('t-jump'), () => this.jump = true, () => this.jump = false);
+    $('t-erase').addEventListener('click', () => { Game.touchErase = !Game.touchErase; $('t-erase').setAttribute('aria-pressed', Game.touchErase); });
+    $('b-music').addEventListener('click', () => this.music());
+    $('b-film').addEventListener('click', () => this.film());
+    $('b-restart').addEventListener('click', () => Game.restartLevel());
+    $('t-left').closest('.touch').addEventListener('pointerdown', () => { if (Game.state === 'title') Game.start(); });
+  },
+  music() { Audio.init(); const on = Audio.toggleMusic(); document.getElementById('b-music').setAttribute('aria-pressed', on); },
+  film() { const on = Film.toggle(); document.getElementById('b-film').setAttribute('aria-pressed', on); document.getElementById('film').classList.toggle('graded', on); },
+};
+
+addEventListener('DOMContentLoaded', () => {
+  const go = () => { UI.init(); Game.init(); };
+  if (document.fonts && document.fonts.load) Promise.race([document.fonts.load(`64px "Caveat Brush"`), new Promise(r => setTimeout(r, 1500))]).then(go, go);
+  else go();
+});
+
+</script>
+</body>
+</html>
