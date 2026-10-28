@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/concert-play/assets/index-8Y7MIt4R.js"></script>
-    <link rel="stylesheet" crossorigin href="/concert-play/assets/index-Bgvwvawo.css">
+    <script type="module" crossorigin src="/concert-play/assets/index-B_eMnuc4.js"></script>
+    <link rel="stylesheet" crossorigin href="/concert-play/assets/index-B79A-lqQ.css">
   </head>
   <body>
     <div id="stage"></div>
@@ -45,6 +45,7 @@
         <label class="row">Title <input id="songTitle" type="text" /></label>
         <label class="row">Artist <input id="songArtist" type="text" /></label>
         <label class="check"><input id="aiTranscribe" type="checkbox" checked /> transcribe every note of audio-only songs (slower, more accurate)</label>
+        <label class="check"><input id="aiInstruments" type="checkbox" checked /> listen for instruments and genre in recordings (16 MB model, once)</label>
         <div id="analysisInfo" class="info"></div>
         <div id="syncBox" class="sync" hidden>
           <div class="row">
@@ -65,6 +66,8 @@
           <button data-venue="philharmonic"><span>🎻</span>Filzharmonie<small>Berlin, black tie</small></button>
           <button data-venue="rock"><span>🎸</span>Stadium Rock<small>Monsters of Lint</small></button>
           <button data-venue="eurovision"><span>✨</span>Eurofelt<small>Song Contest</small></button>
+          <button data-venue="jazz"><span>🎷</span>Blue Mitten<small>Jazz club, late set</small></button>
+          <button data-venue="opera"><span>🎭</span>Teatro alla Lana<small>Opera gala</small></button>
         </div>
         <div id="venueHint" class="hint"></div>
       </section>
@@ -112,6 +115,7 @@
       <span id="time" class="time">0:00 / 0:00</span>
       <button id="skipSong" class="small" title="Skip the pre-show">Skip to song</button>
       <button id="skipEnd" class="small" title="Skip to the applause">Skip to applause</button>
+      <select id="focusSel" class="focus-sel" title="Focus on one player: everyone else turns see-through (double-click a puppet; Esc for everyone)"><option value="">👁 Everyone</option></select>
       <button id="camMode" class="small" title="Toggle director / free camera (C)">🎥 Director</button>
       <button id="gfxToggle" class="small" title="Toggle TV graphics (G)">📺 GFX</button>
       <button id="fullscreen" class="icon" title="Fullscreen (F)">⛶</button>

@@ -1,6 +1,6 @@
 {
  "model": "google/gemini-3.8-flash-tts",
- "generatedAt": "2026-10-28T13:10:33.356Z",
+ "generatedAt": "2026-10-28T16:51:25.267Z",
  "clips": [
   {
    "id": "phil-intro-uplifting-0-0",
@@ -2761,6 +2761,1376 @@
    "file": "voices/euro-country-FLN.mp3",
    "duration": 1.674,
    "hash": "15a7b3606770"
+  },
+  {
+   "id": "jazz-intro-uplifting-0-0",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Good evening, cats and kittens, and welcome to the Blue Mitten: down the stairs, and a little to the left of Lint Street.",
+   "file": "voices/jazz-intro-uplifting-0-0.mp3",
+   "duration": 9.005,
+   "hash": "63aeebdc1dcb"
+  },
+  {
+   "id": "jazz-intro-uplifting-0-1",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "Tonight’s band has been playing together so long they finish each other’s sentences. Mostly with saxophones.",
+   "file": "voices/jazz-intro-uplifting-0-1.mp3",
+   "duration": 8.047,
+   "hash": "de21311cb1d8"
+  },
+  {
+   "id": "jazz-intro-uplifting-0-2",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 2,
+   "speaker": "emcee",
+   "text": "So loosen your collars, order something with an olive in it, and give it up for the late set.",
+   "file": "voices/jazz-intro-uplifting-0-2.mp3",
+   "duration": 7.707,
+   "hash": "30379b91e546"
+  },
+  {
+   "id": "jazz-intro-uplifting-1-0",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Evening, everybody. Welcome to the Blue Mitten, where the drinks are cold, the lights are low, and the piano is mostly in tune.",
+   "file": "voices/jazz-intro-uplifting-1-0.mp3",
+   "duration": 9.798,
+   "hash": "3713e833a0b3"
+  },
+  {
+   "id": "jazz-intro-uplifting-1-1",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "House rules: no flash photography, no talking during the bass solo, and absolutely no snapping on one and three.",
+   "file": "voices/jazz-intro-uplifting-1-1.mp3",
+   "duration": 11.194,
+   "hash": "e22730c34a73"
+  },
+  {
+   "id": "jazz-intro-uplifting-1-2",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 2,
+   "speaker": "emcee",
+   "text": "Ladies and gentlemen… the band.",
+   "file": "voices/jazz-intro-uplifting-1-2.mp3",
+   "duration": 4.299,
+   "hash": "b04407f09190"
+  },
+  {
+   "id": "jazz-intro-energetic-0-0",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Lint Street! Is it hot down here, or is it just the trumpet section? Welcome to the Blue Mitten!",
+   "file": "voices/jazz-intro-energetic-0-0.mp3",
+   "duration": 8.013,
+   "hash": "3ea05afabd1b"
+  },
+  {
+   "id": "jazz-intro-energetic-0-1",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "Tonight we are swinging so hard the coat check has started dancing.",
+   "file": "voices/jazz-intro-energetic-0-1.mp3",
+   "duration": 6.126,
+   "hash": "e855b5422a77"
+  },
+  {
+   "id": "jazz-intro-energetic-0-2",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 2,
+   "speaker": "emcee",
+   "text": "Hold on to your hats, your mittens and your martinis. Here they come!",
+   "file": "voices/jazz-intro-energetic-0-2.mp3",
+   "duration": 5.678,
+   "hash": "2692ba5c385f"
+  },
+  {
+   "id": "jazz-intro-energetic-1-0",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Good evening! The drummer has had three espressos and a pep talk, and frankly, so have I.",
+   "file": "voices/jazz-intro-energetic-1-0.mp3",
+   "duration": 7.471,
+   "hash": "a0e67ed9e498"
+  },
+  {
+   "id": "jazz-intro-energetic-1-1",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "If the tables start shaking, that is not an earthquake. That is the rhythm section.",
+   "file": "voices/jazz-intro-energetic-1-1.mp3",
+   "duration": 6.4,
+   "hash": "5b193e4248e7"
+  },
+  {
+   "id": "jazz-intro-energetic-1-2",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 2,
+   "speaker": "emcee",
+   "text": "Give it up, give it up, give it up for the band!",
+   "file": "voices/jazz-intro-energetic-1-2.mp3",
+   "duration": 4.041,
+   "hash": "7740a24c7846"
+  },
+  {
+   "id": "jazz-intro-sad-0-0",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 0,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Good evening. Welcome to the Blue Mitten. It is raining on Lint Street, and in here, it is raining in our hearts.",
+   "file": "voices/jazz-intro-sad-0-0.mp3",
+   "duration": 13.357,
+   "hash": "546748c2df4e"
+  },
+  {
+   "id": "jazz-intro-sad-0-1",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 0,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "Tonight’s set is for anyone who ever lost a mitten and never found the other one.",
+   "file": "voices/jazz-intro-sad-0-1.mp3",
+   "duration": 6.172,
+   "hash": "399a5d3874a5"
+  },
+  {
+   "id": "jazz-intro-sad-0-2",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 0,
+   "order": 2,
+   "speaker": "emcee",
+   "text": "Settle in. Sip slow. Here’s the band.",
+   "file": "voices/jazz-intro-sad-0-2.mp3",
+   "duration": 4.637,
+   "hash": "1f671cd3474b"
+  },
+  {
+   "id": "jazz-intro-sad-1-0",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 1,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Evening, folks. Pull your chair a little closer to the candle. It is going to be one of those nights.",
+   "file": "voices/jazz-intro-sad-1-0.mp3",
+   "duration": 8.786,
+   "hash": "6c0e74ab632f"
+  },
+  {
+   "id": "jazz-intro-sad-1-1",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 1,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "The saxophone has been crying since soundcheck. We let him.",
+   "file": "voices/jazz-intro-sad-1-1.mp3",
+   "duration": 5.669,
+   "hash": "3f0649909e86"
+  },
+  {
+   "id": "jazz-intro-sad-1-2",
+   "venue": "jazz",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 1,
+   "order": 2,
+   "speaker": "emcee",
+   "text": "Ladies and gentlemen… the blues.",
+   "file": "voices/jazz-intro-sad-1-2.mp3",
+   "duration": 3.423,
+   "hash": "cdecf60ed976"
+  },
+  {
+   "id": "jazz-outro-uplifting-0-0",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Give it up for the band! They will be at the bar, if you would like to buy them something with an umbrella in it.",
+   "file": "voices/jazz-outro-uplifting-0-0.mp3",
+   "duration": 10.217,
+   "hash": "bf6856bace4e"
+  },
+  {
+   "id": "jazz-outro-uplifting-0-1",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "That is the late set. Tip your bartender, find your mittens, and get home safe. Goodnight from the Blue Mitten.",
+   "file": "voices/jazz-outro-uplifting-0-1.mp3",
+   "duration": 10.401,
+   "hash": "0f9ab9f93228"
+  },
+  {
+   "id": "jazz-outro-uplifting-1-0",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Beautiful. Just beautiful. The cats are tired, the candles are short, and nobody wants to leave.",
+   "file": "voices/jazz-outro-uplifting-1-0.mp3",
+   "duration": 8.143,
+   "hash": "effff39a5212"
+  },
+  {
+   "id": "jazz-outro-uplifting-1-1",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "We will be back tomorrow. Same time, same table. Goodnight, Lint Street.",
+   "file": "voices/jazz-outro-uplifting-1-1.mp3",
+   "duration": 7.791,
+   "hash": "c46b7c5fd6a9"
+  },
+  {
+   "id": "jazz-outro-energetic-0-0",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Whoo! That is a band that came to play! Somebody check the floor for melted shoes.",
+   "file": "voices/jazz-outro-energetic-0-0.mp3",
+   "duration": 6.446,
+   "hash": "b8b487032c98"
+  },
+  {
+   "id": "jazz-outro-energetic-0-1",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "Goodnight, Lint Street! Mind the stairs on your way out, they are still swinging.",
+   "file": "voices/jazz-outro-energetic-0-1.mp3",
+   "duration": 5.854,
+   "hash": "7c59ce0ef336"
+  },
+  {
+   "id": "jazz-outro-energetic-1-0",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Now that is how you close a set. The drummer needs a towel, and possibly a holiday.",
+   "file": "voices/jazz-outro-energetic-1-0.mp3",
+   "duration": 6.745,
+   "hash": "ea5eecf9158a"
+  },
+  {
+   "id": "jazz-outro-energetic-1-1",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "Thank you, and goodnight from the Blue Mitten!",
+   "file": "voices/jazz-outro-energetic-1-1.mp3",
+   "duration": 3.64,
+   "hash": "26fde1e8eec2"
+  },
+  {
+   "id": "jazz-outro-sad-0-0",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 0,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "And that is the set. Take a moment. Finish your drink. Call somebody you miss.",
+   "file": "voices/jazz-outro-sad-0-0.mp3",
+   "duration": 9.908,
+   "hash": "8ce62fffbf59"
+  },
+  {
+   "id": "jazz-outro-sad-0-1",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 0,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "Goodnight from the Blue Mitten. Bring an umbrella. Bring a friend.",
+   "file": "voices/jazz-outro-sad-0-1.mp3",
+   "duration": 6.844,
+   "hash": "32b14b6553e4"
+  },
+  {
+   "id": "jazz-outro-sad-1-0",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 1,
+   "order": 0,
+   "speaker": "emcee",
+   "text": "Mm. Not a dry eye in the house. Mainly the candle smoke, but still.",
+   "file": "voices/jazz-outro-sad-1-0.mp3",
+   "duration": 6.631,
+   "hash": "b15f883ba194"
+  },
+  {
+   "id": "jazz-outro-sad-1-1",
+   "venue": "jazz",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 1,
+   "order": 1,
+   "speaker": "emcee",
+   "text": "Goodnight, everybody. Keep your mittens close.",
+   "file": "voices/jazz-outro-sad-1-1.mp3",
+   "duration": 4.183,
+   "hash": "bbf3256a4851"
+  },
+  {
+   "id": "jazz-during-0",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "Mm. Listen to that. That is what we call a groove you could hang your coat on.",
+   "file": "voices/jazz-during-0.mp3",
+   "duration": 6.566,
+   "hash": "836e8e638549"
+  },
+  {
+   "id": "jazz-during-1",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "solo",
+    "general"
+   ],
+   "needs": "piano",
+   "speaker": "emcee",
+   "text": "The piano is taking a solo. He has no idea where he is going, and that is the beauty of it.",
+   "file": "voices/jazz-during-1.mp3",
+   "duration": 7.654,
+   "hash": "a65da9b96672"
+  },
+  {
+   "id": "jazz-during-2",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "solo"
+   ],
+   "needs": "sax",
+   "speaker": "emcee",
+   "text": "The saxophone is out there on his own now. Somebody send a search party. After the song.",
+   "file": "voices/jazz-during-2.mp3",
+   "duration": 7.295,
+   "hash": "9fba79e0c26c"
+  },
+  {
+   "id": "jazz-during-3",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "solo",
+    "quiet"
+   ],
+   "needs": "contrabass",
+   "speaker": "emcee",
+   "text": "Bass solo. Everybody lean in. This is the only time you will hear him all night.",
+   "file": "voices/jazz-during-3.mp3",
+   "duration": 5.45,
+   "hash": "2bf6b091a6bd"
+  },
+  {
+   "id": "jazz-during-4",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general",
+    "quiet"
+   ],
+   "needs": "drums",
+   "speaker": "emcee",
+   "text": "Our drummer is playing brushes tonight. Very soft. Like sweeping a very musical floor.",
+   "file": "voices/jazz-during-4.mp3",
+   "duration": 7.765,
+   "hash": "80c2736cbaef"
+  },
+  {
+   "id": "jazz-during-5",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "climax",
+    "solo"
+   ],
+   "needs": "trumpet",
+   "speaker": "emcee",
+   "text": "That trumpet just hit a note that cracked the ice in my glass.",
+   "file": "voices/jazz-during-5.mp3",
+   "duration": 4.579,
+   "hash": "4fcf670bc1d7"
+  },
+  {
+   "id": "jazz-during-6",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "climax",
+    "general"
+   ],
+   "needs": "vocal",
+   "speaker": "emcee",
+   "text": "Oh, she means it. She means every word, and a few words she just invented.",
+   "file": "voices/jazz-during-6.mp3",
+   "duration": 6.431,
+   "hash": "bd768c152e50"
+  },
+  {
+   "id": "jazz-during-7",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "quiet"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "Shh. This is the part where the bartender stops shaking cocktails out of respect.",
+   "file": "voices/jazz-during-7.mp3",
+   "duration": 7.488,
+   "hash": "3aea4fe77d4e"
+  },
+  {
+   "id": "jazz-during-8",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "climax",
+    "drop"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "Yeah! Now they are cooking. Somebody open a window, the walls are sweating.",
+   "file": "voices/jazz-during-8.mp3",
+   "duration": 6.961,
+   "hash": "c63fce4336c5"
+  },
+  {
+   "id": "jazz-during-9",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "keychange"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "Ooh, a key change. Nobody saw that coming. Including the bass player.",
+   "file": "voices/jazz-during-9.mp3",
+   "duration": 6.741,
+   "hash": "59015fc55814"
+  },
+  {
+   "id": "jazz-during-10",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "Table four, your food is ready. It has been ready since the second chorus.",
+   "file": "voices/jazz-during-10.mp3",
+   "duration": 6.226,
+   "hash": "56432e394a6b"
+  },
+  {
+   "id": "jazz-during-11",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general",
+    "drop"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "That is what they call swing, friends. You cannot learn it. You can only catch it, like a cold.",
+   "file": "voices/jazz-during-11.mp3",
+   "duration": 7.338,
+   "hash": "eddc38fb1cf9"
+  },
+  {
+   "id": "jazz-during-12",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": "sad",
+   "tags": [
+    "quiet",
+    "general"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "That is the sound of a mitten looking for its other half.",
+   "file": "voices/jazz-during-12.mp3",
+   "duration": 5.91,
+   "hash": "ad03c653b9a0"
+  },
+  {
+   "id": "jazz-during-13",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": "energetic",
+   "tags": [
+    "general",
+    "climax"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "The front tables are getting dangerously close to dancing. Management is concerned.",
+   "file": "voices/jazz-during-13.mp3",
+   "duration": 6.146,
+   "hash": "911ba28bd928"
+  },
+  {
+   "id": "jazz-during-14",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "solo",
+    "general"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "Take your time, take your time. We have got all night, and the kitchen is closed.",
+   "file": "voices/jazz-during-14.mp3",
+   "duration": 7.301,
+   "hash": "53e269f71540"
+  },
+  {
+   "id": "jazz-during-15",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": "guitar",
+   "speaker": "emcee",
+   "text": "The guitar player has played the same three beautiful chords all night, and nobody has complained.",
+   "file": "voices/jazz-during-15.mp3",
+   "duration": 7.803,
+   "hash": "e680d0f96171"
+  },
+  {
+   "id": "jazz-during-16",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": "sax",
+   "speaker": "emcee",
+   "text": "Look at that saxophone. Shiny, curvy, and just a little bit smug.",
+   "file": "voices/jazz-during-16.mp3",
+   "duration": 6.545,
+   "hash": "0f324cd6d110"
+  },
+  {
+   "id": "jazz-during-17",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": "uplifting",
+   "tags": [
+    "general"
+   ],
+   "needs": null,
+   "speaker": "emcee",
+   "text": "You hear that? That is everybody’s foot tapping in the same direction, for once.",
+   "file": "voices/jazz-during-17.mp3",
+   "duration": 6.457,
+   "hash": "c8951c7cb698"
+  },
+  {
+   "id": "jazz-during-18",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "climax",
+    "drop"
+   ],
+   "needs": "trombone",
+   "speaker": "emcee",
+   "text": "The horn section stands up for this bit. It is in their contract. So is the sitting back down.",
+   "file": "voices/jazz-during-18.mp3",
+   "duration": 7.338,
+   "hash": "16072831dd4c"
+  },
+  {
+   "id": "jazz-during-19",
+   "venue": "jazz",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": "violin",
+   "speaker": "emcee",
+   "text": "Strings, at the Blue Mitten. Somebody has been reading fancy magazines.",
+   "file": "voices/jazz-during-19.mp3",
+   "duration": 6.571,
+   "hash": "0c7f5d521247"
+  },
+  {
+   "id": "oper-intro-uplifting-0-0",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Buonasera, and welcome to the Teatro alla Lana in Milano, where tonight the air is thick with velvet, perfume and anticipation!",
+   "file": "voices/oper-intro-uplifting-0-0.mp3",
+   "duration": 11.927,
+   "hash": "0035c0a36e59"
+  },
+  {
+   "id": "oper-intro-uplifting-0-1",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "Every box is full. Even box five, which is traditionally reserved for the ghost.",
+   "file": "voices/oper-intro-uplifting-0-1.mp3",
+   "duration": 7.886,
+   "hash": "50c868807120"
+  },
+  {
+   "id": "oper-intro-uplifting-0-2",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 2,
+   "speaker": "prompter",
+   "text": "Psst. Signora. The curtain. The curtain is going up. Places, everyone, places!",
+   "file": "voices/oper-intro-uplifting-0-2.mp3",
+   "duration": 5.776,
+   "hash": "c3e58a473d68"
+  },
+  {
+   "id": "oper-intro-uplifting-1-0",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Buonasera, amici! The chandelier has been polished, the tenor has been flattered, and the soprano has been allowed to arrive late.",
+   "file": "voices/oper-intro-uplifting-1-0.mp3",
+   "duration": 10.453,
+   "hash": "e715b47dbc9a"
+  },
+  {
+   "id": "oper-intro-uplifting-1-1",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "Tonight’s story has love, betrayal, mistaken identities and at least one dramatic fainting. As usual.",
+   "file": "voices/oper-intro-uplifting-1-1.mp3",
+   "duration": 9.04,
+   "hash": "cfb0aa1e8e27"
+  },
+  {
+   "id": "oper-intro-uplifting-1-2",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 2,
+   "speaker": "prompter",
+   "text": "Maestro! Maestro, your baton is in your pocket.",
+   "file": "voices/oper-intro-uplifting-1-2.mp3",
+   "duration": 4.843,
+   "hash": "f6d02f3b3f86"
+  },
+  {
+   "id": "oper-intro-energetic-0-0",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Buonasera! Tonight at the Teatro alla Lana: passion! Fire! Swords! Mostly swords!",
+   "file": "voices/oper-intro-energetic-0-0.mp3",
+   "duration": 8.527,
+   "hash": "e1ad4e7eef5d"
+  },
+  {
+   "id": "oper-intro-energetic-0-1",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "The stage horses have been fed, the cannon has been loaded with confetti, and the tenor has been warned.",
+   "file": "voices/oper-intro-energetic-0-1.mp3",
+   "duration": 7.488,
+   "hash": "cb195ed75db8"
+  },
+  {
+   "id": "oper-intro-energetic-0-2",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 2,
+   "speaker": "prompter",
+   "text": "Everybody, please. Do not set fire to the scenery this time.",
+   "file": "voices/oper-intro-energetic-0-2.mp3",
+   "duration": 4.949,
+   "hash": "c5ac96e23f09"
+  },
+  {
+   "id": "oper-intro-energetic-1-0",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Ladies and gentlemen, the energy tonight is extraordinary. The orchestra has been rehearsing at double speed, just in case.",
+   "file": "voices/oper-intro-energetic-1-0.mp3",
+   "duration": 9.37,
+   "hash": "175ce668af2c"
+  },
+  {
+   "id": "oper-intro-energetic-1-1",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "Our conductor has requested a new tempo marking: as fast as is legally possible.",
+   "file": "voices/oper-intro-energetic-1-1.mp3",
+   "duration": 6.388,
+   "hash": "e1a468106451"
+  },
+  {
+   "id": "oper-intro-energetic-1-2",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 2,
+   "speaker": "prompter",
+   "text": "I have the whole libretto here. Nobody ever asks for it.",
+   "file": "voices/oper-intro-energetic-1-2.mp3",
+   "duration": 3.539,
+   "hash": "3cbe48b5367b"
+  },
+  {
+   "id": "oper-intro-sad-0-0",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 0,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Buonasera. Tonight, a tragedy. A beautiful, beautiful tragedy. The kind with a lot of coughing at the end.",
+   "file": "voices/oper-intro-sad-0-0.mp3",
+   "duration": 11.379,
+   "hash": "29a30c4b95bf"
+  },
+  {
+   "id": "oper-intro-sad-0-1",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 0,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "The ushers have handed out handkerchiefs, and for the front rows, small umbrellas.",
+   "file": "voices/oper-intro-sad-0-1.mp3",
+   "duration": 7.177,
+   "hash": "8c7e1907afb4"
+  },
+  {
+   "id": "oper-intro-sad-0-2",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 0,
+   "order": 2,
+   "speaker": "prompter",
+   "text": "Everybody dies in the last act. Please do not tell the singers, they get upset.",
+   "file": "voices/oper-intro-sad-0-2.mp3",
+   "duration": 7.16,
+   "hash": "4feb46cb9dcd"
+  },
+  {
+   "id": "oper-intro-sad-1-0",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 1,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Buonasera, cari amici. Prepare your hearts. Tonight’s opera is so sad the orchestra rehearsed it in black.",
+   "file": "voices/oper-intro-sad-1-0.mp3",
+   "duration": 9.686,
+   "hash": "648ef580a0c4"
+  },
+  {
+   "id": "oper-intro-sad-1-1",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 1,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "Our soprano has practised her final collapse for six weeks. She is ready. The floor is not.",
+   "file": "voices/oper-intro-sad-1-1.mp3",
+   "duration": 9.348,
+   "hash": "e9ab5b8afee4"
+  },
+  {
+   "id": "oper-intro-sad-1-2",
+   "venue": "opera",
+   "segment": "intro",
+   "mood": "sad",
+   "set": 1,
+   "order": 2,
+   "speaker": "prompter",
+   "text": "Remember: cry on the high note, not before.",
+   "file": "voices/oper-intro-sad-1-2.mp3",
+   "duration": 4.031,
+   "hash": "10efb44b13a7"
+  },
+  {
+   "id": "oper-outro-uplifting-0-0",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Bravi! Bravissimi! The roses are flying! One just hit the conductor, and he is thrilled!",
+   "file": "voices/oper-outro-uplifting-0-0.mp3",
+   "duration": 8.431,
+   "hash": "55eb11015876"
+  },
+  {
+   "id": "oper-outro-uplifting-0-1",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 0,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "From the Teatro alla Lana in Milano, buonanotte, and may your life have more arias and fewer recitatives.",
+   "file": "voices/oper-outro-uplifting-0-1.mp3",
+   "duration": 8.997,
+   "hash": "4c599328a998"
+  },
+  {
+   "id": "oper-outro-uplifting-1-0",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "What a triumph! The soprano is taking her fourteenth bow. The tenor has started counting.",
+   "file": "voices/oper-outro-uplifting-1-0.mp3",
+   "duration": 7.886,
+   "hash": "03f12f3117c5"
+  },
+  {
+   "id": "oper-outro-uplifting-1-1",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "uplifting",
+   "set": 1,
+   "order": 1,
+   "speaker": "prompter",
+   "text": "Goodnight, everybody. I will be in my little box, if anyone needs me.",
+   "file": "voices/oper-outro-uplifting-1-1.mp3",
+   "duration": 4.46,
+   "hash": "02231438c182"
+  },
+  {
+   "id": "oper-outro-energetic-0-0",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Incredibile! The audience is on its feet, the chandelier is swinging, and the stage horse is taking a bow!",
+   "file": "voices/oper-outro-energetic-0-0.mp3",
+   "duration": 8.578,
+   "hash": "fb9d8599dc18"
+  },
+  {
+   "id": "oper-outro-energetic-0-1",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 0,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "From Milano, from the Teatro alla Lana: buonanotte!",
+   "file": "voices/oper-outro-energetic-0-1.mp3",
+   "duration": 4.539,
+   "hash": "77a21ff037d8"
+  },
+  {
+   "id": "oper-outro-energetic-1-0",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "Magnifico! That was so passionate, the fire brigade has asked for an encore.",
+   "file": "voices/oper-outro-energetic-1-0.mp3",
+   "duration": 6.163,
+   "hash": "eea943c08886"
+  },
+  {
+   "id": "oper-outro-energetic-1-1",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "energetic",
+   "set": 1,
+   "order": 1,
+   "speaker": "prompter",
+   "text": "Somebody, please, tell the cannon the show is over.",
+   "file": "voices/oper-outro-energetic-1-1.mp3",
+   "duration": 3.871,
+   "hash": "3144ffa63859"
+  },
+  {
+   "id": "oper-outro-sad-0-0",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 0,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "And so, everybody has died. Beautifully. In tune. Not a dry eye in the house.",
+   "file": "voices/oper-outro-sad-0-0.mp3",
+   "duration": 10.799,
+   "hash": "f687c0e4d170"
+  },
+  {
+   "id": "oper-outro-sad-0-1",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 0,
+   "order": 1,
+   "speaker": "presentatrice",
+   "text": "From the Teatro alla Lana, buonanotte. Please return your handkerchiefs to the ushers. Washed.",
+   "file": "voices/oper-outro-sad-0-1.mp3",
+   "duration": 9.071,
+   "hash": "114ae890a07e"
+  },
+  {
+   "id": "oper-outro-sad-1-0",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 1,
+   "order": 0,
+   "speaker": "presentatrice",
+   "text": "The curtain falls, and so do the singers. Again. It is very moving.",
+   "file": "voices/oper-outro-sad-1-0.mp3",
+   "duration": 6.543,
+   "hash": "b86b31453d46"
+  },
+  {
+   "id": "oper-outro-sad-1-1",
+   "venue": "opera",
+   "segment": "outro",
+   "mood": "sad",
+   "set": 1,
+   "order": 1,
+   "speaker": "prompter",
+   "text": "They will be fine. They do this every night. Goodnight.",
+   "file": "voices/oper-outro-sad-1-1.mp3",
+   "duration": 4.794,
+   "hash": "34a92031402e"
+  },
+  {
+   "id": "oper-during-0",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "quiet"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "Listen. Listen to this pianissimo. Even the chandelier is holding its breath.",
+   "file": "voices/oper-during-0.mp3",
+   "duration": 7.142,
+   "hash": "d0312784a768"
+  },
+  {
+   "id": "oper-during-1",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "climax"
+   ],
+   "needs": "vocal",
+   "speaker": "presentatrice",
+   "text": "Ah! The high note! Bellissimo! Somewhere in the gallery, a wine glass has surrendered.",
+   "file": "voices/oper-during-1.mp3",
+   "duration": 6.796,
+   "hash": "fa71a1cbe742"
+  },
+  {
+   "id": "oper-during-2",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "climax",
+    "drop"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "Che passione! The orchestra is giving everything. The second oboe is giving slightly more than everything.",
+   "file": "voices/oper-during-2.mp3",
+   "duration": 8.105,
+   "hash": "68e3e83c1a32"
+  },
+  {
+   "id": "oper-during-3",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "drop"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "And now the whole company joins in! Like a family dinner, but everyone is in tune.",
+   "file": "voices/oper-during-3.mp3",
+   "duration": 6.408,
+   "hash": "6ab55a44e22b"
+  },
+  {
+   "id": "oper-during-4",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "keychange"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "A modulation! The plot thickens, the key rises, and the tenor’s eyebrows go with it.",
+   "file": "voices/oper-during-4.mp3",
+   "duration": 6.951,
+   "hash": "5bbb1fc2419f"
+  },
+  {
+   "id": "oper-during-5",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": "vocal",
+   "speaker": "prompter",
+   "text": "Next line: I love you, but you are my brother. No. Wait. Wrong opera.",
+   "file": "voices/oper-during-5.mp3",
+   "duration": 5.851,
+   "hash": "ca4bd2ee7a10"
+  },
+  {
+   "id": "oper-during-6",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "quiet",
+    "solo"
+   ],
+   "needs": "vocal",
+   "speaker": "prompter",
+   "text": "Psst! Breathe! You are allowed to breathe! It is in the contract!",
+   "file": "voices/oper-during-6.mp3",
+   "duration": 4.548,
+   "hash": "415a26bc0d2b"
+  },
+  {
+   "id": "oper-during-7",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "For viewers just joining us, the plot: everybody loves the wrong person, and they are all very upset about it, in Italian.",
+   "file": "voices/oper-during-7.mp3",
+   "duration": 9.062,
+   "hash": "f8d7ac0cabc5"
+  },
+  {
+   "id": "oper-during-8",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "solo",
+    "general"
+   ],
+   "needs": "vocal",
+   "speaker": "presentatrice",
+   "text": "This is the great aria. She will sing it for eleven minutes, and then she will sing it again, louder.",
+   "file": "voices/oper-during-8.mp3",
+   "duration": 7.006,
+   "hash": "0000cc359cb4"
+  },
+  {
+   "id": "oper-during-9",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general",
+    "climax"
+   ],
+   "needs": "conductor",
+   "speaker": "presentatrice",
+   "text": "Look at the Maestro. He is not conducting the orchestra. He is conducting the weather.",
+   "file": "voices/oper-during-9.mp3",
+   "duration": 6.367,
+   "hash": "cbf5a5ebbbed"
+  },
+  {
+   "id": "oper-during-10",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general",
+    "quiet"
+   ],
+   "needs": "harp",
+   "speaker": "presentatrice",
+   "text": "The harp! Like angels doing their laundry.",
+   "file": "voices/oper-during-10.mp3",
+   "duration": 3.881,
+   "hash": "a2eafb672de7"
+  },
+  {
+   "id": "oper-during-11",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general",
+    "drop"
+   ],
+   "needs": "timpani",
+   "speaker": "presentatrice",
+   "text": "The timpani announce doom. Or dinner. In opera, it is often both.",
+   "file": "voices/oper-during-11.mp3",
+   "duration": 6.077,
+   "hash": "fb75bb65c04d"
+  },
+  {
+   "id": "oper-during-12",
+   "venue": "opera",
+   "segment": "during",
+   "mood": "sad",
+   "tags": [
+    "general",
+    "quiet"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "Such sorrow. In the third row, a gentleman is weeping into his opera glasses. Now they are just glasses.",
+   "file": "voices/oper-during-12.mp3",
+   "duration": 10.143,
+   "hash": "7ecd875b4878"
+  },
+  {
+   "id": "oper-during-13",
+   "venue": "opera",
+   "segment": "during",
+   "mood": "energetic",
+   "tags": [
+    "general",
+    "climax"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "There is a sword fight on stage! It was not in the rehearsal! Bravissimi!",
+   "file": "voices/oper-during-13.mp3",
+   "duration": 5.671,
+   "hash": "80b729eb59f2"
+  },
+  {
+   "id": "oper-during-14",
+   "venue": "opera",
+   "segment": "during",
+   "mood": "uplifting",
+   "tags": [
+    "general"
+   ],
+   "needs": null,
+   "speaker": "presentatrice",
+   "text": "A happy scene! Very rare in opera. Enjoy it, friends. It will not last.",
+   "file": "voices/oper-during-14.mp3",
+   "duration": 6.447,
+   "hash": "71af245ced25"
+  },
+  {
+   "id": "oper-during-15",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "climax"
+   ],
+   "needs": null,
+   "speaker": "prompter",
+   "text": "Too loud, too loud! No, no, wonderful. Keep going!",
+   "file": "voices/oper-during-15.mp3",
+   "duration": 4.814,
+   "hash": "ec2d0adda751"
+  },
+  {
+   "id": "oper-during-16",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": "triangle",
+   "speaker": "presentatrice",
+   "text": "And down in the pit, the triangle player waits. His moment will come. Probably in Act Four.",
+   "file": "voices/oper-during-16.mp3",
+   "duration": 6.595,
+   "hash": "198a80c067e5"
+  },
+  {
+   "id": "oper-during-17",
+   "venue": "opera",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general",
+    "quiet"
+   ],
+   "needs": "violin",
+   "speaker": "presentatrice",
+   "text": "The violins, so tender. They play as if the moths have finally left the building.",
+   "file": "voices/oper-during-17.mp3",
+   "duration": 6.732,
+   "hash": "88d63bb80918"
   }
  ]
 }
