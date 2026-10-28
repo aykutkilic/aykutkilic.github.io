@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/concert-play/assets/index-DMyzqbd8.js"></script>
-    <link rel="stylesheet" crossorigin href="/concert-play/assets/index-BnrbimlQ.css">
+    <script type="module" crossorigin src="/concert-play/assets/index-8Y7MIt4R.js"></script>
+    <link rel="stylesheet" crossorigin href="/concert-play/assets/index-Bgvwvawo.css">
   </head>
   <body>
     <div id="stage"></div>
@@ -70,7 +70,13 @@
       </section>
 
       <section>
-        <h2>3 · The mood</h2>
+        <h2>3 · The orchestra</h2>
+        <div class="hint">Who plays each part, how many of them, and what it sounds like. <button id="orchReset" class="link">back to auto</button></div>
+        <div id="orchestra" class="orchestra"></div>
+      </section>
+
+      <section>
+        <h2>4 · The mood</h2>
         <div class="moods" id="moods">
           <button data-mood="auto">🤖 Auto</button>
           <button data-mood="uplifting">🌈 Uplifting</button>
@@ -81,7 +87,7 @@
       </section>
 
       <section>
-        <h2>4 · The commentary</h2>
+        <h2>5 · The commentary</h2>
         <label class="row">Hosts
           <select id="commentary">
             <option value="voice">On air (prerecorded voices)</option>
