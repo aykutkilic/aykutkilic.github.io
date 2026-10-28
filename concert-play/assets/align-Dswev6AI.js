@@ -1,0 +1,1 @@
+function e(){throw Error(`note-level alignment not available in this build`)}function t(e){return e}export{e as alignMidiToAudio,t as warpSong};

@@ -1,0 +1,1 @@
+async function e(){throw Error(`note transcription not available in this build`)}export{e as transcribeAudio};
