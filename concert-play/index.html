@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/concert-play/assets/index-Dv-0fcZQ.js"></script>
-    <link rel="stylesheet" crossorigin href="/concert-play/assets/index-B79A-lqQ.css">
+    <script type="module" crossorigin src="/concert-play/assets/index-BhlYGrsB.js"></script>
+    <link rel="stylesheet" crossorigin href="/concert-play/assets/index-f8Jp4Y3n.css">
   </head>
   <body>
     <div id="stage"></div>
@@ -115,6 +115,7 @@
       <span id="time" class="time">0:00 / 0:00</span>
       <button id="skipSong" class="small" title="Skip the pre-show">Skip to song</button>
       <button id="skipEnd" class="small" title="Skip to the applause">Skip to applause</button>
+      <button id="recBtn" class="small rec" title="Record the show as a video (everything stays on this device)">⏺ Record</button>
       <select id="focusSel" class="focus-sel" title="Focus on one player: everyone else turns see-through (double-click a puppet; Esc for everyone)"><option value="">👁 Everyone</option></select>
       <button id="camMode" class="small" title="Toggle director / free camera (C)">🎥 Director</button>
       <button id="gfxToggle" class="small" title="Toggle TV graphics (G)">📺 GFX</button>
@@ -131,5 +132,18 @@
     </div>
 
     <div id="toast" class="toast"></div>
+    <div id="sharePanel" class="share" hidden>
+      <div class="share-card">
+        <h2>Your broadcast</h2>
+        <video id="shareVideo" controls playsinline></video>
+        <div id="shareInfo" class="hint"></div>
+        <div class="share-actions">
+          <button id="shareBtn" class="go">Share…</button>
+          <button id="downloadBtn" class="small">⬇ Download</button>
+          <button id="shareClose" class="small">Close</button>
+        </div>
+        <div class="hint">Recorded and encoded in your browser: nothing was uploaded.</div>
+      </div>
+    </div>
   </body>
 </html>
