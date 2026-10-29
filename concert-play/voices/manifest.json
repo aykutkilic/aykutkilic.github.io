@@ -1,6 +1,6 @@
 {
  "model": "google/gemini-3.8-flash-tts",
- "generatedAt": "2026-10-28T16:51:25.267Z",
+ "generatedAt": "2026-10-29T13:00:13.585Z",
  "clips": [
   {
    "id": "phil-intro-uplifting-0-0",
@@ -10,10 +10,10 @@
    "set": 0,
    "order": 0,
    "speaker": "presenter",
-   "text": "Good evening, and welcome to the Filzharmonie Berlin, live on FILZ-TV Kultur.",
+   "text": "Good evening, and welcome to the Royal Felt Hall in London for tonight’s Felt Prom, live on FBC.",
    "file": "voices/phil-intro-uplifting-0-0.mp3",
-   "duration": 8.297,
-   "hash": "070a3ed8e13b"
+   "duration": 8.685,
+   "hash": "cfe466b757da"
   },
   {
    "id": "phil-intro-uplifting-0-1",
@@ -23,10 +23,10 @@
    "set": 0,
    "order": 1,
    "speaker": "presenter",
-   "text": "The Berliner Filzharmoniker are tuned, brushed and lightly steamed. The audience has been asked to cough only in the approved key.",
+   "text": "The Promenaders have been queuing since dawn, and several since last Tuesday. The orchestra is tuned, brushed and lightly steamed.",
    "file": "voices/phil-intro-uplifting-0-1.mp3",
-   "duration": 11.105,
-   "hash": "c6e8746b7a2b"
+   "duration": 9.996,
+   "hash": "e16fa79036c7"
   },
   {
    "id": "phil-intro-uplifting-0-2",
@@ -36,10 +36,10 @@
    "set": 0,
    "order": 2,
    "speaker": "presenter",
-   "text": "The maestro is approaching the podium. Let us all pretend we have read the programme notes.",
+   "text": "The conductor is making their way to the podium. Let us all pretend we have read the programme notes.",
    "file": "voices/phil-intro-uplifting-0-2.mp3",
-   "duration": 7.797,
-   "hash": "14b25cefeb64"
+   "duration": 7.567,
+   "hash": "a6f3e7f20ed6"
   },
   {
    "id": "phil-intro-uplifting-1-0",
@@ -49,10 +49,10 @@
    "set": 1,
    "order": 0,
    "speaker": "presenter",
-   "text": "Guten Abend. Tonight, the Filzharmonie is sold out, which is remarkable, because the tickets were made of felt and kept fusing together.",
+   "text": "Good evening. Tonight’s Prom is sold out, which is remarkable, because the tickets were made of felt and kept sticking together.",
    "file": "voices/phil-intro-uplifting-1-0.mp3",
-   "duration": 10.766,
-   "hash": "3e529cd89c21"
+   "duration": 9.226,
+   "hash": "ae647eac8636"
   },
   {
    "id": "phil-intro-uplifting-1-1",
@@ -62,10 +62,10 @@
    "set": 1,
    "order": 1,
    "speaker": "presenter",
-   "text": "A joyful programme awaits. The second violins have promised to smile, and we have a doctor on standby in case they strain something.",
+   "text": "A joyful programme awaits. The second violins have promised to smile, and an ambulance is standing by in case they strain something.",
    "file": "voices/phil-intro-uplifting-1-1.mp3",
-   "duration": 10.411,
-   "hash": "290ff94bf5b8"
+   "duration": 9.614,
+   "hash": "c46c06b4c9c5"
   },
   {
    "id": "phil-intro-uplifting-1-2",
@@ -75,10 +75,10 @@
    "set": 1,
    "order": 2,
    "speaker": "presenter",
-   "text": "Here comes the maestro. Applause, please, but tasteful applause.",
+   "text": "Here comes the conductor. Applause, please, but tasteful, British applause.",
    "file": "voices/phil-intro-uplifting-1-2.mp3",
-   "duration": 5.598,
-   "hash": "f71893a373d7"
+   "duration": 6.381,
+   "hash": "c66cde9c646d"
   },
   {
    "id": "phil-intro-energetic-0-0",
@@ -88,10 +88,10 @@
    "set": 0,
    "order": 0,
    "speaker": "presenter",
-   "text": "Good evening from the Filzharmonie Berlin. Tonight the orchestra has been told to play with passion, which in Berlin means slightly faster than usual.",
+   "text": "Good evening from the Royal Felt Hall. Tonight the orchestra has been told to play with passion, which in London means slightly faster than usual.",
    "file": "voices/phil-intro-energetic-0-0.mp3",
-   "duration": 11.627,
-   "hash": "f7f76ca4b657"
+   "duration": 11.43,
+   "hash": "3a13cd0d1abb"
   },
   {
    "id": "phil-intro-energetic-0-1",
@@ -101,10 +101,10 @@
    "set": 0,
    "order": 1,
    "speaker": "presenter",
-   "text": "The percussion section has been given extra mallets. The insurance company has been given extra paperwork.",
+   "text": "The percussion section has been given extra mallets. The insurance company has been given a strong cup of tea.",
    "file": "voices/phil-intro-energetic-0-1.mp3",
-   "duration": 6.875,
-   "hash": "9a97d2e9f818"
+   "duration": 7.351,
+   "hash": "bd07cf7ce9d8"
   },
   {
    "id": "phil-intro-energetic-0-2",
@@ -114,10 +114,10 @@
    "set": 0,
    "order": 2,
    "speaker": "presenter",
-   "text": "The maestro takes the podium. His hair has already started without him.",
+   "text": "The conductor takes the podium. The hair has already started without them.",
    "file": "voices/phil-intro-energetic-0-2.mp3",
-   "duration": 5.245,
-   "hash": "fbbfd8a9039a"
+   "duration": 4.472,
+   "hash": "813188673be5"
   },
   {
    "id": "phil-intro-energetic-1-0",
@@ -127,10 +127,10 @@
    "set": 1,
    "order": 0,
    "speaker": "presenter",
-   "text": "Welcome to an evening of fire and felt at the Filzharmonie. The fire is metaphorical. We checked. Twice.",
+   "text": "Welcome to an evening of fire and felt at the Proms. The fire is metaphorical. We checked. Twice.",
    "file": "voices/phil-intro-energetic-1-0.mp3",
-   "duration": 9.932,
-   "hash": "8589b2b5f694"
+   "duration": 9.111,
+   "hash": "92fb776537ff"
   },
   {
    "id": "phil-intro-energetic-1-1",
@@ -140,10 +140,10 @@
    "set": 1,
    "order": 1,
    "speaker": "presenter",
-   "text": "The conductor drank three espressos backstage and has asked to be addressed as Maestro Velocity.",
+   "text": "The conductor had three espressos in the green room and has asked to be addressed as Maestro Velocity.",
    "file": "voices/phil-intro-energetic-1-1.mp3",
-   "duration": 8.079,
-   "hash": "efa024b72e4c"
+   "duration": 7.715,
+   "hash": "389efbbadb13"
   },
   {
    "id": "phil-intro-energetic-1-2",
@@ -153,10 +153,10 @@
    "set": 1,
    "order": 2,
    "speaker": "presenter",
-   "text": "Hold onto your programmes. It is about to get vigorous.",
+   "text": "Hold on to your programmes, and your umbrellas. It is about to get vigorous.",
    "file": "voices/phil-intro-energetic-1-2.mp3",
-   "duration": 4.298,
-   "hash": "8275e751e550"
+   "duration": 6.733,
+   "hash": "8710dacf6fda"
   },
   {
    "id": "phil-intro-sad-0-0",
@@ -166,10 +166,10 @@
    "set": 0,
    "order": 0,
    "speaker": "presenter",
-   "text": "Good evening from the Filzharmonie Berlin. The cloakroom has already run out of handkerchiefs.",
+   "text": "Good evening from the Royal Felt Hall. The cloakroom has already run out of handkerchiefs.",
    "file": "voices/phil-intro-sad-0-0.mp3",
-   "duration": 8.713,
-   "hash": "6c35428e9338"
+   "duration": 7.295,
+   "hash": "30c94d58a71f"
   },
   {
    "id": "phil-intro-sad-0-1",
@@ -179,10 +179,10 @@
    "set": 0,
    "order": 1,
    "speaker": "presenter",
-   "text": "Tonight’s piece is so melancholy that the orchestra rehearsed it in the dark, holding hands.",
+   "text": "Tonight’s piece is so melancholy that the orchestra rehearsed it in the dark, holding hands, in the rain.",
    "file": "voices/phil-intro-sad-0-1.mp3",
-   "duration": 8.744,
-   "hash": "5ebdbe597678"
+   "duration": 8.838,
+   "hash": "ee291e312f97"
   },
   {
    "id": "phil-intro-sad-0-2",
@@ -192,10 +192,10 @@
    "set": 0,
    "order": 2,
    "speaker": "presenter",
-   "text": "The maestro walks to the podium. Slowly. As if carrying all our feelings in a small velvet bag.",
+   "text": "The conductor walks to the podium. Slowly. As if carrying all our feelings in a small velvet bag.",
    "file": "voices/phil-intro-sad-0-2.mp3",
-   "duration": 9.434,
-   "hash": "11cff5334b0e"
+   "duration": 8.783,
+   "hash": "ae1e7217ed41"
   },
   {
    "id": "phil-intro-sad-1-0",
@@ -205,10 +205,10 @@
    "set": 1,
    "order": 0,
    "speaker": "presenter",
-   "text": "Guten Abend. Please switch off your phones, and if you can, your hope.",
+   "text": "Good evening. Please switch off your phones, and if you can, your hope.",
    "file": "voices/phil-intro-sad-1-0.mp3",
-   "duration": 7.799,
-   "hash": "b7a221628829"
+   "duration": 6.445,
+   "hash": "14b523421738"
   },
   {
    "id": "phil-intro-sad-1-1",
@@ -218,10 +218,10 @@
    "set": 1,
    "order": 1,
    "speaker": "presenter",
-   "text": "It is raining inside the Filzharmonie again. The architects call it an acoustic feature. We call it Tuesday.",
+   "text": "It is raining inside the Royal Felt Hall again. The architects call it an acoustic feature. Londoners call it Tuesday.",
    "file": "voices/phil-intro-sad-1-1.mp3",
-   "duration": 10.512,
-   "hash": "1c80988ea27f"
+   "duration": 11.114,
+   "hash": "20b9e31e6be3"
   },
   {
    "id": "phil-intro-sad-1-2",
@@ -231,10 +231,10 @@
    "set": 1,
    "order": 2,
    "speaker": "presenter",
-   "text": "Here is the maestro. He has brought tissues for the entire string section.",
+   "text": "Here is the conductor, with tissues for the entire string section.",
    "file": "voices/phil-intro-sad-1-2.mp3",
-   "duration": 6.041,
-   "hash": "8e8b6f70afe8"
+   "duration": 5.224,
+   "hash": "b6456ddbb9d6"
   },
   {
    "id": "phil-outro-uplifting-0-0",
@@ -244,10 +244,10 @@
    "set": 0,
    "order": 0,
    "speaker": "presenter",
-   "text": "Bravo! Bravissimo! The audience is on its feet, which is very unusual, because most of them are glued to their seats.",
+   "text": "Bravo! The Promenaders are on their feet, which is no surprise, because they have been on their feet all evening.",
    "file": "voices/phil-outro-uplifting-0-0.mp3",
-   "duration": 10.504,
-   "hash": "e60e31a7d8e3"
+   "duration": 8.971,
+   "hash": "669d9fa856b1"
   },
   {
    "id": "phil-outro-uplifting-0-1",
@@ -257,10 +257,10 @@
    "set": 0,
    "order": 1,
    "speaker": "presenter",
-   "text": "And yes, the triangle note arrived exactly on time. From all of us at FILZ-TV Kultur: gute Nacht.",
+   "text": "And yes, the triangle note arrived exactly on time. From all of us at the Royal Felt Hall: good night.",
    "file": "voices/phil-outro-uplifting-0-1.mp3",
-   "duration": 10.225,
-   "hash": "5fb90e857571"
+   "duration": 10.907,
+   "hash": "4d7c7273ed2b"
   },
   {
    "id": "phil-outro-uplifting-1-0",
@@ -270,10 +270,10 @@
    "set": 1,
    "order": 0,
    "speaker": "presenter",
-   "text": "What a triumph. Roses are being thrown at the maestro. One of them was still in a vase.",
+   "text": "What a triumph. Flowers are being handed to the conductor. One of them was still in a vase.",
    "file": "voices/phil-outro-uplifting-1-0.mp3",
-   "duration": 6.623,
-   "hash": "00251a3ba106"
+   "duration": 6.82,
+   "hash": "55a2543636e7"
   },
   {
    "id": "phil-outro-uplifting-1-1",
@@ -283,10 +283,10 @@
    "set": 1,
    "order": 1,
    "speaker": "presenter",
-   "text": "Coming up next on FILZ-TV: a documentary about the history of the sock. In nine parts. Gute Nacht.",
+   "text": "Coming up next on FBC: a documentary about the history of the sock. In nine parts. Good night.",
    "file": "voices/phil-outro-uplifting-1-1.mp3",
-   "duration": 11.487,
-   "hash": "fadeef0a72af"
+   "duration": 8.971,
+   "hash": "b4c15b656a4a"
   },
   {
    "id": "phil-outro-energetic-0-0",
@@ -296,10 +296,10 @@
    "set": 0,
    "order": 0,
    "speaker": "presenter",
-   "text": "Extraordinary! The orchestra is breathing heavily, and the front row will need new eyebrows.",
+   "text": "Extraordinary! The orchestra is breathing heavily, and the front row of the Arena will need new eyebrows.",
    "file": "voices/phil-outro-energetic-0-0.mp3",
-   "duration": 6.453,
-   "hash": "0940c750fadc"
+   "duration": 7.059,
+   "hash": "3fcf19c29f4d"
   },
   {
    "id": "phil-outro-energetic-0-1",
@@ -309,10 +309,10 @@
    "set": 0,
    "order": 1,
    "speaker": "presenter",
-   "text": "The maestro has lost his baton somewhere in the brass section. It will be returned by post. Gute Nacht.",
+   "text": "The conductor has lost the baton somewhere in the brass section. It will be returned by second-class post. Good night.",
    "file": "voices/phil-outro-energetic-0-1.mp3",
-   "duration": 8.473,
-   "hash": "ace412494c17"
+   "duration": 8.279,
+   "hash": "d489fd910909"
   },
   {
    "id": "phil-outro-energetic-1-0",
@@ -322,10 +322,10 @@
    "set": 1,
    "order": 0,
    "speaker": "presenter",
-   "text": "Bravo! That was so fast that the echo is still trying to catch up.",
+   "text": "Bravo! That was so fast that the echo is still going round the dome, looking for us.",
    "file": "voices/phil-outro-energetic-1-0.mp3",
-   "duration": 5.808,
-   "hash": "ffea04119d3c"
+   "duration": 6.193,
+   "hash": "628642f26129"
   },
   {
    "id": "phil-outro-energetic-1-1",
@@ -335,10 +335,10 @@
    "set": 1,
    "order": 1,
    "speaker": "presenter",
-   "text": "Please do not try this at home. Or in Berlin. Good night from the Filzharmonie.",
+   "text": "Please do not try this at home. Or on the Underground. Good night from the Proms.",
    "file": "voices/phil-outro-energetic-1-1.mp3",
-   "duration": 6.525,
-   "hash": "7f8196b39d3c"
+   "duration": 6.127,
+   "hash": "81945dfa1a7a"
   },
   {
    "id": "phil-outro-sad-0-0",
@@ -350,8 +350,8 @@
    "speaker": "presenter",
    "text": "And so it ends. Not a dry eye in the house, mainly because of the indoor rain.",
    "file": "voices/phil-outro-sad-0-0.mp3",
-   "duration": 8.886,
-   "hash": "a15ecb1a028d"
+   "duration": 8.43,
+   "hash": "09280aa58e93"
   },
   {
    "id": "phil-outro-sad-0-1",
@@ -361,10 +361,10 @@
    "set": 0,
    "order": 1,
    "speaker": "presenter",
-   "text": "Thank you for weeping with us. The Filzharmonie will now provide towels. Gute Nacht.",
+   "text": "Thank you for weeping with us. The Royal Felt Hall will now provide towels, and tea. Good night.",
    "file": "voices/phil-outro-sad-0-1.mp3",
-   "duration": 8.027,
-   "hash": "fff64e7c6948"
+   "duration": 9.525,
+   "hash": "e250732ec000"
   },
   {
    "id": "phil-outro-sad-1-0",
@@ -376,8 +376,8 @@
    "speaker": "presenter",
    "text": "There is a long, respectful silence. And now, a long, respectful nose-blowing.",
    "file": "voices/phil-outro-sad-1-0.mp3",
-   "duration": 9.234,
-   "hash": "fb6b45d48b1e"
+   "duration": 7.747,
+   "hash": "709fd76c8a86"
   },
   {
    "id": "phil-outro-sad-1-1",
@@ -387,10 +387,10 @@
    "set": 1,
    "order": 1,
    "speaker": "presenter",
-   "text": "From FILZ-TV Kultur, good night. Please, hug a cellist on your way home.",
+   "text": "From the Royal Felt Hall, good night. Please, hug a cellist on your way to the Tube.",
    "file": "voices/phil-outro-sad-1-1.mp3",
-   "duration": 8.393,
-   "hash": "a748838d1ea2"
+   "duration": 8.051,
+   "hash": "195acf8d922e"
   },
   {
    "id": "phil-during-0",
@@ -405,8 +405,8 @@
    "speaker": "presenter",
    "text": "Listen carefully. You can actually hear the felt.",
    "file": "voices/phil-during-0.mp3",
-   "duration": 3.94,
-   "hash": "387c9c278550"
+   "duration": 3.872,
+   "hash": "8e8ca6c5f548"
   },
   {
    "id": "phil-during-1",
@@ -420,8 +420,8 @@
    "speaker": "presenter",
    "text": "Exquisite. The violas are playing so softly that some of them may not be playing at all.",
    "file": "voices/phil-during-1.mp3",
-   "duration": 7.456,
-   "hash": "aff9ee802cb0"
+   "duration": 6.207,
+   "hash": "d2b12eade80e"
   },
   {
    "id": "phil-during-2",
@@ -433,10 +433,10 @@
    ],
    "needs": null,
    "speaker": "presenter",
-   "text": "Silence now, please. If you are watching at home, kindly put down your crisps.",
+   "text": "Silence now, please. If you are watching at home, kindly put the kettle down.",
    "file": "voices/phil-during-2.mp3",
-   "duration": 7.236,
-   "hash": "49762252b592"
+   "duration": 7.159,
+   "hash": "ae07866555ab"
   },
   {
    "id": "phil-during-3",
@@ -448,10 +448,10 @@
    ],
    "needs": "conductor",
    "speaker": "presenter",
-   "text": "And here it comes — the big moment. The maestro’s hair is now conducting independently.",
+   "text": "And here it comes — the big moment. The conductor’s hair is now conducting independently.",
    "file": "voices/phil-during-3.mp3",
-   "duration": 7.288,
-   "hash": "5440a8e6b46b"
+   "duration": 7.007,
+   "hash": "eac3af037f64"
   },
   {
    "id": "phil-during-4",
@@ -463,10 +463,10 @@
    ],
    "needs": "trumpet",
    "speaker": "presenter",
-   "text": "Magnificent! The brass section has reached a volume normally only permitted at airports.",
+   "text": "Magnificent! The brass section has reached a volume normally only permitted at Heathrow.",
    "file": "voices/phil-during-4.mp3",
-   "duration": 7.123,
-   "hash": "ea301fd05710"
+   "duration": 6.072,
+   "hash": "187f5ae642dd"
   },
   {
    "id": "phil-during-5",
@@ -481,8 +481,8 @@
    "speaker": "presenter",
    "text": "What power. Somewhere in the second row, a monocle has just fallen into a soup.",
    "file": "voices/phil-during-5.mp3",
-   "duration": 7.091,
-   "hash": "4b1c257d92c2"
+   "duration": 6.635,
+   "hash": "360e830c4f6f"
   },
   {
    "id": "phil-during-6",
@@ -494,10 +494,10 @@
    ],
    "needs": null,
    "speaker": "presenter",
-   "text": "And suddenly, everyone joins in at once, like a family argument, but in tune.",
+   "text": "And suddenly, everyone joins in at once, like a family argument at Christmas, but in tune.",
    "file": "voices/phil-during-6.mp3",
-   "duration": 7.341,
-   "hash": "599d506cd26e"
+   "duration": 7.643,
+   "hash": "d918f0f0a046"
   },
   {
    "id": "phil-during-7",
@@ -511,8 +511,8 @@
    "speaker": "presenter",
    "text": "Ah, the key has changed. The triangle player has not been informed.",
    "file": "voices/phil-during-7.mp3",
-   "duration": 5.966,
-   "hash": "ad72bf95ccae"
+   "duration": 6.133,
+   "hash": "a8994550f47e"
   },
   {
    "id": "phil-during-8",
@@ -524,10 +524,10 @@
    ],
    "needs": null,
    "speaker": "presenter",
-   "text": "A modulation! Very daring. The subscribers in the front row are clutching their pearls.",
+   "text": "A modulation! Very daring. The season-ticket holders in the front row are clutching their pearls.",
    "file": "voices/phil-during-8.mp3",
-   "duration": 6.988,
-   "hash": "734afc5aa22c"
+   "duration": 7.712,
+   "hash": "b8cbfb4cf58f"
   },
   {
    "id": "phil-during-9",
@@ -541,8 +541,8 @@
    "speaker": "presenter",
    "text": "Please observe the triangle player. Waiting. Ready. Like a coiled spring made of patience.",
    "file": "voices/phil-during-9.mp3",
-   "duration": 9.053,
-   "hash": "3e3c2c24ae0f"
+   "duration": 7.918,
+   "hash": "009027496a3a"
   },
   {
    "id": "phil-during-10",
@@ -556,8 +556,8 @@
    "speaker": "presenter",
    "text": "The triangle player has now been waiting so long that he has started a small family.",
    "file": "voices/phil-during-10.mp3",
-   "duration": 5.647,
-   "hash": "9dd2a53f2cdb"
+   "duration": 6.438,
+   "hash": "ab5803a531c6"
   },
   {
    "id": "phil-during-11",
@@ -572,8 +572,8 @@
    "speaker": "presenter",
    "text": "The timpanist is in excellent form tonight. We have been asked not to stand near him.",
    "file": "voices/phil-during-11.mp3",
-   "duration": 7.201,
-   "hash": "c7abe1c94632"
+   "duration": 6.073,
+   "hash": "545c62d359a6"
   },
   {
    "id": "phil-during-12",
@@ -588,8 +588,8 @@
    "speaker": "presenter",
    "text": "The cellos, warm and noble. Each cello was hand-knitted by a different grandmother.",
    "file": "voices/phil-during-12.mp3",
-   "duration": 8.367,
-   "hash": "864ef7be5e11"
+   "duration": 8.413,
+   "hash": "a4eadd4be7aa"
   },
   {
    "id": "phil-during-13",
@@ -603,8 +603,8 @@
    "speaker": "presenter",
    "text": "The double basses, the quiet heroes of the orchestra. Mostly quiet because nobody can hear them.",
    "file": "voices/phil-during-13.mp3",
-   "duration": 7.695,
-   "hash": "7f47f76a97ec"
+   "duration": 7.151,
+   "hash": "8f6a51954e3d"
   },
   {
    "id": "phil-during-14",
@@ -619,8 +619,8 @@
    "speaker": "presenter",
    "text": "The harp. Forty-seven strings and not a single one of them has ever been in a hurry.",
    "file": "voices/phil-during-14.mp3",
-   "duration": 7.499,
-   "hash": "51dfffd60073"
+   "duration": 6.466,
+   "hash": "ea143d53af44"
   },
   {
    "id": "phil-during-15",
@@ -634,8 +634,8 @@
    "speaker": "presenter",
    "text": "A solo! Listen to that. Pure, unfiltered showing off, and we love it.",
    "file": "voices/phil-during-15.mp3",
-   "duration": 7.152,
-   "hash": "57f2f144f11f"
+   "duration": 6.84,
+   "hash": "40ccbc1a14da"
   },
   {
    "id": "phil-during-16",
@@ -650,8 +650,8 @@
    "speaker": "presenter",
    "text": "Our soloist at the piano, playing with tremendous feeling and at least eleven fingers.",
    "file": "voices/phil-during-16.mp3",
-   "duration": 7.615,
-   "hash": "31ada92c2bf9"
+   "duration": 7.773,
+   "hash": "04ca32b8d231"
   },
   {
    "id": "phil-during-17",
@@ -665,8 +665,8 @@
    "speaker": "presenter",
    "text": "I must point out that there is an electric guitarist in the orchestra tonight. Nobody knows who invited him.",
    "file": "voices/phil-during-17.mp3",
-   "duration": 8.148,
-   "hash": "8748aeec43e2"
+   "duration": 7.538,
+   "hash": "4edf6934d0cb"
   },
   {
    "id": "phil-during-18",
@@ -681,8 +681,8 @@
    "speaker": "presenter",
    "text": "Our soprano is now reaching notes that only dogs and music critics can hear.",
    "file": "voices/phil-during-18.mp3",
-   "duration": 6.795,
-   "hash": "ba6aa80fd90d"
+   "duration": 6.056,
+   "hash": "d6f889ca07eb"
   },
   {
    "id": "phil-during-19",
@@ -696,8 +696,8 @@
    "speaker": "presenter",
    "text": "The woodwinds, delicate as ever. The clarinet has asked me to say he is fine. He is not fine.",
    "file": "voices/phil-during-19.mp3",
-   "duration": 10.717,
-   "hash": "87fe169345f2"
+   "duration": 8.331,
+   "hash": "b24c3e36c0c6"
   },
   {
    "id": "phil-during-20",
@@ -710,10 +710,10 @@
    ],
    "needs": null,
    "speaker": "presenter",
-   "text": "A gentleman in row twelve has fallen asleep. Honestly, this is the highest compliment in Berlin.",
+   "text": "A gentleman in the Circle has fallen asleep. Honestly, this is the highest compliment at the Proms.",
    "file": "voices/phil-during-20.mp3",
-   "duration": 8.058,
-   "hash": "92cc9965fd4c"
+   "duration": 6.913,
+   "hash": "dfac3bde3da1"
   },
   {
    "id": "phil-during-21",
@@ -727,8 +727,8 @@
    "speaker": "presenter",
    "text": "Notice the bowing. Up, down, up, down. They practised this for nine years.",
    "file": "voices/phil-during-21.mp3",
-   "duration": 8.434,
-   "hash": "a960bed55140"
+   "duration": 6.915,
+   "hash": "05cde0b23497"
   },
   {
    "id": "phil-during-22",
@@ -742,8 +742,8 @@
    "speaker": "presenter",
    "text": "The audience is so moved that someone has started to rain. Indoors. Again.",
    "file": "voices/phil-during-22.mp3",
-   "duration": 7.925,
-   "hash": "7531e6348d4b"
+   "duration": 7.52,
+   "hash": "a67bfb723746"
   },
   {
    "id": "phil-during-23",
@@ -758,8 +758,8 @@
    "speaker": "presenter",
    "text": "Such sorrow. Even the sheet music looks like it needs a hug.",
    "file": "voices/phil-during-23.mp3",
-   "duration": 5.08,
-   "hash": "e33219c6a301"
+   "duration": 5.823,
+   "hash": "3d278e892d60"
   },
   {
    "id": "phil-during-24",
@@ -773,8 +773,55 @@
    "speaker": "presenter",
    "text": "The tempo is so brisk that two violinists have already finished and gone home.",
    "file": "voices/phil-during-24.mp3",
-   "duration": 5.619,
-   "hash": "a3d37b80fcf8"
+   "duration": 4.56,
+   "hash": "f6e504379742"
+  },
+  {
+   "id": "phil-during-25",
+   "venue": "philharmonic",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "general"
+   ],
+   "needs": null,
+   "speaker": "presenter",
+   "text": "Down in the Arena, the Promenaders are standing perfectly still. Some of them have been standing since the first Prom.",
+   "file": "voices/phil-during-25.mp3",
+   "duration": 8.01,
+   "hash": "8c6f7215c4da"
+  },
+  {
+   "id": "phil-during-26",
+   "venue": "philharmonic",
+   "segment": "during",
+   "mood": null,
+   "tags": [
+    "quiet",
+    "general"
+   ],
+   "needs": null,
+   "speaker": "presenter",
+   "text": "Somewhere in the Arena, a Promenader is trying very hard not to hum along.",
+   "file": "voices/phil-during-26.mp3",
+   "duration": 6.325,
+   "hash": "4f6c3ac5a4c8"
+  },
+  {
+   "id": "phil-during-27",
+   "venue": "philharmonic",
+   "segment": "during",
+   "mood": "uplifting",
+   "tags": [
+    "general",
+    "climax"
+   ],
+   "needs": null,
+   "speaker": "presenter",
+   "text": "The flags are coming out in the Arena. It is not even the Last Night. They simply could not wait.",
+   "file": "voices/phil-during-27.mp3",
+   "duration": 6.789,
+   "hash": "dbb63e7e9f7e"
   },
   {
    "id": "rock-intro-uplifting-0-0",
