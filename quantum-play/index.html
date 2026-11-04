@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>How Small Is Small? — a quantum adventure</title>
+    <meta name="theme-color" content="#0b1036" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="How Small Is Small?" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <meta name="description" content="Shrink down through microbes, cells, DNA, proteins, molecules, atoms, quanta and quarks — guided by the scientists who discovered them." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="./icon-192.png" />
+    <script type="module" crossorigin src="./assets/index-BSPiFy-x.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BNvjQh_W.css">
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="pencil"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+    <canvas id="gl"></canvas>
+    <div id="vignette"></div>
+    <div id="ui"></div>
+    <div id="fader"></div>
+    <div id="loader">
+      <style>#loader{z-index:50;color:#f4f6ff;background:radial-gradient(at 50% 120%,#2a1d5e,#070920 60%);place-items:center;font-family:Fredoka,Nunito,system-ui,sans-serif;transition:opacity .7s;display:grid;position:fixed;inset:0}#loader.out{opacity:0;pointer-events:none}#loader .box{text-align:center;width:min(420px,82vw)}#loader .star{width:64px;height:64px;margin:0 auto 18px;animation:2.4s linear infinite spin}#loader h1{margin:0 0 6px;font-size:clamp(26px,5vw,40px)}#loader p{color:#aab3e6;min-height:20px;margin:0 0 18px;font-size:15px}#loader .bar{background:#ffffff1f;border-radius:99px;height:10px;overflow:hidden}#loader .fill{background:linear-gradient(90deg,#ffcf3f,#ff8f5c);border-radius:99px;width:8%;height:100%;transition:width .4s}#loader .dots{justify-content:center;gap:6px;margin-top:18px;display:flex}#loader .dots i{opacity:.2;background:#fff;border-radius:50%;width:4px;height:4px;animation:1.6s ease-in-out infinite tw}@keyframes spin{to{transform:rotate(360deg)}}@keyframes tw{50%{opacity:1}}</style>
+      <div class="box">
+        <svg class="star" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#141a46"/><path d="M32 10l4 14 14 4-14 4-4 14-4-14-14-4 14-4z" fill="#ffcf3f"/></svg>
+        <h1>How Small Is Small?</h1>
+        <p id="loadmsg">Shrinking…</p>
+        <div class="bar"><div class="fill" id="loadfill"></div></div>
+        <div class="dots"><i></i><i style="animation-delay:.2s"></i><i style="animation-delay:.4s"></i><i style="animation-delay:.6s"></i><i style="animation-delay:.8s"></i></div>
+      </div>
+      <script>
+        (function () {
+          var f = document.getElementById('loadfill'), p = 8;
+          window.__loadTimer = setInterval(function () { if (p < 38) { p += 1.5; f.style.width = p + '%'; } }, 120);
+        })();
+      </script>
+    </div>
+    <div class="rotate-hint">Turn your phone sideways — the small world is wide. 🔬</div>
+  </body>
+</html>
