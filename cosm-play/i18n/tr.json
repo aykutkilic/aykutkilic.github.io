@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "daha uzun kalp atışı → daha parlak yıldız",
     "nova: flares up once, then fades for good": "nova: bir kez parlar, sonra sonsuza dek söner",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "O Büyük Alev Fırtınası, Güneş Kadar Mı?",
     "on the main sequence, colour → true brightness": "ana dizide renk → gerçek parlaklık",
     "one period": "bir periyot",
     "pink: the cluster": "pembe: küme",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "yarı yol: {0} {1}",
     "one way: {0}": "tek yön: {0}",
     "speed: {0}": "hız: {0}",
-    "there and back: {0}": "gidiş-dönüş: {0}"
+    "there and back: {0}": "gidiş-dönüş: {0}",
+    "brightness": "parlaklık",
+    "tonight": "bu gece",
+    "galaxies": "galaksiler",
+    "us": "biz",
+    "you": "buradasın"
   },
   "f": {
     "l0.nDream": "Ve son esneme ile ilk rüya arasında bir yerde, Ada'nın yatağı bir uzay gemisine dönüştü.",

@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "latido más largo → estrella más brillante",
     "nova: flares up once, then fades for good": "nova: se enciende una vez y luego se apaga para siempre",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "Observa Brillantes Astros Fugaces, Galaxias, Kepler, Marte",
     "on the main sequence, colour → true brightness": "en la secuencia principal, color → brillo real",
     "one period": "un periodo",
     "pink: the cluster": "rosa: el cúmulo",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "a medio camino: {0} {1}",
     "one way: {0}": "solo ida: {0}",
     "speed: {0}": "velocidad: {0}",
-    "there and back: {0}": "ida y vuelta: {0}"
+    "there and back: {0}": "ida y vuelta: {0}",
+    "brightness": "brillo",
+    "tonight": "esta noche",
+    "galaxies": "galaxias",
+    "us": "nosotros",
+    "you": "estás aquí"
   },
   "f": {
     "l0.nDream": "Y en algún lugar entre el último bostezo y el primer sueño, la cama de Ada se convirtió en una nave espacial.",

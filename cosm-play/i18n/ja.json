@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "鼓動が長い → 明るい星",
     "nova: flares up once, then fades for good": "新星：いちど光って、そのまま消えていく",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "大空(O)・望遠鏡(B)・明るい(A)・不思議(F)・銀河(G)・火星(K)・見える(M)",
     "on the main sequence, colour → true brightness": "主系列では、色 → 本当の明るさ",
     "one period": "1周期",
     "pink: the cluster": "ピンク：星団",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "中間地点: {0} {1}",
     "one way: {0}": "片道: {0}",
     "speed: {0}": "速さ: {0}",
-    "there and back: {0}": "往復: {0}"
+    "there and back: {0}": "往復: {0}",
+    "brightness": "明るさ",
+    "tonight": "今夜",
+    "galaxies": "銀河",
+    "us": "わたしたち",
+    "you": "きみはここ"
   },
   "f": {
     "common.qWhy": "なんで*わたしたち*が測らなきゃいけないの? あなたの船、宇宙から来たんでしょ!",

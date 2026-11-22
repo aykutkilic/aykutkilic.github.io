@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "نبضة أطول ← نجم أسطع",
     "nova: flares up once, then fades for good": "نوفا: تتوهج مرة واحدة ثم تخفت للأبد",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "أول بريق أنجم فضاء غامض كوكب مريخ",
     "on the main sequence, colour → true brightness": "على التسلسل الرئيسي، اللون ← السطوع الحقيقي",
     "one period": "دورة واحدة",
     "pink: the cluster": "وردي: العنقود",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "المنتصف: {0} {1}",
     "one way: {0}": "في اتجاه واحد: {0}",
     "speed: {0}": "السرعة: {0}",
-    "there and back: {0}": "ذهابًا وإيابًا: {0}"
+    "there and back: {0}": "ذهابًا وإيابًا: {0}",
+    "brightness": "السطوع",
+    "tonight": "الليلة",
+    "galaxies": "المجرات",
+    "us": "نحن",
+    "you": "أنت هنا"
   },
   "f": {
     "common.aHome": "من مجرة صغيرة جميلة في عنقود كبير مزدحم. أنتم تسمّونه عنقود كوما. ونحن نسمّيه كوما أيضاً. اسمعي، تسمية الأشياء ليست نقطة قوة عند جنسي.",

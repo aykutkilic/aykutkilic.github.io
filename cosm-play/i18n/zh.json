@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "心跳越长 → 星越亮",
     "nova: flares up once, then fades for good": "新星：突然爆亮一次，然后永远暗下去",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "偶(O)见 北(B)极 暗(A)星 发(F)光(G)，看(K)木(M)星",
     "on the main sequence, colour → true brightness": "在主序带上，颜色 → 真实亮度",
     "one period": "一个周期",
     "pink: the cluster": "粉色：星团",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "半程：{0} {1}",
     "one way: {0}": "单程：{0}",
     "speed: {0}": "速度：{0}",
-    "there and back: {0}": "往返：{0}"
+    "there and back: {0}": "往返：{0}",
+    "brightness": "亮度",
+    "tonight": "今晚",
+    "galaxies": "星系",
+    "us": "我们",
+    "you": "你在这里"
   },
   "f": {
     "l0.nDream": "就在最后一个哈欠和第一个梦之间，艾达的床变成了一艘宇宙飞船。",

@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "дольше сердцебиение → ярче звезда",
     "nova: flares up once, then fades for good": "новая: вспыхивает один раз и гаснет навсегда",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "Огромный Блестящий Астрономический Фонарь Горит Как Марс",
     "on the main sequence, colour → true brightness": "на главной последовательности цвет → истинная яркость",
     "one period": "один период",
     "pink: the cluster": "розовое: скопление",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "на полпути: {0} {1}",
     "one way: {0}": "в один конец: {0}",
     "speed: {0}": "скорость: {0}",
-    "there and back: {0}": "туда и обратно: {0}"
+    "there and back: {0}": "туда и обратно: {0}",
+    "brightness": "яркость",
+    "tonight": "сегодня",
+    "galaxies": "галактики",
+    "us": "мы",
+    "you": "ты здесь"
   },
   "f": {
     "l0.nDream": "И где-то между последним зевком и первым сном кровать Ады превратилась в космический корабль.",

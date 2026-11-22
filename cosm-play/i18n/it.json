@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "battito più lungo → stella più luminosa",
     "nova: flares up once, then fades for good": "nova: si accende una volta, poi si spegne per sempre",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "Osserva Brillanti Astri Fuocosi, Galassie, Kepler, Marte",
     "on the main sequence, colour → true brightness": "sulla sequenza principale, colore → vera luminosità",
     "one period": "un periodo",
     "pink: the cluster": "rosa: l'ammasso",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "a metà strada: {0} {1}",
     "one way: {0}": "solo andata: {0}",
     "speed: {0}": "velocità: {0}",
-    "there and back: {0}": "andata e ritorno: {0}"
+    "there and back: {0}": "andata e ritorno: {0}",
+    "brightness": "luminosità",
+    "tonight": "stanotte",
+    "galaxies": "galassie",
+    "us": "noi",
+    "you": "sei qui"
   },
   "f": {
     "l0.m1": "Luci spente, piccola astronoma. È ben oltre l'ora di dormire.",

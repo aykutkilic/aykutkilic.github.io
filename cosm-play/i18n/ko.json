@@ -2414,7 +2414,7 @@
     "longer heartbeat → brighter star": "박동이 길수록 → 더 밝은 별",
     "nova: flares up once, then fades for good": "신성: 한 번 번쩍하고 영영 사라진다",
     "OBAFGKM": "OBAFGKM",
-    "Oh Be A Fine Girl/Guy, Kiss Me": "Oh Be A Fine Girl/Guy, Kiss Me",
+    "Oh Be A Fine Girl/Guy, Kiss Me": "오늘(O) 별(B) 아래(A) 폭발(F) 광선(G) 큰(K) 목성(M)",
     "on the main sequence, colour → true brightness": "주계열에서는 색 → 실제 밝기",
     "one period": "한 주기",
     "pink: the cluster": "분홍: 성단",
@@ -2807,7 +2807,12 @@
     "halfway: {0} {1}": "절반: {0} {1}",
     "one way: {0}": "편도: {0}",
     "speed: {0}": "속력: {0}",
-    "there and back: {0}": "왕복: {0}"
+    "there and back: {0}": "왕복: {0}",
+    "brightness": "밝기",
+    "tonight": "오늘 밤",
+    "galaxies": "은하",
+    "us": "우리",
+    "you": "너는 여기"
   },
   "f": {
     "l0.nDream": "그리고 마지막 하품과 첫 번째 꿈 사이 어딘가에서, 에이다의 침대는 우주선으로 변했어.",
