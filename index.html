@@ -49,6 +49,7 @@
     .shots { display: grid; gap: 8px; margin: 0 0 20px; }
     .shots.two { grid-template-columns: 1fr 1fr; }
     .shots figure { margin: 0; }
+    .shots .wide { grid-column: 1 / -1; }
     .shots img {
       display: block; width: 100%; height: auto;
       aspect-ratio: 16 / 10; object-fit: cover;
@@ -221,17 +222,28 @@
   </article>
 
   <article>
-    <div class="shots">
-      <img src="img/astro.webp" width="1280" height="800" alt="Astroseeker on iPhone: a natal chart over the night sky, a birthplace map, and time playback controls">
+    <div class="shots two">
+      <figure class="wide">
+        <img src="img/astro-globe.webp" width="1600" height="1000" loading="lazy" alt="Astroseeker on the web: a cartoon snow globe of the sky over a floating island with an astrologer, the zodiac band and houses turning overhead, the planets as characters, a chart panel and Celeste the talking orb">
+        <figcaption>Web: the sky in a snow globe</figcaption>
+      </figure>
+      <figure>
+        <img src="img/astro.webp" width="1280" height="800" loading="lazy" alt="Astroseeker on iPhone: a natal chart over the night sky, a birthplace map, and time playback controls">
+        <figcaption>iPhone</figcaption>
+      </figure>
+      <figure>
+        <img src="img/astro-chart.webp" width="1280" height="800" loading="lazy" alt="Astroseeker on the web: a classical natal chart with the Ascendant on the left, planets with degrees, aspect lines and an aspect grid, and Celeste explaining Venus">
+        <figcaption>Web: the classical chart</figcaption>
+      </figure>
     </div>
     <div class="title">
       <h2>Astroseeker</h2>
-      <span class="tags">Flutter · iOS</span>
+      <span class="tags">Flutter · iOS · Three.js</span>
     </div>
-    <p>An astrology app for learning the subculture and for personal analysis. It computes natal charts on the device with a pure-Dart astronomy engine (VSOP87) and draws them over a real sky background. You pick a birthplace on a map, play time forward to watch the chart move, and can ask Gemini to interpret what you see.</p>
+    <p>An astrology app for learning the subculture and for personal analysis. Charts come from its own pure-Dart astronomy engine (VSOP87), which runs on the phone and, compiled to JavaScript, in the browser. The iPhone app draws the natal chart over a real sky background: pick a birthplace on a map, play time forward to watch the chart move, and ask Gemini to interpret what you see. The web edition puts the sky in a cartoon snow globe: an astrologer stands on a floating island while the zodiac, the houses and the real stars turn overhead, with the planets as characters. Orbit it, turn it in isometric view, look up from the island, or flatten it into a classical natal chart. Celeste, a talking orb, explains whatever you tap and works out what would have changed had you been born a few minutes earlier or some kilometres away. A side panel lists dignities, aspects, house lords, the Moon's phase and the planetary hour.</p>
     <div class="links">
+      <a href="https://aykutkilic.github.io/astroseeker-play/">Play web edition ↗</a>
       <a href="https://apps.apple.com/app/astroseekerapp/id6760286987">App Store ↗</a>
-      <a href="https://github.com/aykutkilic/astroseeker">Source ↗</a>
     </div>
   </article>
 
